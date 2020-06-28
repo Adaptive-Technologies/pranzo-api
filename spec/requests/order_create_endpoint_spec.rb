@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'POST /api/orders' do
-  let(:channells) {
-    ActionCable.server.pubsub.instance_variable_get(:@channels_data)
-  }
+RSpec.describe 'POST /api/orders', type: :request do
   before do
     ActionCable.server.restart
     post '/api/orders'

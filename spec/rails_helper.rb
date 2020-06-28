@@ -25,6 +25,12 @@ module JsonHelpers
   end
 end
 
+module ActionCableHelpers
+  def channells
+    ActionCable.server.pubsub.instance_variable_get(:@channels_data)
+  end
+end
+
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
@@ -33,4 +39,5 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Shoulda::Matchers::ActiveRecord, type: :model
   config.include JsonHelpers, type: :request
+  config.include ActionCableHelpers, type: :request
 end
