@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe User, type: :model do
   describe 'Database table' do
     it { is_expected.to have_db_column :name }
@@ -14,5 +16,5 @@ RSpec.describe User, type: :model do
     }
   end
 
-  it {is_expected.to have_many :orders  }
+  it { is_expected.to have_many :orders }
 end
