@@ -3,7 +3,22 @@
 class OrdersController < ApplicationController
   def create
     order = user_signed_in? ? current_user.orders.create : Order.create
-    NotificationsService.notify_kitchen(order)
-    render json: { order: order, message: 'Your order was submitted' }
+    if order.persisted?
+      add_items(order)
+      NotificationsService.notify_kitchen(order)
+      render json: { order: order, message: 'Your order was submitted' }
+    end
+  end
+
+  private
+
+  def add_items(order)
+    order_params[:items].each do |id|
+      order.items.create(product_id: id)
+    end
+  end
+
+  def order_params
+    params.require(:order).permit(items: [])
   end
 end

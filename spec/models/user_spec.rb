@@ -16,5 +16,10 @@ RSpec.describe User, type: :model do
     }
   end
 
-  it { is_expected.to have_many :orders }
+  describe 'associations' do
+    it {
+      is_expected.to have_many(:orders)
+        .dependent(:destroy)
+    }
+  end
 end

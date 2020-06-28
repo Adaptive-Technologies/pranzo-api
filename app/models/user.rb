@@ -9,5 +9,5 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  has_many :orders
+  has_many :orders, dependent: :destroy
 end
