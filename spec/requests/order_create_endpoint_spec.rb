@@ -10,7 +10,7 @@ RSpec.describe 'POST /api/orders', type: :request do
   describe 'as visitor' do
     before do
       post '/api/orders',
-           params: { order: {items: [product_1.id, product_2.id]} }
+           params: { order: { items: [product_1.id, product_2.id] } }
     end
 
     it {
@@ -20,7 +20,7 @@ RSpec.describe 'POST /api/orders', type: :request do
       expect(Order.last).to be_persisted
     end
 
-    it 'is expected to have a total' do
+    it 'is expected to have a total calculated on the items' do
       expect(Order.last.total.to_f).to eq 15.00
     end
 
@@ -55,7 +55,7 @@ RSpec.describe 'POST /api/orders', type: :request do
 
     before do
       post '/api/orders',
-           params: { order: {items: [product_3.id, product_2.id]} },
+           params: { order: { items: [product_3.id, product_2.id] } },
            headers: valid_auth_headers
     end
 
