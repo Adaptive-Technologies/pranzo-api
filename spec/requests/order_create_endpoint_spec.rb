@@ -3,9 +3,12 @@
 RSpec.describe 'POST /api/orders', type: :request do
   before do
     ActionCable.server.restart
-    post '/api/orders'
   end
   describe 'as visitor' do
+    before do
+      post '/api/orders'
+    end
+
     it {
       expect(response).to have_http_status 200
     }
@@ -23,7 +26,7 @@ RSpec.describe 'POST /api/orders', type: :request do
 
     it 'is expected to dispatch a websocket message to "kitchen_notifications"' do
       expect(
-        channells["kitchen_notifications"].count
+        channells['kitchen_notifications'].count
       ).to eq 1
     end
 
@@ -31,14 +34,23 @@ RSpec.describe 'POST /api/orders', type: :request do
       time = DateTime.now.in_time_zone .to_s(:time)
       expect(
         JSON.parse(
-          channells["kitchen_notifications"].first
+          channells['kitchen_notifications'].first
         )['data']['message']
       ).to eq "#{time}: incoming order"
     end
   end
 
   describe 'as registered user' do
+    let(:user) { create(:user) }
+    let(:credentials) { user.create_new_auth_token }
+    let(:valid_auth_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
 
+    before do
+      post '/api/orders', headers: valid_auth_headers
+    end
+
+    it {
+      expect(response).to have_http_status 200
+    }
   end
-
 end

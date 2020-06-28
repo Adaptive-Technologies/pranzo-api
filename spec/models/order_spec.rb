@@ -8,6 +8,5 @@ RSpec.describe Order, type: :model do
     it {
       expect(create(:order)).to be_valid
     }
-
   end
 end
