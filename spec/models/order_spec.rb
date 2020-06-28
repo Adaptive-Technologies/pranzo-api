@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Order, type: :model do
   describe 'Database table' do
     it { is_expected.to have_db_column :created_at }
@@ -7,6 +9,13 @@ RSpec.describe Order, type: :model do
   describe 'Factory' do
     it {
       expect(create(:order)).to be_valid
+    }
+  end
+
+  describe 'associations' do
+    it {
+      is_expected.to belong_to(:user)
+        .optional(true)
     }
   end
 end
