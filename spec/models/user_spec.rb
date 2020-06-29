@@ -21,5 +21,9 @@ RSpec.describe User, type: :model do
       is_expected.to have_many(:orders)
         .dependent(:destroy)
     }
+    it {
+      is_expected.to have_many(:time_sheets)
+        .dependent(:destroy)
+    }
   end
 end

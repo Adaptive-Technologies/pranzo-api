@@ -13,6 +13,7 @@ gem 'rack-cors'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
 gem 'redis', '~> 4.0'
 gem 'devise_token_auth'
+gem 'active_model_serializers', '~> 0.10.0'
 
 group :development, :test do
   gem 'factory_bot_rails'

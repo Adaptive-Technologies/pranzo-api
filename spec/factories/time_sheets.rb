@@ -4,6 +4,6 @@ FactoryBot.define do
     start_time { "2020-06-29 16:46:44" }
     end_time { "2020-06-29 16:46:44" }
     duration { "9.99" }
-    user { nil }
+    user 
   end
 end

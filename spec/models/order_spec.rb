@@ -25,9 +25,9 @@ RSpec.describe Order, type: :model do
       is_expected.to have_many(:products)
         .through(:items)
     }
+
   end
 
   describe 'validations' do
-
   end
 end
