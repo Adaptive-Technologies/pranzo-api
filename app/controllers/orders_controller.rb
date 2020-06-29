@@ -6,7 +6,9 @@ class OrdersController < ApplicationController
     if order.persisted?
       add_items(order)
       NotificationsService.notify_kitchen(order)
-      render json: { order: order, message: 'Your order was submitted' }
+      render json: {
+        order: order, message: 'Your order was submitted'
+      }, status: :created
     end
   end
 

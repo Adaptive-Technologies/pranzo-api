@@ -14,7 +14,7 @@ RSpec.describe 'POST /api/orders', type: :request do
     end
 
     it {
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status 201
     }
     it 'is expected to create an instance of Order' do
       expect(Order.last).to be_persisted
@@ -60,7 +60,7 @@ RSpec.describe 'POST /api/orders', type: :request do
     end
 
     it {
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status 201
     }
     it 'is expected to asociate user with the instance of Order' do
       expect(Order.last.user).to an_instance_of User
