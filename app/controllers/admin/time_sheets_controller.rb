@@ -4,7 +4,6 @@ class Admin::TimeSheetsController < ApplicationController
   before_action :authenticate_user!
   before_action :format_options, only: :create
   def create
-
     time_sheet = current_user.time_sheets.create(@options)
     if time_sheet.persisted?
       render json: {
@@ -13,15 +12,23 @@ class Admin::TimeSheetsController < ApplicationController
     end
   end
 
-  def index;
-    time_sheets = TimeSheet.all
-    render json: time_sheets, each_serializer: TimeSheets::IndexSerializer
+  def index
+    time_sheets = current_user.time_sheets.for_current_period
+    render json: { user: Users::ShowSerializer.new(current_user), time_sheets: serialize_collection(time_sheets), total_hours: time_sheets.sum(:duration) }
   end
 
   private
 
   def serialize(time_sheet)
     TimeSheets::ShowSerializer.new(time_sheet)
+  end
+
+  def serialize_collection(time_sheets)
+    ActiveModelSerializers::SerializableResource.new(
+      time_sheets,
+      each_serializer: TimeSheets::IndexSerializer,
+      adapter: :attributes
+    )
   end
 
   def valid_params
@@ -35,7 +42,6 @@ class Admin::TimeSheetsController < ApplicationController
       date: Date.parse(valid_params[:date]),
       start_time: start_time,
       end_time: end_time,
-      duration: (end_time - start_time) / 1.minutes / 60
     }
   end
 end

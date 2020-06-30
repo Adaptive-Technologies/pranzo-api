@@ -23,7 +23,7 @@ RSpec.describe TimeSheets::ShowSerializer, type: :serializer do
     expect(subject['time_sheet'].keys).to match expected_keys
   end
 
-  it 'is expected to contain "id", "email" andd "name" for "user"' do
+  it 'is expected to contain "id", "email" and "name" for "user"' do
     expected_keys = %w[id email name]
     expect(subject['time_sheet']['user'].keys).to match expected_keys
   end
