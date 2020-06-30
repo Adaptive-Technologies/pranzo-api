@@ -22,7 +22,7 @@ RSpec.describe 'GET /admin/timesheets' do
              start_time: '09:00',
              end_time: '15:00')
       create(:time_sheet,
-             date: Date.today.beginning_of_month + 5,
+             date: Date.today.beginning_of_month + 15,
              user: employee_2,
              start_time: '09:00',
              end_time: '15:00')
@@ -41,12 +41,15 @@ RSpec.describe 'GET /admin/timesheets' do
       expect(response).to have_http_status(200)
     end
 
-    it 'is expected to respond with time sheets filtered by user' do
-      expect(response_json['employees'].size).to eq 2
+    it 'is expected to respond with time sheets groupes by user name' do
+      expect(response_json['time_sheets'].keys.first).to eq 'Kalle'
     end
 
-    it 'is expected to calculate "total hours"' do
-      expect(response_json['employees'].first['timesheets']).to eq 2
+    it 'is expected to return appropoite time sheets"' do
+      expect(
+        response_json['time_sheets'][response_json['time_sheets'].keys.first].size
+      )
+        .to eq 1
     end
   end
 end

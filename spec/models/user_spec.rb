@@ -8,6 +8,10 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_db_column :uid }
     it { is_expected.to have_db_column :created_at }
     it { is_expected.to have_db_column :updated_at }
+    it {
+      is_expected.to have_db_column(:role)
+        .of_type(:integer)
+    }
   end
 
   describe 'Factory' do
@@ -24,6 +28,35 @@ RSpec.describe User, type: :model do
     it {
       is_expected.to have_many(:time_sheets)
         .dependent(:destroy)
+    }
+  end
+
+  describe '#role' do
+    subject { create(:user) }
+    it { is_expected.to respond_to :consumer? }
+    it { is_expected.to respond_to :consumer! }
+    it { is_expected.to respond_to :employee? }
+    it { is_expected.to respond_to :employee! }
+    it { is_expected.to respond_to :admin? }
+    it { is_expected.to respond_to :admin! }
+    it {
+      expect do
+        subject.employee!
+      end.to change { subject.role }
+        .from('consumer').to('employee')
+    }
+    it {
+      expect do
+        subject.admin!
+      end.to change { subject.role }
+        .from('consumer').to('admin')
+    }
+    it {
+      subject.employee!
+      expect do
+        subject.consumer!
+      end.to change { subject.role }
+        .from('employee').to('consumer')
     }
   end
 end

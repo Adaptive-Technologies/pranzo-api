@@ -13,8 +13,14 @@ class Admin::TimeSheetsController < ApplicationController
   end
 
   def index
-    time_sheets = current_user.time_sheets.for_current_period
-    render json: { user: Users::ShowSerializer.new(current_user), time_sheets: serialize_collection(time_sheets), total_hours: time_sheets.sum(:duration) }
+    if current_user.admin?
+      time_sheets = TimeSheet.for_current_period.group_by { |ts| ts.user.name }
+      ts_json = time_sheets.each { |_key, value| serialize(value) }
+      render json: { time_sheets: ts_json }
+    else
+      time_sheets = current_user.time_sheets.for_current_period
+      render json: { user: Users::ShowSerializer.new(current_user), time_sheets: serialize_collection(time_sheets), total_hours: time_sheets.sum(:duration) }
+    end
   end
 
   private
@@ -41,7 +47,7 @@ class Admin::TimeSheetsController < ApplicationController
     @options = {
       date: Date.parse(valid_params[:date]),
       start_time: start_time,
-      end_time: end_time,
+      end_time: end_time
     }
   end
 end
