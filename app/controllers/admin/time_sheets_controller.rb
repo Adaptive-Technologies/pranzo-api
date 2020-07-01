@@ -15,8 +15,8 @@ class Admin::TimeSheetsController < ApplicationController
   def index
     if current_user.admin?
       time_sheets = TimeSheet.for_current_period.group_by { |ts| ts.user.name }
-      ts_json = time_sheets.each { |_key, value| serialize(value) }
-      render json: { time_sheets: ts_json }
+      # render json: time_sheets, serializer: TimeSheets::GroupedSerializer
+      render json: serialize_grouped_collection(time_sheets) #time_sheets, each_serializer: TimeSheets::GroupedSerializer
     else
       time_sheets = current_user.time_sheets.for_current_period
       render json: { user: Users::ShowSerializer.new(current_user), time_sheets: serialize_collection(time_sheets), total_hours: time_sheets.sum(:duration) }
@@ -35,6 +35,21 @@ class Admin::TimeSheetsController < ApplicationController
       each_serializer: TimeSheets::IndexSerializer,
       adapter: :attributes
     )
+  end
+
+  def serialize_grouped_collection(time_sheets)
+    binding.pry
+    ActiveModelSerializers::SerializableResource.new(
+      time_sheets,
+      serializer: TimeSheets::GroupedSerializer,
+      adapter: :attributes,
+      root: false
+    )
+
+    # TimeSheets::GroupedSerializer.new(time_sheets, root: 'foo')
+    # ts_json = time_sheets.each {|k, v| ActiveModel::Serializer::CollectionSerializer.new(v, serializer: TimeSheets::ShowSerializer).to_json}
+    # # ts_json = time_sheets.each { |_key, value| serialize_collection(value) }
+    # ts_json.as_json
   end
 
   def valid_params

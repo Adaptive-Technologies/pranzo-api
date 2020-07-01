@@ -42,6 +42,8 @@ RSpec.describe 'GET /admin/timesheets' do
     end
 
     it 'is expected to respond with time sheets groupes by user name' do
+      binding.pry
+      
       expect(response_json['time_sheets'].keys.first).to eq 'Kalle'
     end
 
