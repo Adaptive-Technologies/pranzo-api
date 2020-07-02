@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-require 'rails_helper'
 
 RSpec.describe 'GET /admin/timesheets' do
   let(:employee_1) { create(:user, role: :employee,  name: 'Kalle') }
@@ -16,16 +13,25 @@ RSpec.describe 'GET /admin/timesheets' do
              user: employee_1,
              start_time: '09:00',
              end_time: '15:00')
+
+      create(:time_sheet,
+            date: Date.today.beginning_of_month + 16,
+            user: employee_1,
+            start_time: '09:00',
+            end_time: '15:00')
+
       create(:time_sheet,
              date: Date.today.months_ago(1).beginning_of_month + 10,
              user: employee_1,
              start_time: '09:00',
              end_time: '15:00')
+
       create(:time_sheet,
              date: Date.today.beginning_of_month + 15,
              user: employee_2,
              start_time: '09:00',
              end_time: '15:00')
+
       create(:time_sheet,
              date: Date.today.months_ago(1).beginning_of_month + 10,
              user: employee_2,
@@ -42,16 +48,21 @@ RSpec.describe 'GET /admin/timesheets' do
     end
 
     it 'is expected to respond with time sheets groupes by user name' do
-      binding.pry
-      
-      expect(response_json['time_sheets'].keys.first).to eq 'Kalle'
+      expect(response_json['users'].keys.first).to eq 'Kalle'
     end
 
-    it 'is expected to return appropoite time sheets"' do
+    it 'is expected to return appropoite "time sheets"' do
       expect(
-        response_json['time_sheets'][response_json['time_sheets'].keys.first].size
+        response_json['users'][response_json['users'].keys.first]['time_sheets'].size
       )
-        .to eq 1
+        .to eq 2
+    end
+
+    it 'is expected to return appropoite "total_hours"' do
+      expect(
+        response_json['users'][response_json['users'].keys.first]['total_hours']
+      )
+        .to eq "12.0"
     end
   end
 end

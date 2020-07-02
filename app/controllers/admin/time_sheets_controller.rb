@@ -15,11 +15,13 @@ class Admin::TimeSheetsController < ApplicationController
   def index
     if current_user.admin?
       time_sheets = TimeSheet.for_current_period.group_by { |ts| ts.user.name }
-      # render json: time_sheets, serializer: TimeSheets::GroupedSerializer
-      render json: serialize_grouped_collection(time_sheets) #time_sheets, each_serializer: TimeSheets::GroupedSerializer
+      render json: { users: serialize_grouped_collection(time_sheets) }
     else
       time_sheets = current_user.time_sheets.for_current_period
-      render json: { user: Users::ShowSerializer.new(current_user), time_sheets: serialize_collection(time_sheets), total_hours: time_sheets.sum(:duration) }
+      render json: {
+        user: Users::ShowSerializer.new(current_user),
+        time_sheets: serialize_collection(time_sheets),
+        total_hours: time_sheets.sum(:duration) }
     end
   end
 
@@ -33,23 +35,18 @@ class Admin::TimeSheetsController < ApplicationController
     ActiveModelSerializers::SerializableResource.new(
       time_sheets,
       each_serializer: TimeSheets::IndexSerializer,
-      adapter: :attributes
+      adapter: :attributes,
+      root: 'time_sheets'
     )
   end
 
   def serialize_grouped_collection(time_sheets)
-    binding.pry
-    ActiveModelSerializers::SerializableResource.new(
-      time_sheets,
-      serializer: TimeSheets::GroupedSerializer,
-      adapter: :attributes,
-      root: false
-    )
-
-    # TimeSheets::GroupedSerializer.new(time_sheets, root: 'foo')
-    # ts_json = time_sheets.each {|k, v| ActiveModel::Serializer::CollectionSerializer.new(v, serializer: TimeSheets::ShowSerializer).to_json}
-    # # ts_json = time_sheets.each { |_key, value| serialize_collection(value) }
-    # ts_json.as_json
+    serialized = time_sheets.map do |group_key, sheets|
+      serialized_sheets = serialize_collection(sheets)
+      total_hours = sheets.pluck(:duration).sum
+      [group_key, { time_sheets: serialized_sheets, total_hours: total_hours }]
+    end.to_h
+    serialized
   end
 
   def valid_params
