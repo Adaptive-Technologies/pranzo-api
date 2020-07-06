@@ -4,11 +4,15 @@ class Admin::TimeSheetsController < ApplicationController
   before_action :authenticate_user!
   before_action :format_options, only: :create
   def create
-    time_sheet = current_user.time_sheets.create(@options)
-    if time_sheet.persisted?
-      render json: {
-        timesheet: serialize(time_sheet), message: 'Your time sheet was submitted'
-      }, status: :created
+    if @error
+      render json: @error, status: 422
+    else
+      time_sheet = current_user.time_sheets.create(@options)
+      if time_sheet.persisted?
+        render json: {
+          timesheet: serialize(time_sheet), message: 'Your time sheet was submitted'
+        }, status: :created
+      end
     end
   end
 
@@ -21,7 +25,8 @@ class Admin::TimeSheetsController < ApplicationController
       render json: {
         user: Users::ShowSerializer.new(current_user),
         time_sheets: serialize_collection(time_sheets),
-        total_hours: time_sheets.sum(:duration) }
+        total_hours: time_sheets.sum(:duration)
+      }
     end
   end
 
@@ -61,5 +66,7 @@ class Admin::TimeSheetsController < ApplicationController
       start_time: start_time,
       end_time: end_time
     }
+  rescue StandardError => e
+    @error = { message: 'Your request could not be fullfilled' }
   end
 end
