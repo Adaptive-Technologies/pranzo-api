@@ -40,14 +40,4 @@ describe Orders::IndexSerializer, type: :serializer do
     expected_keys = %w[id product_id name price]
     expect(subject['orders'].last['items'].first.keys).to match expected_keys
   end
-
-  it 'is expected to have a specific structure' do
-    expect(subject).to match(
-      'user' => {
-        'id' => an_instance_of(Integer),
-        'email' => a_string_including('@'),
-        'name' => an_instance_of(String)
-      }
-    )
-  end
 end

@@ -14,7 +14,7 @@ class OrdersController < ApplicationController
 
   def index
     orders = Order.all
-    render json: orders
+    render json: orders, each_serializer: Orders::IndexSerializer
   end
 
   private

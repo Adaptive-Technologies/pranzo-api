@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'GET /api/admin/orders', type: :request do
+  let(:user) { create(:user) }
   let(:product_1) { create(:product, price: 10) }
   let(:product_2) { create(:product, price: 5) }
   let(:product_3) { create(:product) }
@@ -8,20 +9,20 @@ RSpec.describe 'GET /api/admin/orders', type: :request do
   let!(:order_1_item_1) { create(:item, order: order_1, product: product_1) }
   let!(:order_1_item_2) { create(:item, order: order_1, product: product_2) }
   let!(:order_1_item_3) { create(:item, order: order_1, product: product_3) }
-  before do
-    ActionCable.server.restart
-  end
+  let(:order_2) { create(:order, user: user) }
+  let!(:order_2_item_1) { create(:item, order: order_2, product: product_1) }
+  let!(:order_2_item_2) { create(:item, order: order_2, product: product_2) }
+  let!(:order_2_item_3) { create(:item, order: order_2, product: product_3) }
 
   before do
     get '/api/admin/orders'
   end
 
   it {
-    expect(response).to have_http_status 201
+    expect(response).to have_http_status 200
   }
 
   it 'is expected to retun the order' do
-    expect(response_json['orders']).to eq Order.last.as_json
+    expect(response_json['orders'].count).to eq 2
   end
-
 end
