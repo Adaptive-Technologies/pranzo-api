@@ -15,6 +15,33 @@ RSpec.describe Product, type: :model do
     }
   end
 
+  describe 'Validations' do
+    describe '#services' do
+      it 'contains "lunch"' do
+        subject.services << 'lunch'
+        expect(subject.valid?).to be_truthy
+      end
+
+      it 'contains "dinner"' do
+        subject.services << 'lunch'
+        expect(subject.valid?).to be_truthy
+      end
+
+      it 'contains an invalid value' do
+        subject.services << 'something_invalid'
+        subject.valid?
+        expect(subject.errors[:services])
+          .to include('"something_invalid" is an invalid value')
+      end
+
+      it 'is an empty array' do
+        subject.valid?
+        expect(subject.errors[:services])
+          .to include('must include at least one value')
+      end
+    end
+  end
+
   describe 'Factory' do
     it {
       expect(create(:product)).to be_valid
