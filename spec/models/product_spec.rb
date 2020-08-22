@@ -16,6 +16,8 @@ RSpec.describe Product, type: :model do
   end
 
   describe 'Validations' do
+    subject { create(:product) }
+
     describe '#services' do
       it 'contains "lunch"' do
         subject.services << 'lunch'
@@ -35,9 +37,51 @@ RSpec.describe Product, type: :model do
       end
 
       it 'is an empty array' do
+        subject.services = []
         subject.valid?
         expect(subject.errors[:services])
           .to include('must include at least one value')
+      end
+    end
+
+    describe '#image_url' do
+      it { is_expected.to validate_url_of(:image_url) }
+      it 'is expected to be valid with a HTTPS url' do
+        subject.image_url = 'https://picsum.photos/800'
+        expect(subject.valid?).to be_truthy
+      end
+
+      it 'is expected to be valid with a HTTP url' do
+        subject.image_url = 'http://picsum.photos/800'
+        expect(subject.valid?).to be_truthy
+      end
+
+      it 'is expected NOT to be valid with an invalid protocol value (ftp)' do
+        subject.image_url = 'ftp:/picsum.photos/800'
+        subject.valid?
+        expect(subject.errors[:image_url])
+          .to include('is not a valid URL')
+      end
+
+      it 'is expected NOT to be valid with an invalid value' do
+        subject.image_url = 'http:/picsum.photos/800'
+        subject.valid?
+        expect(subject.errors[:image_url])
+          .to include('is not a valid URL')
+      end
+
+      it 'is expected NOT to be valid with an empty value' do
+        subject.image_url = ''
+        subject.valid?
+        expect(subject.errors[:image_url])
+          .to include('is not a valid URL')
+      end
+
+      it 'is expected NOT to be valid with an nil value' do
+        subject.image_url = nil
+        subject.valid?
+        expect(subject.errors[:image_url])
+          .to include('is not a valid URL')
       end
     end
   end
