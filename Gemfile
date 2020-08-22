@@ -21,6 +21,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'faker'
+  gem 'timecop'
 end
 
 group :development do

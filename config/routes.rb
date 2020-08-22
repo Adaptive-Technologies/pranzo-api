@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   end
   scope path: 'api' do
     resources :orders, only: [:create]
+    resources :services, only: [:index]
   end
 end
