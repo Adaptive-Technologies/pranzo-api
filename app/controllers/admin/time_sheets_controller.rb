@@ -69,4 +69,10 @@ class Admin::TimeSheetsController < ApplicationController
   rescue StandardError => e
     @error = { message: 'Your request could not be fullfilled' }
   end
+
+
+  def authenticate_user!
+    super
+  end
+
 end

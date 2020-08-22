@@ -12,6 +12,11 @@ class OrdersController < ApplicationController
     end
   end
 
+  def index
+    orders = Order.all
+    render json: orders, each_serializer: Orders::IndexSerializer
+  end
+
   private
 
   def add_items(order)

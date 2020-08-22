@@ -1,29 +1,30 @@
 # frozen_string_literal: true
 
-describe Users::ShowSerializer, type: :serializer do
-  let(:user) { create(:user) }
+describe Items::ShowSerializer, type: :serializer do
+  let(:item) { create(:item) }
   let(:serialization) do
     ActiveModelSerializers::SerializableResource.new(
-      user,
+      item,
       serializer: described_class
     )
   end
   subject { JSON.parse(serialization.to_json) }
 
   it 'is expected to wrap content in key reflecting model name' do
-    expect(subject.keys).to match ['user']
+    expect(subject.keys).to match ['item']
   end
   it 'is expected to contain relevant keys' do
-    expected_keys = %w[id email name]
-    expect(subject['user'].keys).to match expected_keys
+    expected_keys = %w[id product_id name price]
+    expect(subject['item'].keys).to match expected_keys
   end
 
   it 'is expected to have a specific structure' do
     expect(subject).to match(
-      'user' => {
+      'item' => {
         'id' => an_instance_of(Integer),
-        'email' => a_string_including('@'),
-        'name' => an_instance_of(String)
+        'product_id' => an_instance_of(Integer),
+        'name' => an_instance_of(String),
+        'price' => an_instance_of(String)
       }
     )
   end
