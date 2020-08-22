@@ -15,7 +15,7 @@ RSpec.describe 'GET /api/admin/orders', type: :request do
   let!(:order_2_item_3) { create(:item, order: order_2, product: product_3) }
 
   before do
-    get '/api/admin/orders'
+    get '/admin/orders'
   end
 
   it {
