@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Product, type: :model do
   describe 'Database table' do
     it { is_expected.to have_db_column :name }
@@ -6,6 +7,11 @@ RSpec.describe Product, type: :model do
       is_expected.to have_db_column(:price)
         .of_type(:decimal)
         .with_options(precision: 8, scale: 2, null: false)
+    }
+    it {
+      is_expected.to have_db_column(:services)
+        .of_type(:text)
+        .with_options(array: true, default: [])
     }
   end
 

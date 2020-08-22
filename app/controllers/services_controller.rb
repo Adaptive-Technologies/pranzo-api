@@ -2,7 +2,6 @@
 
 class ServicesController < ApplicationController
   def index
-
-    render json: { services: ServicesService.list_available }
+    render json: { services: ServicesService.current }
   end
 end

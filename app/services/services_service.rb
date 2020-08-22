@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ServicesService
-  def self.list_available
+  def self.current
     services = []
     lunch_start = DateTime.now.beginning_of_day + (11.hours + 30.minutes)
     lunch_end = DateTime.now.beginning_of_day + (14.hours + 30.minutes)
