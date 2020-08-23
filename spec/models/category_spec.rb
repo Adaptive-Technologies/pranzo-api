@@ -16,4 +16,10 @@ RSpec.describe Category, type: :model do
       expect(create(:category)).to be_valid
     }
   end
+
+  describe 'associations' do
+    it {
+      is_expected.to have_and_belong_to_many(:products)
+    }
+  end
 end

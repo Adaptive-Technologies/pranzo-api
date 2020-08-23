@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe 'GET /api/products', type: :request do
-  let!(:lunch_dish) { create(:product, services: ['lunch']) }
-  let!(:dinner_dish) { create(:product, services: ['dinner']) }
+  let(:category_1) { create(:category, name: 'Tapas') }
+  let(:category_2) { create(:category, name: 'Pica-Pica') }
+  let(:category_3) { create(:category, name: 'Drinks') }
+  let!(:lunch_dish_1) { create(:product, services: ['lunch'], categories: [category_1, category_2]) }
+  let!(:lunch_dish_2) { create(:product, services: ['lunch'], categories: [category_2]) }
+  let!(:lunch_dish_3) { create(:product, services: ['lunch'], categories: [category_3]) }
+  let!(:dinner_dish) { create(:product, services: ['dinner'], categories: [category_1, category_2]) }
 
   describe 'at noonish' do
     before do
@@ -15,7 +20,7 @@ RSpec.describe 'GET /api/products', type: :request do
     }
 
     it 'is expected to return products for lunch service' do
-      expect(response_json['products'].count).to eq 1
+      expect(response_json['tapas']['items'].count).to eq 1
     end
   end
 
@@ -30,7 +35,7 @@ RSpec.describe 'GET /api/products', type: :request do
     }
 
     it 'is expected to return products for dinner service' do
-      expect(response_json['products'].count).to eq 1
+      expect(response_json['tapas']['items'].count).to eq 1
     end
   end
 end
