@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
-  before_action :get_current_service # returns an array
+  before_action :get_current_service
   def index
-    products = Product.where(services: @current_service)
+    # '&&' overlap (have elements in common) is documented at https://www.postgresql.org/docs/current/functions-array.html
+    query = "services && '{#{@current_services}}'"
+    products = Product.where(query)
     category_names_in_use = products.map { |product| product.categories.pluck(:name) }.flatten.uniq
     categories_in_use = Category.where(name: category_names_in_use)
     grouped_collection = Hash[category_names_in_use.map do |category|
@@ -13,7 +15,7 @@ class ProductsController < ApplicationController
                                   items: serialize_collection(
                                     current_category
                                     .products
-                                    .where(services: @current_service)
+                                    .where(query)
                                   )
                                 }]
                               end
@@ -33,6 +35,6 @@ class ProductsController < ApplicationController
   end
 
   def get_current_service
-    @current_service = ServicesService.current
+    @current_services = ServicesService.current.join(', ')
   end
 end
