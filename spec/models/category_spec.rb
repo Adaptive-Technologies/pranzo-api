@@ -13,6 +13,7 @@ RSpec.describe Category, type: :model do
 
   describe 'Factory' do
     it {
+      binding.pry
       expect(create(:category)).to be_valid
     }
   end
