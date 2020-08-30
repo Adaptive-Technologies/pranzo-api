@@ -6,5 +6,6 @@ FactoryBot.define do
     price { 9.99 }
     services { ['lunch'] }
     image_url { 'https://picsum.photos/800' }
+    categories { |a| [a.association(:category)] }
   end
 end

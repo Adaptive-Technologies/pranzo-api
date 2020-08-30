@@ -9,6 +9,6 @@ module ServicesService
     dinner_end = DateTime.now.beginning_of_day + 20.hours
     services.push('lunch') if DateTime.now.between?(lunch_start, lunch_end)
     services.push('dinner') if DateTime.now.between?(dinner_start, dinner_end)
-    services
+    services.empty? ? ['lunch', 'dinner'] : services
   end
 end
