@@ -3,6 +3,7 @@
 RSpec.describe Product, type: :model do
   describe 'Database table' do
     it { is_expected.to have_db_column :name }
+
     it {
       is_expected.to have_db_column(:price)
         .of_type(:decimal)
@@ -83,6 +84,32 @@ RSpec.describe Product, type: :model do
         expect(subject.errors[:image_url])
           .to include('is not a valid URL')
       end
+    end
+  end
+
+  describe 'Translations' do
+    subject { create(:product) }
+    before do
+      subject.update(subtitle: 'Swedish subtitle', locale: :sv)
+    end
+
+    after { I18n.locale = :en }
+
+    it {
+      is_expected.to respond_to(:translations)
+    }
+
+    it {
+      is_expected.to respond_to(:subtitle)
+    }
+
+    it 'is expected to have multiple translations' do
+      expect(subject.translations.count).to eq 2
+    end
+
+    it 'is expected to display translated value for the right locale' do
+      I18n.locale = :sv
+      expect(subject.subtitle).to eq 'Swedish subtitle'
     end
   end
 

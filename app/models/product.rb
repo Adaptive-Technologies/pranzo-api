@@ -7,4 +7,5 @@ class Product < ApplicationRecord
   has_many :items
   has_many :orders, through: :items
   has_and_belongs_to_many :categories
+  translates :subtitle
 end
