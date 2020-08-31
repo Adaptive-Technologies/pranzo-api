@@ -11,7 +11,8 @@ RSpec.describe 'GET /api/products', type: :request do
 
   describe 'at noonish' do
     before do
-      category_1.update({promo: 'Hej din lilla mansfitta. Jag heter Oliver och gillar småpojkar', locale: :sv})
+      category_1.update({ promo: 'Svensk promotext', locale: :sv })
+      lunch_dish_1.update({ subtitle: 'Svens subtitle', locale: :sv })
       Timecop.freeze(Time.local(2020, 1, 1, 12, 1, 0))
       get '/api/products'
     end
@@ -22,6 +23,14 @@ RSpec.describe 'GET /api/products', type: :request do
 
     it 'is expected to return products for lunch service' do
       expect(response_json['tapas']['items'].count).to eq 1
+    end
+
+    it 'is expected to return translated promo' do
+      expect(response_json['tapas']['promo'].keys).to match %w[en sv]
+    end
+
+    it 'is expected to return translated subtitle' do
+      expect(response_json['tapas']['items'][0]['subtitle'].keys).to match %w[en sv]
     end
   end
 
@@ -50,7 +59,7 @@ RSpec.describe 'GET /api/products', type: :request do
       expect(response).to have_http_status 200
     }
 
-    it 'is expected to return all products for both lunch  and dinner service' do
+    it 'is expected to return all products for both lunch and dinner service' do
       expect(response_json.keys).to eq %w[tapas pica-pica drinks]
     end
   end

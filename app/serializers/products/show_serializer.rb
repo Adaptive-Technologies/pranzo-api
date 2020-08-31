@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Products::ShowSerializer < ActiveModel::Serializer
   attributes :id, :title, :subtitle, :price, :imageUrl
 
@@ -10,6 +12,10 @@ class Products::ShowSerializer < ActiveModel::Serializer
   end
 
   def subtitle
-    'test'
+    subtitle_object = {}
+    object.translations.each do |translation|
+      subtitle_object[translation.locale.to_sym] = translation.subtitle
+    end
+    subtitle_object
   end
 end
