@@ -10,14 +10,16 @@ class ProductsController < ApplicationController
     categories_in_use = Category.where(name: category_names_in_use)
     grouped_collection = Hash[category_names_in_use.map do |category|
                                 current_category = categories_in_use.detect { |c| c.name == category }
-                                [current_category.name.downcase, {
-                                  promo: current_category.promo,
-                                  items: serialize_collection(
-                                    current_category
-                                    .products
-                                    .where(query)
-                                  )
-                                }]
+                                [current_category.name.downcase,
+                                 serialize_resource(
+                                   current_category,
+                                   Categories::ShowSerializer
+                                 ).as_json.merge!(items: serialize_collection(
+                                   current_category
+                                   .products
+                                   .where(query),
+                                   Products::ShowSerializer
+                                 ))]
                               end
                             ]
 
@@ -26,10 +28,18 @@ class ProductsController < ApplicationController
 
   private
 
-  def serialize_collection(products)
+  def serialize_collection(collection, serializer)
     ActiveModelSerializers::SerializableResource.new(
-      products,
-      each_serializer: Products::ShowSerializer,
+      collection,
+      each_serializer: serializer,
+      adapter: :attributes
+    )
+  end
+
+  def serialize_resource(resource, serializer)
+    ActiveModelSerializers::SerializableResource.new(
+      resource,
+      serializer: serializer,
       adapter: :attributes
     )
   end

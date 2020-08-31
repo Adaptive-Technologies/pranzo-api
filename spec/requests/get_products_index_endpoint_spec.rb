@@ -11,6 +11,7 @@ RSpec.describe 'GET /api/products', type: :request do
 
   describe 'at noonish' do
     before do
+      category_1.update({promo: 'Hej din lilla mansfitta. Jag heter Oliver och gillar småpojkar', locale: :sv})
       Timecop.freeze(Time.local(2020, 1, 1, 12, 1, 0))
       get '/api/products'
     end
