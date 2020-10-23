@@ -25,9 +25,9 @@ RSpec.describe TimeSheet, type: :model do
     let!(:time_sheets) do
       create(:time_sheet, date: Date.today.beginning_of_month + 15, user: user, start_time: '09:00', end_time: '15:00')
       create(:time_sheet, date: Date.today.beginning_of_month + 16, user: user, start_time: '09:00', end_time: '15:00')
-      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 10, user: user, start_time: '09:00', end_time: '15:00')
-      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 11, user: user, start_time: '09:00', end_time: '15:00')
-      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 12, user: user, start_time: '09:00', end_time: '15:00')
+      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 15, user: user, start_time: '09:00', end_time: '15:00')
+      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 16, user: user, start_time: '09:00', end_time: '15:00')
+      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 17, user: user, start_time: '09:00', end_time: '15:00')
 
     end
     describe '#all' do

@@ -23,17 +23,17 @@ RSpec.describe 'GET /admin/timesheets' do
            end_time: '15:00')
 
     create(:time_sheet,
-           date: Date.today.months_ago(1).beginning_of_month - 5,
+           date: Date.today.months_ago(1).end_of_month - 14,
            user: employee_1,
            start_time: '09:00',
            end_time: '10:00')
     create(:time_sheet,
-          date: Date.today.months_ago(1).beginning_of_month + 5,
+          date: Date.today.months_ago(1).beginning_of_month + 17,
           user: employee_1,
           start_time: '09:00',
           end_time: '10:00')
     create(:time_sheet,
-          date: Date.today.months_ago(1).beginning_of_month + 12,
+          date: Date.today.months_ago(1).beginning_of_month + 19,
           user: employee_1,
           start_time: '09:00',
           end_time: '10:00')
@@ -103,7 +103,7 @@ RSpec.describe 'GET /admin/timesheets' do
             params: { previous: 'true' },
             headers: valid_auth_headers_for_employee
       end
-      
+
       it 'is expected to respond with time sheets filtered by user' do
         expect(response_json['time_sheets'].size).to eq 3
       end
