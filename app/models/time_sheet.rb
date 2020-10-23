@@ -8,6 +8,10 @@ class TimeSheet < ApplicationRecord
     where(date: (DateTime.now.beginning_of_month + 14)..(DateTime.now.end_of_month + 15))
   }
 
+  scope :for_previous_period, lambda {
+    where(date: (DateTime.now.months_ago(2).beginning_of_month + 14)..(DateTime.now.months_ago(2).end_of_month + 15))
+  }
+
   private
 
   def set_duration

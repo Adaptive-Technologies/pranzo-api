@@ -21,7 +21,7 @@ class Admin::TimeSheetsController < ApplicationController
       time_sheets = TimeSheet.for_current_period.group_by { |ts| ts.user.name }
       render json: { users: serialize_grouped_collection(time_sheets) }
     else
-      time_sheets = current_user.time_sheets.for_current_period
+      time_sheets = params[:previous] == 'true' ? current_user.time_sheets.for_previous_period : current_user.time_sheets.for_current_period
       render json: {
         user: Users::ShowSerializer.new(current_user),
         time_sheets: serialize_collection(time_sheets),
@@ -70,9 +70,7 @@ class Admin::TimeSheetsController < ApplicationController
     @error = { message: 'Your request could not be fullfilled' }
   end
 
-
   def authenticate_user!
     super
   end
-
 end

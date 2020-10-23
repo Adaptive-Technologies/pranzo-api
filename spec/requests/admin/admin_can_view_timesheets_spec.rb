@@ -23,11 +23,20 @@ RSpec.describe 'GET /admin/timesheets' do
            end_time: '15:00')
 
     create(:time_sheet,
-           date: Date.today.months_ago(1).beginning_of_month + 10,
+           date: Date.today.months_ago(1).beginning_of_month - 5,
            user: employee_1,
            start_time: '09:00',
-           end_time: '15:00')
-
+           end_time: '10:00')
+    create(:time_sheet,
+          date: Date.today.months_ago(1).beginning_of_month + 5,
+          user: employee_1,
+          start_time: '09:00',
+          end_time: '10:00')
+    create(:time_sheet,
+          date: Date.today.months_ago(1).beginning_of_month + 12,
+          user: employee_1,
+          start_time: '09:00',
+          end_time: '10:00')
     create(:time_sheet,
            date: Date.today.beginning_of_month + 15,
            user: employee_2,
@@ -38,7 +47,7 @@ RSpec.describe 'GET /admin/timesheets' do
            date: Date.today.months_ago(1).beginning_of_month + 10,
            user: employee_2,
            start_time: '09:00',
-           end_time: '15:00')
+           end_time: '10:00')
   end
   describe 'as an :admin user' do
     before do
@@ -69,20 +78,40 @@ RSpec.describe 'GET /admin/timesheets' do
   end
 
   describe 'as an employee' do
-    before do
-      get '/admin/timesheets',
-          headers: valid_auth_headers_for_employee
-    end
-    it 'is expected to return a collection of current timesheeets' do
-      expect(response).to have_http_status(200)
+    context 'for current month' do
+      before do
+        get '/admin/timesheets',
+            params: { previous: 'false' },
+            headers: valid_auth_headers_for_employee
+      end
+      it 'is expected to return a collection of current timesheeets' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'is expected to respond with time sheets filtered by user' do
+        expect(response_json['time_sheets'].size).to eq 2
+      end
+
+      it 'is expected to calculate "total hours"' do
+        expect(response_json['total_hours']).to eq '12.0'
+      end
     end
 
-    it 'is expected to respond with time sheets filtered by user' do
-      expect(response_json['time_sheets'].size).to eq 2
-    end
+    context 'for previous month' do
+      before do
+        get '/admin/timesheets',
+            params: { previous: 'true' },
+            headers: valid_auth_headers_for_employee
+      end
+      
+      it 'is expected to respond with time sheets filtered by user' do
+        expect(response_json['time_sheets'].size).to eq 3
+      end
 
-    it 'is expected to calculate "total hours"' do
-      expect(response_json['total_hours']).to eq '12.0'
+      it 'is expected to calculate "total hours"' do
+        expect(response_json['total_hours']).to eq '3.0'
+      end
+
     end
   end
 end
