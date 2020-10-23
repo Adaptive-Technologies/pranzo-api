@@ -18,7 +18,7 @@ class Admin::TimeSheetsController < ApplicationController
 
   def index
     if current_user.admin?
-      time_sheets = TimeSheet.for_current_period.group_by { |ts| ts.user.name }
+      time_sheets = TimeSheet.for_current_period.group_by(&:user)
       render json: { users: serialize_grouped_collection(time_sheets) }
     else
       time_sheets = params[:previous] == 'true' ? current_user.time_sheets.for_previous_period : current_user.time_sheets.for_current_period
@@ -46,10 +46,14 @@ class Admin::TimeSheetsController < ApplicationController
   end
 
   def serialize_grouped_collection(time_sheets)
-    serialized = time_sheets.map do |group_key, sheets|
+    serialized = time_sheets.map do |group_object, sheets|
       serialized_sheets = serialize_collection(sheets)
       total_hours = sheets.pluck(:duration).sum
-      [group_key, { time_sheets: serialized_sheets, total_hours: total_hours }]
+      [group_object.name, {
+        user:  Users::ShowSerializer.new(group_object),
+        time_sheets: serialized_sheets,
+        total_hours: total_hours
+      }]
     end.to_h
     serialized
   end
