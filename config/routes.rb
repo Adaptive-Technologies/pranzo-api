@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+
   namespace :admin do
+    resources :users, only: [:index]
     resources :time_sheets, only: %i[create index], path: 'timesheets'
   end
   mount_devise_token_auth_for 'User', at: 'auth'
