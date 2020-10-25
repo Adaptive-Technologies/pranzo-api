@@ -3,11 +3,12 @@
 class Admin::TimeSheetsController < ApplicationController
   before_action :authenticate_user!
   before_action :format_options, only: :create
+  before_action :get_user, only: :create
   def create
     if @error
       render json: @error, status: 422
     else
-      time_sheet = current_user.time_sheets.create(@options)
+      time_sheet = @user.time_sheets.create(@options)
       if time_sheet.persisted?
         render json: {
           timesheet: serialize(time_sheet), message: 'Your time sheet was submitted'
@@ -76,5 +77,9 @@ class Admin::TimeSheetsController < ApplicationController
 
   def authenticate_user!
     super
+  end
+
+  def get_user
+    @user = valid_params[:employeeId] ? User.find(valid_params[:employeeId]) : current_user
   end
 end
