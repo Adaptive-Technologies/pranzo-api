@@ -42,7 +42,7 @@ RSpec.describe '/admin/timesheets', type: :request do
              { date: '2020-01-05',
                start_time: '09:00',
                end_time: '15:00',
-               employeeId: user.id }
+               employee_id: user.id }
            },
            headers: valid_auth_headers_for_admin
     end

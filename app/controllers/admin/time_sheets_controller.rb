@@ -80,6 +80,6 @@ class Admin::TimeSheetsController < ApplicationController
   end
 
   def get_user
-    @user = valid_params[:employeeId] ? User.find(valid_params[:employeeId]) : current_user
+    @user = valid_params[:employee_id] ? User.find(valid_params[:employee_id]) : current_user
   end
 end
