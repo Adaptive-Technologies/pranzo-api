@@ -1,15 +1,39 @@
 # frozen_string_literal: true
+require 'rest-client'
 
-module ResOsService
-  key = 'OpBmGrJ5i03KBAq8pstw-4ZHX5YyyaOaGgmoV2zfcHK'
-  encoded_key = Base64.strict_encode64 key
-  HEADERS = {
-    Authorization: "Basic #{encoded_key}"
-  }.freeze
-  API_URL = 'https://api.resos.com/v1'
+module ResOs
+  class Configuration
+    attr_accessor :api_key, :api_url
+
+    def initialize
+      @api_key = ''
+      @api_url = 'https://api.resos.com/v1'
+    end
+
+    def headers
+      {
+        Authorization: "Basic #{Base64.strict_encode64 @api_key}"
+      }.freeze
+    end
+  end
+
+  def self.configuration
+    @configuration ||= Configuration.new
+  end
+
+  def self.reset
+    @configuration = Configuration.new
+  end
+
+  def self.configure
+    yield(configuration)
+  end
 
   def self.tables
-    response = RestClient.get(API_URL + '/tables', headers = HEADERS)
+    response = RestClient.get(
+      configuration.api_url + '/tables',
+      headers = configuration.headers
+    )
     JSON.parse response.body.force_encoding('UTF-8')
   end
 
@@ -18,19 +42,19 @@ module ResOsService
     case method
     when :post
       payload = booking_options(options).to_json
-      headers = HEADERS.deep_dup.merge!(content_type: :json, accept: :json)
+      headers = configuration.headers.deep_dup.merge!(content_type: :json, accept: :json)
     when :put
       raise StandardError, 'No booking id given' unless options[:id]
 
       payload = booking_options(options).to_json
-      headers = HEADERS.deep_dup.merge!(content_type: :json, accept: :json)
+      headers = configuration.headers.deep_dup.merge!(content_type: :json, accept: :json)
     when :get
       params = bookings_period(options)
-      headers = HEADERS.deep_dup.merge!(params: params)
+      headers = configuration.headers.deep_dup.merge!(params: params)
     end
     request = RestClient::Request.new(
       method: method,
-      url: API_URL + "/bookings#{options[:id] && '/' + options[:id]}",
+      url: configuration.api_url + "/bookings#{options[:id] && '/' + options[:id]}",
       payload: payload,
       headers: headers
     )

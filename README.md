@@ -13,6 +13,14 @@ RestClient.get(url, headers={})
 
 ## ResOsService
 
+### CONFIGURATION
+
+```ruby
+ResOsService.configure do |config|
+  config.api_key = "OpBmGrJ5i03KBAq8pstw-4ZHX5YyyaOaGgmoV2zfcHK"
+end
+```
+
 ###  USAGE
 #### Collection of bookings:
 ```ruby

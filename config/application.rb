@@ -12,6 +12,8 @@ require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
 
+require_relative '../lib/res_os'
+
 Bundler.require(*Rails.groups)
 
 module BocadoApi
