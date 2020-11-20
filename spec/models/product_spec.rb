@@ -98,7 +98,6 @@ RSpec.describe Product, type: :model do
       is_expected.to have_many(:orders)
         .through(:items)
     }
-
     it {
       is_expected.to have_and_belong_to_many(:categories)
     }
