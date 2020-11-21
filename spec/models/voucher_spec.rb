@@ -34,19 +34,83 @@ RSpec.describe Voucher, type: :model do
     it { is_expected.to validate_presence_of :paid }
     it { is_expected.to validate_presence_of :value }
 
-    describe ':transactions count' do
-      subject { create(:voucher) }
-      let!(:transactions) { 10.times { create(:transaction, voucher: subject) } }
-      it {
-        expect(subject).to be_valid
-      }
-      it {
-        transaction_attributes = attributes_for(:transaction)
-        create(:transaction, voucher: subject)
-        subject.reload
-        binding.pry
-        expect(subject).to_not be_valid
-      }
+    describe ':transactions count for voucher with value 10' do
+      subject { create(:voucher, value: 10) }
+      let!(:transactions) do
+        9.times do
+          create(:transaction, voucher: subject)
+        end
+      end
+
+      context 'on creating 10th transaction' do
+        it 'is expected to be valid' do
+          transaction = subject.transactions.new(attributes_for(:transaction))
+          expect(transaction.save).to eq true
+        end
+      end
+
+      context 'on creating 11th transaction' do
+        let!(:last_valid_transaction) { create(:transaction, voucher: subject) }
+        let(:transaction) {subject.transactions.new(attributes_for(:transaction))}
+        it 'is expected to be invalid' do
+          expect(transaction.save).to eq false
+        end
+
+        it 'is expected to add error message to transaction' do
+          transaction.save
+          expect(
+            transaction.errors.full_messages
+          ).to include 'Voucher limit exceeded'
+        end
+
+        it 'is expected to add error message to voucher' do
+          transaction.save
+          expect(
+            subject.errors.full_messages
+          ).to include 'Voucher value limit exceeded'
+        end
+      end
+
     end
+
+    describe ':transactions count for voucher with value 15' do
+      subject { create(:voucher, value: 15) }
+      let!(:transactions) do
+        14.times do
+          create(:transaction, voucher: subject)
+        end
+      end
+
+      context 'on creating 15th transaction' do
+        it 'is expected to be valid' do
+          transaction = subject.transactions.new(attributes_for(:transaction))
+          expect(transaction.save).to eq true
+        end
+      end
+
+      context 'on creating 16th transaction' do
+        let!(:last_valid_transaction) { create(:transaction, voucher: subject) }
+        let(:transaction) {subject.transactions.new(attributes_for(:transaction))}
+        it 'is expected to be invalid' do
+          expect(transaction.save).to eq false
+        end
+
+        it 'is expected to add error message to transaction' do
+          transaction.save
+          expect(
+            transaction.errors.full_messages
+          ).to include 'Voucher limit exceeded'
+        end
+
+        it 'is expected to add error message to voucher' do
+          transaction.save
+          expect(
+            subject.errors.full_messages
+          ).to include 'Voucher value limit exceeded'
+        end
+      end
+
+    end
+
   end
 end
