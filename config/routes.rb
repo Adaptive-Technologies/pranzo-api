@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :orders, only: [:index]
   end
   scope path: 'api' do
+    resources :vouchers, only: [:show]
     resources :orders, only: [:create]
     resources :services, only: [:index]
     resources :products, only: [:index]

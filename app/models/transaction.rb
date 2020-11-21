@@ -5,7 +5,7 @@ class Transaction < ApplicationRecord
   validate :is_voucher_value_reached?
 
   def is_voucher_value_reached?
-    if voucher.transactions.count >= voucher.value
+    if voucher && voucher.transactions.count >= voucher.value
       errors.add(:voucher, :limit_exceeded)
       voucher.errors.add(:base, :limit_exceeded)
     end

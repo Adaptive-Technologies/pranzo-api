@@ -15,4 +15,20 @@ RSpec.describe 'POST /admin/vouchers', type: :request do
       expect(response).to have_http_status 201
     }
   end
+
+  describe 'with invalid data' do
+    before do
+      post '/admin/vouchers',
+           params: { voucher: { value: nil, paid: true } },
+           headers: valid_auth_headers_for_admin
+    end
+
+    it {
+      expect(response).to have_http_status 422
+    }
+    
+    it 'is expected to return error message' do
+      expect(response_json['message']).to eq "Value can't be blank"
+    end
+  end
 end
