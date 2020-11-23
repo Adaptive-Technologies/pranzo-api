@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-require 'rest-client'
 
+require 'rest-client'
 module IZet
   class Config
     attr_accessor :client_id, :assertion, :grant_type
@@ -12,7 +12,6 @@ module IZet
       @grant_type = 'urn:ietf:params:oauth:grant-type:jwt-bearer'
       @token = get_token
     end
-
 
     def headers
       {
@@ -28,7 +27,7 @@ module IZet
         client_id: 'd164ee29-2dc8-11eb-8377-ea3cc72c97b8',
         grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer'
       }
-      request = RestClient.post('https://oauth.izettle.com/token', options)
+      response = RestClient.post('https://oauth.izettle.com/token', options)
       token = JSON.parse(response.body)['access_token']
       token
     end
@@ -42,7 +41,41 @@ module IZet
     @config = Config.new
   end
 
+  # This is just not right!!
   def self.configure
     yield(config)
+  end
+
+  def self.products
+    response = RestClient.get(
+      'https://products.izettle.com/organizations/self/products',
+      headers = config.headers
+    )
+    JSON.parse response.body.force_encoding('UTF-8')
+  end
+
+  class Product
+    attr_reader :product
+    def initialize(product)
+      product.each do |key,value|
+        self.instance_variable_set("@#{key}", value.is_a?(Hash) ? Product.new(value) : value)
+        self.class.send(:define_method, key, proc{self.instance_variable_get("@#{key}")})
+        self.class.send(:define_method, "#{key}=", proc{|value| self.instance_variable_set("@#{key}", value)})
+      end
+    end
+
+    def category
+      product['category']
+    end
+
+    def self.all
+      IZet.products.map do | product |
+        new(product)
+      end
+    end
+    def self.active_categories
+      categories = all.map(&:category).uniq! {|category| category unless !category }
+      categories.compact
+    end
   end
 end
