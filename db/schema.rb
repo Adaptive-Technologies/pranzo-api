@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 2020_11_20_224033) do
     t.boolean "paid"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "code", default: "OpiMp"
+    t.string "code"
   end
 
   add_foreign_key "items", "orders"

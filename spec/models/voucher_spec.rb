@@ -30,7 +30,6 @@ RSpec.describe Voucher, type: :model do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :code }
     it { is_expected.to validate_presence_of :paid }
     it { is_expected.to validate_presence_of :value }
 
