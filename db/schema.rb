@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_23_064600) do
+ActiveRecord::Schema.define(version: 2020_11_20_224033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,14 @@ ActiveRecord::Schema.define(version: 2020_08_23_064600) do
     t.index ["user_id"], name: "index_time_sheets_on_user_id"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.datetime "date"
+    t.bigint "voucher_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["voucher_id"], name: "index_transactions_on_voucher_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -95,8 +103,17 @@ ActiveRecord::Schema.define(version: 2020_08_23_064600) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  create_table "vouchers", force: :cascade do |t|
+    t.integer "value"
+    t.boolean "paid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "code", default: "OpiMp"
+  end
+
   add_foreign_key "items", "orders"
   add_foreign_key "items", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "time_sheets", "users"
+  add_foreign_key "transactions", "vouchers"
 end
