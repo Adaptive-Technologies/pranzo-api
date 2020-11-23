@@ -51,7 +51,7 @@ RSpec.describe Voucher, type: :model do
 
       context 'on creating 11th transaction' do
         let!(:last_valid_transaction) { create(:transaction, voucher: subject) }
-        let(:transaction) {subject.transactions.new(attributes_for(:transaction))}
+        let(:transaction) { subject.transactions.new(attributes_for(:transaction)) }
         it 'is expected to be invalid' do
           expect(transaction.save).to eq false
         end
@@ -70,7 +70,6 @@ RSpec.describe Voucher, type: :model do
           ).to include 'Voucher value limit exceeded'
         end
       end
-
     end
 
     describe ':transactions count for voucher with value 15' do
@@ -90,7 +89,7 @@ RSpec.describe Voucher, type: :model do
 
       context 'on creating 16th transaction' do
         let!(:last_valid_transaction) { create(:transaction, voucher: subject) }
-        let(:transaction) {subject.transactions.new(attributes_for(:transaction))}
+        let(:transaction) { subject.transactions.new(attributes_for(:transaction)) }
         it 'is expected to be invalid' do
           expect(transaction.save).to eq false
         end
@@ -109,8 +108,6 @@ RSpec.describe Voucher, type: :model do
           ).to include 'Voucher value limit exceeded'
         end
       end
-
     end
-
   end
 end

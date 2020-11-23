@@ -4,7 +4,7 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
   before do
     allow(SecureRandom).to receive(:alphanumeric).with(5).and_return('test1')
   end
-  
+
   describe 'with a valid code' do
     let!(:voucher) { create(:voucher) }
     before do
@@ -23,7 +23,7 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
 
   describe 'with an invalid code' do
     before do
-      get "/api/vouchers/xxxxx"
+      get '/api/vouchers/xxxxx'
     end
 
     it {
