@@ -7,6 +7,7 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
 
   describe 'with a valid code' do
     let!(:voucher) { create(:voucher) }
+    let!(:transaction) { 3.times {create(:transaction, voucher: voucher)}}
     before do
       get "/api/vouchers/#{voucher.code}"
     end

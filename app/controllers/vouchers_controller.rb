@@ -4,6 +4,11 @@ class VouchersController < ApplicationController
   before_action :authenticate_user!, only: [:create]
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
+  def index
+    vouchers = Voucher.all
+    render json: vouchers, each_serializer: Vouchers::ShowSerializer
+  end
+
   def show
     voucher = Voucher.find_by!(code: params[:id])
     render json: voucher, serializer: Vouchers::ShowSerializer if voucher
