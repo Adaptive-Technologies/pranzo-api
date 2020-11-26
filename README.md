@@ -1,4 +1,4 @@
-# ResOS
+# ResOS V1
 
 ## API usage example
 Documentation: https://documenter.getpostman.com/view/3308304/SzzehLGp?version=latest
