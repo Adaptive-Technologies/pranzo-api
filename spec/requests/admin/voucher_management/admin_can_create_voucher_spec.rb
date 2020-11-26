@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './credentials.rb'
+require_relative '../credentials.rb'
 
 RSpec.describe 'POST /admin/vouchers', type: :request do
   include_context 'credentials'
@@ -26,7 +26,7 @@ RSpec.describe 'POST /admin/vouchers', type: :request do
     it {
       expect(response).to have_http_status 422
     }
-    
+
     it 'is expected to return error message' do
       expect(response_json['message']).to eq "Value can't be blank"
     end
