@@ -5,35 +5,62 @@ class Voucher < ApplicationRecord
   validates_presence_of :paid, :value
   validates :transactions, length: { maximum: 10 }
   has_many :transactions, dependent: :destroy
-  before_validation :generate_code, on: :create
-  after_create :generate_qr_code
-  has_one_attached :qr
 
-  def qr_code_path
-    ActiveStorage::Blob.service.path_for(qr.key)
+  before_validation :generate_code, on: :create
+  # after_create :generate_qr_code
+  after_create :attach_pdf_card
+
+  has_one_attached :qr_dark
+  has_one_attached :qr_white
+  has_one_attached :pdf_card
+  def white_qr_code_path
+    ActiveStorage::Blob.service.path_for(qr_white.key)
   end
+
+  def dark_qr_code_path
+    ActiveStorage::Blob.service.path_for(qr_dark.key)
+  end
+
+  def pdf_card_path
+    ActiveStorage::Blob.service.path_for(pdf_card.key)
+  end
+
 
   def generate_code
     self.code = SecureRandom.alphanumeric(5)
   end
 
-  def generate_qr_code
+  def attach_pdf_card
     qrcode = RQRCode::QRCode.new(code)
+    %w[dark white].each do |type|
+      generate_qr_png(qrcode, type)
+    end
+    # CardGenerator.new(self)
+  end
+
+  def generate_qr_png(qrcode, type)
+    color = type == 'dark' ? 'black' : 'white'
     png = qrcode.as_png(
       bit_depth: 1,
       border_modules: 4,
       color_mode: ChunkyPNG::COLOR_GRAYSCALE,
-      color: 'black',
+      color: color,
       file: nil,
       fill: ChunkyPNG::Color::TRANSPARENT,
       module_px_size: 6,
       resize_exactly_to: false,
       resize_gte_to: false,
-      size: 120
+      size: 60
     )
     io = StringIO.new
     io.puts(png.to_s)
     io.rewind
-    qr.attach(io: io, filename: "qr_#{code}.png")
+    eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.png')")
   end
+
+  # def attach_pdf_card
+  #   binding.pry
+  #   file = CardGenerator.new(self)
+  #   pdf_card.attach(io: File.open(file), filename: "card_#{value}_#{code}.pdf")
+  # end
 end
