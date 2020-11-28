@@ -19,6 +19,8 @@ gem 'rest-client'
 gem 'res_os_ruby'
 gem 'rqrcode'
 
+gem 'prawn'
+
 
 group :development, :test do
   gem 'factory_bot_rails'

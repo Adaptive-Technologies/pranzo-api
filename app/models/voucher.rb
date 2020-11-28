@@ -10,7 +10,7 @@ class Voucher < ApplicationRecord
   has_one_attached :qr
 
   def qr_code_path
-    ActiveStorage::Blob.service.path_for(v.qr.key)
+    ActiveStorage::Blob.service.path_for(qr.key)
   end
 
   def generate_code
@@ -25,7 +25,7 @@ class Voucher < ApplicationRecord
       color_mode: ChunkyPNG::COLOR_GRAYSCALE,
       color: 'black',
       file: nil,
-      fill: 'white',
+      fill: ChunkyPNG::Color::TRANSPARENT,
       module_px_size: 6,
       resize_exactly_to: false,
       resize_gte_to: false,
