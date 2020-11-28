@@ -109,4 +109,13 @@ RSpec.describe Voucher, type: :model do
       end
     end
   end
+
+  describe '#qr' do
+    let(:voucher) { create(:voucher) }
+    subject { voucher.qr }
+    # subject.qr.attach(io: File.open(fixture_path + '/dummy_qr.jpg'), filename: 'qr_attachment.jpg', content_type: 'image/jpg')
+
+    it { is_expected.to be_attached }
+    it { is_expected.to be_an_instance_of ActiveStorage::Attached::One }
+  end
 end

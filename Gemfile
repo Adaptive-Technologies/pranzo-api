@@ -17,6 +17,7 @@ gem 'active_model_serializers', '~> 0.10.0'
 gem 'validate_url'
 gem 'rest-client'
 gem 'res_os_ruby'
+gem 'rqrcode'
 
 
 group :development, :test do
