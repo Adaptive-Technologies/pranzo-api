@@ -110,12 +110,20 @@ RSpec.describe Voucher, type: :model do
     end
   end
 
-  describe '#qr' do
+  describe '#qr attributes' do
     let(:voucher) { create(:voucher) }
-    subject { voucher.qr }
-    # subject.qr.attach(io: File.open(fixture_path + '/dummy_qr.jpg'), filename: 'qr_attachment.jpg', content_type: 'image/jpg')
+    describe 'white qr code transparent background (qr_white)' do
+      subject { voucher.qr_white }
 
-    it { is_expected.to be_attached }
-    it { is_expected.to be_an_instance_of ActiveStorage::Attached::One }
+      it { is_expected.to be_attached }
+      it { is_expected.to be_an_instance_of ActiveStorage::Attached::One }
+    end
+
+    describe 'black qr code transparent background (qr_dark)' do
+      subject { voucher.qr_dark }
+
+      it { is_expected.to be_attached }
+      it { is_expected.to be_an_instance_of ActiveStorage::Attached::One }
+    end
   end
 end
