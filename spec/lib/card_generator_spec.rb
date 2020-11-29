@@ -16,7 +16,7 @@ RSpec.describe CardGenerator do
       is_expected.to be_an_instance_of CardGenerator
     }
 
-    it 'contains voucher data' do
+    it 'is expected to contain voucher data' do
       expect(pdf.strings)
         .to include('LUNCH VOUCHER')
         .and include('Code: QQQQQ Value: 10')
