@@ -5,15 +5,15 @@ class Voucher < ApplicationRecord
   validates_presence_of :value
   validates :transactions, length: { maximum: 10 }
   has_many :transactions, dependent: :destroy
-  has_one :owner
+  has_one :owner, dependent: :destroy
 
   before_validation :generate_code, on: :create
-  # after_create :generate_qr_code
   after_create :attach_pdf_card
 
   has_one_attached :qr_dark
   has_one_attached :qr_white
   has_one_attached :pdf_card
+  
   def white_qr_code_path
     ActiveStorage::Blob.service.path_for(qr_white.key)
   end

@@ -25,7 +25,11 @@ RSpec.describe Voucher, type: :model do
   describe 'associations' do
     it {
       is_expected.to have_many(:transactions)
-      .dependent(:destroy)
+        .dependent(:destroy)
+    }
+    it {
+      is_expected.to have_one(:owner)
+        .dependent(:destroy)
     }
     describe 'belongs_to a owner that can be a user(role: consumer)' do
       let!(:user) { create(:consumer, email: 'registered@mail.com') }
