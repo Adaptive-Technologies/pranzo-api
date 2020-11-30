@@ -2,7 +2,7 @@
 
 class Voucher < ApplicationRecord
   attr_readonly :code
-  validates_presence_of :paid, :value
+  validates_presence_of :value
   validates :transactions, length: { maximum: 10 }
   has_many :transactions, dependent: :destroy
 
@@ -24,7 +24,6 @@ class Voucher < ApplicationRecord
   def pdf_card_path
     ActiveStorage::Blob.service.path_for(pdf_card.key)
   end
-
 
   def generate_code
     self.code = SecureRandom.alphanumeric(5)
@@ -58,9 +57,7 @@ class Voucher < ApplicationRecord
     eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.png')")
   end
 
-  # def attach_pdf_card
-  #   binding.pry
-  #   file = CardGenerator.new(self)
-  #   pdf_card.attach(io: File.open(file), filename: "card_#{value}_#{code}.pdf")
-  # end
+  def activate!
+    update(active: true)
+  end
 end

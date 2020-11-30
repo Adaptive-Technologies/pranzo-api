@@ -7,7 +7,7 @@ RSpec.describe 'POST /admin/vouchers', type: :request do
   describe 'with valid data' do
     before do
       post '/admin/vouchers',
-           params: { voucher: { value: 10, paid: true } },
+           params: { voucher: { value: 10 } },
            headers: valid_auth_headers_for_admin
     end
 
@@ -19,7 +19,7 @@ RSpec.describe 'POST /admin/vouchers', type: :request do
   describe 'with invalid data' do
     before do
       post '/admin/vouchers',
-           params: { voucher: { value: nil, paid: true } },
+           params: { voucher: { value: nil } },
            headers: valid_auth_headers_for_admin
     end
 

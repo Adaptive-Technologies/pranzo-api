@@ -7,7 +7,7 @@ RSpec.describe Voucher, type: :model do
         .of_type(:integer)
     }
     it {
-      is_expected.to have_db_column(:paid)
+      is_expected.to have_db_column(:active)
         .of_type(:boolean)
     }
   end
@@ -30,7 +30,6 @@ RSpec.describe Voucher, type: :model do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :paid }
     it { is_expected.to validate_presence_of :value }
 
     describe ':transactions count for voucher with value 10' do
@@ -124,6 +123,15 @@ RSpec.describe Voucher, type: :model do
 
       it { is_expected.to be_attached }
       it { is_expected.to be_an_instance_of ActiveStorage::Attached::One }
+    end
+  end
+
+  describe '#activate!' do
+    subject { create(:voucher) }
+    it do
+      expect{
+        subject.activate!
+      }.to change{subject.active}.from(false).to(true)
     end
   end
 end

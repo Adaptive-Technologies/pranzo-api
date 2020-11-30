@@ -16,7 +16,7 @@ class CardGenerator < Prawn::Document
     logo
     custom_text
     qr_code
-    generate_and_attach
+    generate_file
   end
 
   def background
@@ -52,9 +52,8 @@ class CardGenerator < Prawn::Document
     end
   end
 
-  def generate_and_attach
+  def generate_file
     @path = Rails.public_path.join('card.pdf')
     render_file(@path)
-    # @voucher.pdf_card.attach(io: File.open(file_name), filename: "card_#{value}_#{code}.pdf")
   end
 end
