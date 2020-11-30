@@ -5,6 +5,7 @@ class Voucher < ApplicationRecord
   validates_presence_of :value
   validates :transactions, length: { maximum: 10 }
   has_many :transactions, dependent: :destroy
+  has_one :owner
 
   before_validation :generate_code, on: :create
   # after_create :generate_qr_code
@@ -27,6 +28,10 @@ class Voucher < ApplicationRecord
 
   def generate_code
     self.code = SecureRandom.alphanumeric(5)
+  end
+
+  def email
+    owner&.user&.email || owner.email if owner
   end
 
   def attach_pdf_card

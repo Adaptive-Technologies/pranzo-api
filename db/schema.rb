@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_185906) do
+ActiveRecord::Schema.define(version: 2020_11_30_194920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,16 @@ ActiveRecord::Schema.define(version: 2020_11_30_185906) do
     t.bigint "user_id"
     t.integer "table"
     t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "owners", force: :cascade do |t|
+    t.bigint "voucher_id", null: false
+    t.bigint "user_id"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_owners_on_user_id"
+    t.index ["voucher_id"], name: "index_owners_on_voucher_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -136,6 +146,8 @@ ActiveRecord::Schema.define(version: 2020_11_30_185906) do
   add_foreign_key "items", "orders"
   add_foreign_key "items", "products"
   add_foreign_key "orders", "users"
+  add_foreign_key "owners", "users"
+  add_foreign_key "owners", "vouchers"
   add_foreign_key "time_sheets", "users"
   add_foreign_key "transactions", "vouchers"
 end

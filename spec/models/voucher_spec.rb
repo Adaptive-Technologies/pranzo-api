@@ -25,8 +25,26 @@ RSpec.describe Voucher, type: :model do
   describe 'associations' do
     it {
       is_expected.to have_many(:transactions)
-        .dependent(:destroy)
+      .dependent(:destroy)
     }
+    describe 'belongs_to a owner that can be a user(role: consumer)' do
+      let!(:user) { create(:consumer, email: 'registered@mail.com') }
+      let!(:registered_owner) { create(:owner, user: user) }
+      subject { create(:voucher, value: 10, owner: registered_owner) }
+
+      it {
+        expect(subject).to have_attributes(email: 'registered@mail.com')
+      }
+    end
+
+    describe 'belongs_to a owner that do not have to be a user' do
+      let!(:unregistered_owner) { create(:owner, user: nil, email: 'just_an@email.com') }
+      subject { create(:voucher, value: 10, owner: unregistered_owner) }
+
+      it {
+        expect(subject).to have_attributes(email: 'just_an@email.com')
+      }
+    end
   end
 
   describe 'validations' do
@@ -129,9 +147,9 @@ RSpec.describe Voucher, type: :model do
   describe '#activate!' do
     subject { create(:voucher) }
     it do
-      expect{
+      expect do
         subject.activate!
-      }.to change{subject.active}.from(false).to(true)
+      end.to change { subject.active }.from(false).to(true)
     end
   end
 end
