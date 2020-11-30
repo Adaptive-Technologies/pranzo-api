@@ -13,7 +13,7 @@ class Voucher < ApplicationRecord
   has_one_attached :qr_dark
   has_one_attached :qr_white
   has_one_attached :pdf_card
-  
+
   def white_qr_code_path
     ActiveStorage::Blob.service.path_for(qr_white.key)
   end
@@ -39,7 +39,6 @@ class Voucher < ApplicationRecord
     %w[dark white].each do |type|
       generate_qr_png(qrcode, type)
     end
-    # CardGenerator.new(self)
   end
 
   def generate_qr_png(qrcode, type)
