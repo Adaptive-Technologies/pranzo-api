@@ -2,7 +2,7 @@
 
 class CardGenerator < Prawn::Document
   attr_reader :path
-  def initialize(voucher)
+  def initialize(voucher, render = true)
     super({
       page_size: [144, 253],
       page_layout: :landscape,
@@ -16,7 +16,7 @@ class CardGenerator < Prawn::Document
     logo
     custom_text
     qr_code
-    generate_file
+    generate_file if render
   end
 
   def background
