@@ -56,18 +56,18 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
     end
 
     it {
-      expect(JSON.parse(response.body, { symbolize_names: true })[:voucher])
-        .to have_key(:email).and have_value('consumer@mail.com')
+      expect(response_json['voucher'])
+        .to have_key('email').and have_value('consumer@mail.com')
     }
 
     it {
-      expect(JSON.parse(response.body, { symbolize_names: true })[:voucher])
-        .to have_key(:code).and have_value('QQQQQ')
+      expect(response_json['voucher'])
+        .to have_key('code').and have_value('QQQQQ')
     }
 
     it {
-      expect(JSON.parse(response.body, { symbolize_names: true })[:voucher])
-        .to have_key(:value).and have_value(15)
+      expect(JSON.parse(response.body)['voucher'])
+        .to have_key('value').and have_value(15)
     }
   end
 
