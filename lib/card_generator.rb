@@ -48,7 +48,8 @@ class CardGenerator < Prawn::Document
 
   def qr_code
     canvas do
-      image @voucher.white_qr_code_path, scale: 0.9, position: :right, vposition: :bottom
+      qr_png = Rails.env.test? ? @voucher.white_qr_code_path : StringIO.open(@voucher.qr_white.download)
+      image qr_png, scale: 0.9, position: :right, vposition: :bottom
     end
   end
 

@@ -16,6 +16,10 @@ class CardCollection < Prawn::Document
   def initialize(vouchers)
     super(PAGE_OPTIONS)
     @vouchers = vouchers
+    canvas do
+      fill_color '892B2F'
+      fill_rectangle [bounds.left, bounds.top], bounds.right, bounds.top
+    end
     define_grid(columns: 2, rows: 5, column_gutter: 28.34645669291339, row_gutter: 0)
     fill_grids
     generate_file
@@ -25,11 +29,12 @@ class CardCollection < Prawn::Document
     col = 0
     row = 0
     @vouchers.each do |voucher|
-      # background_color = voucher.value == 15 ? '000000' : '892B2F'
+      background_color = voucher.value == 15 ? '000000' : '892B2F'
       grid(row, col).bounding_box do
         stroke do
           fill_color '892B2F'
-          fill_and_stroke_rectangle [(cursor - bounds.height) - 5, cursor], (bounds.width + 5), (bounds.height + 5)
+          stroke_color '892B2F'
+          fill_and_stroke_rectangle [cursor - bounds.height, cursor], bounds.width, bounds.height
         end
         padded_box([bounds.left, bounds.top], 7, width: bounds.width, height: bounds.height) do
           logo
@@ -56,11 +61,11 @@ class CardCollection < Prawn::Document
     font 'Courier'
     text 'LUNCH VOUCHER', size: 16, style: :normal, position: :center, color: 'FFFFFF'
     move_down 3
-    text "Code: #{voucher.code} Value: #{voucher.value}", size: 12, style: :normal, align: :left, color: 'FFFFFF'
+    text "Code: #{voucher.code} Value: #{voucher.value}", size: 12, style: :bold, align: :left, color: 'FFFFFF'
     move_down 26
-    text 'Please tell your waiter that you plan to use', size: 6, style: :normal, align: :left, color: 'FFFFFF'
+    text 'Please tell your waiter that you plan to use', size: 6, style: :bold, align: :left, color: 'FFFFFF'
     move_down 1
-    text 'your voucher when you place your order.', size: 6, style: :normal, align: :left, color: 'FFFFFF'
+    text 'your voucher when you place your order.', size: 6, style: :bold, align: :left, color: 'FFFFFF'
     move_down 1
     text 'Activated at purchase. Valid until fully consumed!', size: 6, style: :bold, align: :left, color: 'FFFFFF'
     move_down 1
@@ -74,7 +79,7 @@ class CardCollection < Prawn::Document
   end
 
   def generate_file
-    @path = Rails.public_path.join('card_collection.pdf')
+    @path = Rails.public_path.join('card_collection_2.pdf')
     render_file(@path)
   end
 end

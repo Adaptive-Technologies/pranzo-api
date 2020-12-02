@@ -15,15 +15,15 @@ class Voucher < ApplicationRecord
   has_one_attached :pdf_card
 
   def white_qr_code_path
-    ActiveStorage::Blob.service.path_for(qr_white.key)
+    Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_white.key) : qr_white.service_url(expires_in: 1.hour, disposition: 'inline')
   end
 
   def dark_qr_code_path
-    ActiveStorage::Blob.service.path_for(qr_dark.key)
+    Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_dark.key) : qr_dark.service_url(expires_in: 1.hour, disposition: 'inline')
   end
 
   def pdf_card_path
-    ActiveStorage::Blob.service.path_for(pdf_card.key)
+    Rails.env.test? ? ActiveStorage::Blob.service.path_for(pdf_card.key) : pdf_card.service_url(expires_in: 1.hour, disposition: 'inline')
   end
 
   def generate_code
