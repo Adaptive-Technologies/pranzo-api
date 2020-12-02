@@ -20,6 +20,7 @@ gem 'res_os_ruby'
 gem 'rqrcode'
 gem "aws-sdk-s3", require: false
 gem 'prawn'
+gem 'stripe-rails'
 
 
 group :development, :test do
@@ -30,6 +31,8 @@ group :development, :test do
   gem 'faker'
   gem 'timecop'
   gem 'pdf-inspector', require: "pdf/inspector"
+    gem 'stripe-ruby-mock', '~> 2.5.8', require: 'stripe_mock'
+
 end
 
 group :development do
