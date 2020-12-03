@@ -7,7 +7,7 @@ RSpec.describe Voucher, type: :model do
         .of_type(:integer)
     }
     it {
-      is_expected.to have_db_column(:paid)
+      is_expected.to have_db_column(:active)
         .of_type(:boolean)
     }
   end
@@ -27,10 +27,31 @@ RSpec.describe Voucher, type: :model do
       is_expected.to have_many(:transactions)
         .dependent(:destroy)
     }
+    it {
+      is_expected.to have_one(:owner)
+        .dependent(:destroy)
+    }
+    describe 'belongs_to a owner that can be a user(role: consumer)' do
+      let!(:user) { create(:consumer, email: 'registered@mail.com') }
+      let!(:registered_owner) { create(:owner, user: user) }
+      subject { create(:voucher, value: 10, owner: registered_owner) }
+
+      it {
+        expect(subject).to have_attributes(email: 'registered@mail.com')
+      }
+    end
+
+    describe 'belongs_to a owner that do not have to be a user' do
+      let!(:unregistered_owner) { create(:owner, user: nil, email: 'just_an@email.com') }
+      subject { create(:voucher, value: 10, owner: unregistered_owner) }
+
+      it {
+        expect(subject).to have_attributes(email: 'just_an@email.com')
+      }
+    end
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :paid }
     it { is_expected.to validate_presence_of :value }
 
     describe ':transactions count for voucher with value 10' do
@@ -107,6 +128,32 @@ RSpec.describe Voucher, type: :model do
           ).to include 'Voucher value limit exceeded'
         end
       end
+    end
+  end
+
+  describe '#qr attributes' do
+    let(:voucher) { create(:voucher) }
+    describe 'white qr code transparent background (qr_white)' do
+      subject { voucher.qr_white }
+
+      it { is_expected.to be_attached }
+      it { is_expected.to be_an_instance_of ActiveStorage::Attached::One }
+    end
+
+    describe 'black qr code transparent background (qr_dark)' do
+      subject { voucher.qr_dark }
+
+      it { is_expected.to be_attached }
+      it { is_expected.to be_an_instance_of ActiveStorage::Attached::One }
+    end
+  end
+
+  describe '#activate!' do
+    subject { create(:voucher) }
+    it do
+      expect do
+        subject.activate!
+      end.to change { subject.active }.from(false).to(true)
     end
   end
 end

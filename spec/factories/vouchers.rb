@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :voucher do
     value { 10 }
     code { SecureRandom.alphanumeric(5) }
-    paid { true }
+    active { false }
   end
 end

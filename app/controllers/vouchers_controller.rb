@@ -26,7 +26,7 @@ class VouchersController < ApplicationController
   private
 
   def voucher_params
-    params.require(:voucher).permit(:paid, :value)
+    params.require(:voucher).permit(:value)
   end
 
   def voucher_not_found

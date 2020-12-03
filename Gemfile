@@ -17,6 +17,10 @@ gem 'active_model_serializers', '~> 0.10.0'
 gem 'validate_url'
 gem 'rest-client'
 gem 'res_os_ruby'
+gem 'rqrcode'
+gem "aws-sdk-s3", require: false
+gem 'prawn'
+gem 'stripe-rails'
 
 
 group :development, :test do
@@ -26,6 +30,9 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'faker'
   gem 'timecop'
+  gem 'pdf-inspector', require: "pdf/inspector"
+    gem 'stripe-ruby-mock', '~> 2.5.8', require: 'stripe_mock'
+
 end
 
 group :development do

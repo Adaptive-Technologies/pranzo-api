@@ -52,6 +52,7 @@ Rails.application.configure do
 
   # ActionCable settings
   config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/, /chrome-extension:\/\/*/]
+  config.active_storage.service = :amazon_development
 
 
 end

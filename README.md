@@ -50,3 +50,16 @@ ResOs.bookings(
   <pass in bookings details>
   )
 ```
+
+## VOUCHER
+
+The voucher code is generated at `create`.
+
+A voucher must be activated (set `activated` to `true`)
+
+```ruby
+voucher = Voucher.last
+doc = CardGenerator.new(voucher)
+file = File.open(doc.path)
+voucher.pdf_card.attach(io: file, filename: 'test.pdf')
+```
