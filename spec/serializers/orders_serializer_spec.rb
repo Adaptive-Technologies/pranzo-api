@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 describe Orders::IndexSerializer, type: :serializer do
   let(:user) { create(:user) }
-
   let(:product_1) { create(:product, price: 10) }
   let(:product_2) { create(:product, price: 5) }
   let(:product_3) { create(:product) }
@@ -31,13 +32,17 @@ describe Orders::IndexSerializer, type: :serializer do
     expect(subject['orders'].last.keys).to match expected_keys
   end
 
-  it '"user" is expected to contain relevant keys' do
-    expected_keys = %w[id email name]
-    expect(subject['orders'].last['user'].keys).to match expected_keys
+  describe 'key "user"' do
+    it 'is expected to contain relevant keys' do
+      expected_keys = %w[id email name]
+      expect(subject['orders'].last['user'].keys).to match expected_keys
+    end
   end
 
-  it '"items" is expected to contain relevant keys' do
-    expected_keys = %w[id product_id name price]
-    expect(subject['orders'].last['items'].first.keys).to match expected_keys
+  describe 'key "items"' do
+    it 'is expected to contain relevant keys' do
+      expected_keys = %w[id product_id name price]
+      expect(subject['orders'].last['items'].first.keys).to match expected_keys
+    end
   end
 end
