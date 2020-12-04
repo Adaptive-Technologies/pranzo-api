@@ -23,6 +23,16 @@ class VouchersController < ApplicationController
     end
   end
 
+  def update
+    voucher = Voucher.find(params[:id])
+    voucher.activate!
+    if voucher.valid?
+      render json: { message: 'Voucher is now active' }, status: 201
+    else
+      render json: { message: voucher.errors.full_messages.to_sentence }, status: 422
+    end
+  end
+
   private
 
   def voucher_params

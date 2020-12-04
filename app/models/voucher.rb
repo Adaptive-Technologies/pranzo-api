@@ -3,6 +3,7 @@
 class Voucher < ApplicationRecord
   attr_readonly :code
   validates_presence_of :value
+  validate :already_active, if: proc { |obj| !obj.new_record? && obj.active? }
   validates :transactions, length: { maximum: 10 }
   has_many :transactions, dependent: :destroy
   has_one :owner, dependent: :destroy
@@ -61,7 +62,19 @@ class Voucher < ApplicationRecord
     eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.png')")
   end
 
+  def active?
+    active
+  end
+
   def activate!
-    update(active: true)
+    if active
+      errors.add(:base, 'Voucher is already activated')
+    else
+      update(active: true)
+    end
+  end
+
+  def already_active
+    will_save_change_to_active?
   end
 end
