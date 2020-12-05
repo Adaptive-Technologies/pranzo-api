@@ -167,14 +167,6 @@ RSpec.describe Voucher, type: :model do
           .from({})
           .to({ base: [{ error: 'Voucher is already activated' }] })
       end
-
-      it do
-        expect do
-          subject.activate!
-        end.to change { subject.valid? }
-          .from(true)
-          .to(false)
-      end
     end
   end
 end

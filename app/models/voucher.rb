@@ -3,7 +3,6 @@
 class Voucher < ApplicationRecord
   attr_readonly :code
   validates_presence_of :value
-  validate :already_active, if: proc { |obj| !obj.new_record? && obj.active? }
   validates :transactions, length: { maximum: 10 }
   has_many :transactions, dependent: :destroy
   has_one :owner, dependent: :destroy
@@ -69,12 +68,9 @@ class Voucher < ApplicationRecord
   def activate!
     if active
       errors.add(:base, 'Voucher is already activated')
+      false
     else
       update(active: true)
     end
-  end
-
-  def already_active
-    will_save_change_to_active?
   end
 end
