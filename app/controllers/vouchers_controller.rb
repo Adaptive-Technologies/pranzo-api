@@ -3,6 +3,7 @@
 class VouchersController < ApplicationController
   before_action :authenticate_user!, only: %i[create]
   before_action :find_voucher, only: %i[show update]
+  after_action :set_owner, only: %i[update]
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
@@ -35,6 +36,18 @@ class VouchersController < ApplicationController
 
   def find_voucher
     @voucher = Voucher.find_by!(code: params[:id])
+  end
+
+  def set_owner
+    if params[:voucher][:email] && @voucher.owner.nil?
+      user = User.find_by_email(params[:voucher][:email])
+      associated_user = user ? user : nil
+      Owner.find_or_create_by(
+        email: params[:voucher][:email],
+        voucher: @voucher,
+        user: associated_user
+      )
+    end
   end
 
   def voucher_params
