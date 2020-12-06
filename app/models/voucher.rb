@@ -61,7 +61,16 @@ class Voucher < ApplicationRecord
     eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.png')")
   end
 
+  def active?
+    active
+  end
+
   def activate!
-    update(active: true)
+    if active
+      errors.add(:base, 'Voucher is already activated')
+      false
+    else
+      update(active: true)
+    end
   end
 end

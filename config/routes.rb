@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   end
   mount_devise_token_auth_for 'User', at: 'auth'
   scope path: 'admin' do
-    resources :vouchers, only: %i[index create] do
+    resources :vouchers, only: %i[index create update] do
       resources :transactions, only: [:create]
       post 'vouchers/purchases', controller: :purchases, action: :create
     end

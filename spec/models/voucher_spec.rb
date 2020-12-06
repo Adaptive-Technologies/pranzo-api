@@ -149,11 +149,24 @@ RSpec.describe Voucher, type: :model do
   end
 
   describe '#activate!' do
-    subject { create(:voucher) }
-    it do
-      expect do
-        subject.activate!
-      end.to change { subject.active }.from(false).to(true)
+    describe 'inactive voucher' do
+      subject { create(:voucher) }
+      it do
+        expect do
+          subject.activate!
+        end.to change { subject.active }.from(false).to(true)
+      end
+    end
+
+    describe 'active voucher' do
+      subject { create(:voucher, active: true) }
+      it do
+        expect do
+          subject.activate!
+        end.to change { subject.errors.details }
+          .from({})
+          .to({ base: [{ error: 'Voucher is already activated' }] })
+      end
     end
   end
 end
