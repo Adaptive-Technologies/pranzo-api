@@ -34,7 +34,7 @@ RSpec.describe 'POST /api/orders', type: :request do
 
     it 'is expected to dispatch a websocket message to "kitchen_notifications"' do
       expect(
-        channells['kitchen_notifications'].count
+        channels['kitchen_notifications'].count
       ).to eq 1
     end
 
@@ -42,7 +42,7 @@ RSpec.describe 'POST /api/orders', type: :request do
       time = DateTime.now.in_time_zone .to_s(:time)
       expect(
         JSON.parse(
-          channells['kitchen_notifications'].first
+          channels['kitchen_notifications'].first
         )['data']['message']
       ).to eq "#{time}: incoming order"
     end
@@ -72,7 +72,7 @@ RSpec.describe 'POST /api/orders', type: :request do
 
     it 'is expected to dispatch a websocket message to "kitchen_notifications"' do
       expect(
-        channells['kitchen_notifications'].count
+        channels['kitchen_notifications'].count
       ).to eq 1
     end
 
@@ -80,7 +80,7 @@ RSpec.describe 'POST /api/orders', type: :request do
       time = DateTime.now.in_time_zone .to_s(:time)
       expect(
         JSON.parse(
-          channells['kitchen_notifications'].first
+          channels['kitchen_notifications'].first
         )['data']['message']
       ).to eq "#{time}: incoming order from #{user.name}"
     end

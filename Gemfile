@@ -19,6 +19,7 @@ gem 'rest-client'
 gem 'res_os_ruby'
 gem 'rqrcode'
 gem "aws-sdk-s3", require: false
+gem 'prawn-svg'
 gem 'prawn'
 gem 'stripe-rails'
 

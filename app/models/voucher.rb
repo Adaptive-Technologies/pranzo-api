@@ -42,23 +42,34 @@ class Voucher < ApplicationRecord
   end
 
   def generate_qr_png(qrcode, type)
-    color = type == 'dark' ? 'black' : 'white'
-    png = qrcode.as_png(
-      bit_depth: 1,
-      border_modules: 4,
-      color_mode: ChunkyPNG::COLOR_GRAYSCALE,
-      color: color,
-      file: nil,
-      fill: ChunkyPNG::Color::TRANSPARENT,
-      module_px_size: 6,
-      resize_exactly_to: false,
-      resize_gte_to: false,
-      size: 60
+    # color = type == 'dark' ? 'black' : 'white'
+    # png = qrcode.as_png(
+    #   bit_depth: 1,
+    #   border_modules: 4,
+    #   color_mode: ChunkyPNG::COLOR_GRAYSCALE,
+    #   color: color,
+    #   file: nil,
+    #   fill: ChunkyPNG::Color::TRANSPARENT,
+    #   module_px_size: 6,
+    #   resize_exactly_to: false,
+    #   resize_gte_to: false,
+    #   size: 60
+    # )
+    color = type == 'dark' ? '000' : 'FFF'
+    svg = qrcode.as_svg(
+      offset: 0,
+      color: '000',
+      shape_rendering: 'crispEdges',
+      module_size: 6,
+      standalone: true
     )
     io = StringIO.new
-    io.puts(png.to_s)
+    # io.puts(png.to_s)
+    io.puts(svg)
     io.rewind
-    eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.png')")
+    # eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.png')")
+    eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.svg')")
+
   end
 
   def active?
