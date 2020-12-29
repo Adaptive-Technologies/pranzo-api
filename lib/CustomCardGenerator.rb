@@ -48,10 +48,10 @@ class CustomCardGenerator < Prawn::Document
     fill_color 'FFFFFF'
     font 'Gotham'
     draw_text 'LUNCH CARD', size: 16, style: :normal, at: [75, 70]
-    draw_text "VALUE: #{@voucher.value}", size: 12, style: :light, at: [95, 55]
+    draw_text "VALUE #{@voucher.value}", size: 12, style: :light, at: [95, 55]
     fill_color '000000'
     text_block_position = 25
-    draw_text "Code: #{@voucher.code}", at: [10, text_block_position], size: 11, style: :normal
+    draw_text "Code #{@voucher.code}", at: [10, text_block_position], size: 11, style: :normal
 
     draw_text 'Please present card when placing order.', at: [10, text_block_position - 15], size: 6, style: :light
     draw_text "Purchased: #{@voucher.created_at.strftime('%B %Y')}. Valid until fully consumed!", at: [10, text_block_position - 23], size: 6, style: :light
