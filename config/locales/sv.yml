@@ -14,5 +14,5 @@ sv:
     title: 'LUNCH KORT'
     value: 'VÄRDE'
     code: 'Kod:'
-    lead_text: 'Vänligen uppge koden eller visa upp kortet vid beställning'
-    validity: 'Inköpt %{date}. Giltig tills förbrukad'
+    lead_text: 'Vänligen uppge koden eller visa upp kortet vid beställning.'
+    validity: 'Aktiverad i %{date}. Giltig tills uttömd. Kontrollera saldo online på: bit.ly/pranzo_card'
