@@ -63,3 +63,11 @@ doc = CardGenerator.new(voucher)
 file = File.open(doc.path)
 voucher.pdf_card.attach(io: file, filename: 'test.pdf')
 ```
+
+## Custom Card Generator
+This generator takes more options and can be configured with several templates.
+
+```ruby
+# CustomCardGenerator.new(<voucher obj>, <render:boolean/default: true>, <variant:integer>, <locale:ssymbol/deafault: :sv>)
+CustomCardGenerator.new(voucher, true, 1, :sv)
+```

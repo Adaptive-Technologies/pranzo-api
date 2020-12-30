@@ -41,3 +41,9 @@ en:
           attributes:
             base:
               limit_exceeded: "Voucher value limit exceeded"
+  voucher:
+    title: 'LUNCH CARD'
+    value: 'VALUE'
+    code: 'Code:'
+    lead_text: 'Please present card when placing order'
+    validity: 'Purchased %{date}. Valid until fully consumed'

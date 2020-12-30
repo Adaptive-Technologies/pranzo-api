@@ -58,7 +58,7 @@ class Voucher < ApplicationRecord
     color = type == 'dark' ? '000' : 'FFF'
     svg = qrcode.as_svg(
       offset: 0,
-      color: '000',
+      color: color,
       shape_rendering: 'crispEdges',
       module_size: 6,
       standalone: true

@@ -21,6 +21,8 @@ module BocadoApi
     config.eager_load_paths += %W[#{config.root}/lib]
     config.load_defaults 6.0
     config.api_only = true
+    config.i18n.default_locale = :sv
+    I18n.available_locales = [:en, :sv]
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
