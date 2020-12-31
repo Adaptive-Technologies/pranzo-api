@@ -25,17 +25,18 @@ class CustomCardGenerator < Prawn::Document
     case variant
     when 1
       @svg_file = IO.read("#{Rails.root}/lib/assets/color_1.svg")
-      set_card_color
-      background_centered
+      set_card_color()
+      background_centered()
       powered_by(:left)
       logo('bocado', :right)
-      card_header_centered
-      custom_text
+      card_header_centered()
+      custom_text()
+      # custom_text_side_aligned(:right)
       qr_code('dark', :right)
     when 2
       @svg_file = IO.read("#{Rails.root}/lib/assets/card_2_color_2.svg")
-      set_card_color
-      background_side_aligned
+      set_card_color()
+      background_side_aligned()
       powered_by(:left)
       logo('dummy', :right)
       card_header_side_aligned(:right)
@@ -44,8 +45,8 @@ class CustomCardGenerator < Prawn::Document
       custom_text_side_aligned(:right)
     when 3
       @svg_file = IO.read("#{Rails.root}/lib/assets/card_3_color_6.svg")
-      set_card_color
-      background_side_aligned
+      set_card_color()
+      background_side_aligned()
       powered_by(:right)
       logo('bocado', :left)
       card_header_side_aligned(:left)
@@ -53,7 +54,7 @@ class CustomCardGenerator < Prawn::Document
       card_value_side_aligned(:right)
       custom_text_side_aligned(:left)
     end
-    generate_file if render
+    generate_file() if render
   end
 
   def set_card_color
@@ -106,13 +107,12 @@ class CustomCardGenerator < Prawn::Document
     # This logic is a bit of a mess. What we are currently doing is to handle
     # the dummy logo on a dark background when branding == 'bocado'. Hence the comments.
     if branding == 'bocado'
-      # move_up 15
-      move_up 15
-      # logo = "#{Rails.root}/lib/bocado_logo_white.png"
-      logo = "#{Rails.root}/lib/fast_shopping_inverted.png"
-      indent(orientation == :left ? 5 : 0) do
-        # image logo, scale: 0.03, position: :right
-        image logo, scale: 0.09, position: orientation
+      move_up 10
+      logo = "#{Rails.root}/lib/bocado_logo_white.png"
+      # logo = "#{Rails.root}/lib/fast_shopping_inverted.png"
+      indent(orientation == :left ? 10 : 0) do
+        image logo, scale: 0.035, position: orientation
+        # image logo, scale: 0.09, position: orientation
       end
     else
       move_up 18
@@ -162,17 +162,16 @@ class CustomCardGenerator < Prawn::Document
   end
 
   def custom_text
-    font 'Gotham'
-    text_block_position = 25
-    fill_color @header_color
-    draw_text "#{I18n.t('voucher.code')} #{@voucher.code}", at: [10, text_block_position], size: 11, style: :normal
-    fill_color '808080'
-    draw_text I18n.t('voucher.lead_text'), at: [10, text_block_position - 15], size: 6, style: :light
-    draw_text I18n.t('voucher.validity', date: @voucher.created_at.strftime('%B %Y')), at: [10, text_block_position - 23], size: 6, style: :light
+    box_position = top_placement(:left, 5, '+', 100, '-')
+    padded_box(box_position, 5, width: 190, height: 45) do
+      fill_color @text_color
+      font 'Gotham'
+      text "#{I18n.t('voucher.code')} #{@voucher.code}"
+      text "#{I18n.t('voucher.lead_text')} #{I18n.t('voucher.validity', date: @voucher.created_at.strftime('%B %Y'))}", align: :left, valign: :bottom, size: 5.5, style: :light, leading: 1, character_spacing: 0.15
+    end
   end
 
   def custom_text_side_aligned(orientation)
-  # Original position [82, 25]
     case orientation
     when :left
       box_position = top_placement(orientation, 5, '+', 113, '-')
@@ -195,7 +194,6 @@ class CustomCardGenerator < Prawn::Document
              else
                [5, 46]
              end
-    # coords = mode == 'dark' ? [202, 46] : [5, 46]
     padded_box(coords, 5, width: 50, height: 50) do
       qr = Rails.env.test? ? @voucher.method("#{mode.gsub('-left', '')}_qr_code_path".to_sym).call : @voucher.method("qr_#{mode.gsub('-left', '')}".to_sym).call.download
       svg qr, position: orientation, vposition: :bottom, width: 35
