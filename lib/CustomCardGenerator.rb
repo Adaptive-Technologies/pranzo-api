@@ -108,16 +108,16 @@ class CustomCardGenerator < Prawn::Document
     # the dummy logo on a dark background when branding == 'bocado'. Hence the comments.
     if branding == 'bocado'
       move_up 10
-      logo = "#{Rails.root}/lib/bocado_logo_white.png"
+      logo = "#{Rails.root}/lib/bocado_logo_color.png"
       # logo = "#{Rails.root}/lib/fast_shopping_inverted.png"
       indent(orientation == :left ? 10 : 0) do
         image logo, scale: 0.035, position: orientation
         # image logo, scale: 0.09, position: orientation
       end
     else
-      move_up 18
-      logo = "#{Rails.root}/lib/fast_shopping.png"
-      image logo, scale: 0.02, position: orientation
+      move_up 15
+      logo = "#{Rails.root}/lib/bocado_logo_color.png"
+      image logo, scale: 0.15, position: orientation
     end
   end
 
