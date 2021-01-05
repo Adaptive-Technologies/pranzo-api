@@ -195,7 +195,7 @@ class CustomCardGenerator < Prawn::Document
                [5, 46]
              end
     padded_box(coords, 5, width: 50, height: 50) do
-      qr = Rails.env.test? ? @voucher.method("#{mode.gsub('-left', '')}_qr_code_path".to_sym).call : @voucher.method("qr_#{mode.gsub('-left', '')}".to_sym).call.download
+      qr = @voucher.method("qr_#{mode.gsub('-left', '')}".to_sym).call.download
       svg qr, position: orientation, vposition: :bottom, width: 35
     end
   end
