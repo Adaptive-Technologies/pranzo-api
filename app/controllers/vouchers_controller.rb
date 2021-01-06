@@ -16,7 +16,7 @@ class VouchersController < ApplicationController
   end
 
   def create
-    voucher = Voucher.create(voucher_params)
+    voucher = Voucher.create(voucher_params.merge(issuer: current_user))
     if voucher.persisted?
       render json: { message: 'Voucher was created' }, status: 201
     else

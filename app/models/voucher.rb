@@ -6,6 +6,8 @@ class Voucher < ApplicationRecord
   validates :transactions, length: { maximum: 10 }
   has_many :transactions, dependent: :destroy
   has_one :owner, dependent: :destroy
+  belongs_to :issuer, class_name: 'User'
+  has_one :vendor, through: :issuer
 
   before_validation :generate_code, on: :create
   after_create :attach_pdf_card

@@ -5,5 +5,6 @@ FactoryBot.define do
     value { 10 }
     code { SecureRandom.alphanumeric(5) }
     active { false }
+    issuer factory: :user
   end
 end

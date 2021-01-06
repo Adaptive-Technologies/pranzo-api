@@ -49,6 +49,15 @@ RSpec.describe Voucher, type: :model do
         expect(subject).to have_attributes(email: 'just_an@email.com')
       }
     end
+
+    describe '#issuer and #vendor' do
+      let!(:vendor) { create(:vendor) }
+      let(:issuing_user) { create(:user, vendor: vendor) }
+      subject { create(:voucher, issuer: issuing_user) }
+
+      it { is_expected.to belong_to(:issuer) }
+      it { is_expected.to have_one(:vendor).through(:issuer) }
+    end
   end
 
   describe 'validations' do

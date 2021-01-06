@@ -5,6 +5,7 @@ class PurchasesController < ApplicationController
     user = User.find_by_email params[:email]
     owner = Owner.create(user: user, email: user&.email || params[:email])
     value = params[:value] || 10
+    # TODO: this is a ploblem now that we have Vouchers that have issuers and vendors
     voucher = Voucher.create(owner: owner, value: value, active: true)
     if voucher.persisted?
       render json: { message: 'success', voucher: voucher }, status: 201
