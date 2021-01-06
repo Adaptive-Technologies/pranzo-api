@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PurchasesController < ApplicationController
+  # before_action :get_vendor
   def create
     user = User.find_by_email params[:email]
     owner = Owner.create(user: user, email: user&.email || params[:email])
