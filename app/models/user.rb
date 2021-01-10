@@ -13,5 +13,5 @@ class User < ActiveRecord::Base
   has_many :time_sheets, dependent: :destroy
   has_many :vouchers, foreign_key: :issuer_id
   belongs_to :vendor, optional: true
-  enum role: { consumer: 1, employee: 90, admin: 99 }
+  enum role: { consumer: 1, employee: 90, admin: 99, system_user: 999 }
 end

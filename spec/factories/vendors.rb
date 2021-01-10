@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :vendor do
     name { 'Bocado' }
     description { 'Instagrram friendly food...' }
+    primary_email { 'primary@mail.com' }
     after(:build) do |vendor|
       vendor.logotype.attach(
         io: File.open(Rails.root.join('spec', 'fixtures', 'bocado_logo_color.png')),
