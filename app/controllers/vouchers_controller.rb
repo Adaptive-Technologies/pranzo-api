@@ -36,12 +36,14 @@ class VouchersController < ApplicationController
 
   def find_voucher
     @voucher = Voucher.find_by!(code: params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { message: 'This is an invalid voucher' }, status: 422
   end
 
   def set_owner
     if params[:voucher][:email] && @voucher.owner.nil?
       user = User.find_by_email(params[:voucher][:email])
-      associated_user = user ? user : nil
+      associated_user = user || nil
       Owner.find_or_create_by(
         email: params[:voucher][:email],
         voucher: @voucher,
