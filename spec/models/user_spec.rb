@@ -29,6 +29,15 @@ RSpec.describe User, type: :model do
       is_expected.to have_many(:time_sheets)
         .dependent(:destroy)
     }
+
+    it {
+      is_expected.to belong_to(:vendor)
+        .optional(true)
+    }
+
+    it {
+      is_expected.to have_many(:vouchers)
+    }
   end
 
   describe '#role' do

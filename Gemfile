@@ -22,6 +22,7 @@ gem "aws-sdk-s3", require: false
 gem 'prawn-svg'
 gem 'prawn'
 gem 'stripe-rails'
+gem 'geocoder'
 
 
 group :development, :test do
