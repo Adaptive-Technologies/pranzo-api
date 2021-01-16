@@ -10,6 +10,11 @@ class VendorsController < ApplicationController
     end
   end
 
+  def show
+    vendor = Vendor.find(params[:id])
+    render json: { vendor: vendor }
+  end
+
   private
 
   def vendor_params
