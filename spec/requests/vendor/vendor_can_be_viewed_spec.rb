@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'GET /api/vendors/:id', type: :request do
-  let(:vendor) { create(:vendor) }
+  let(:vendor) { create(:vendor, name: 'The Restaurnat') }
 
   describe '' do
     before do
@@ -15,7 +15,7 @@ RSpec.describe 'GET /api/vendors/:id', type: :request do
     it 'is expected to return vendor object' do
       expect(response_json['vendor'])
         .to have_key('name')
-        .and have_value('Bocado')
+        .and have_value('The Restaurnat')
     end
   end
 end
