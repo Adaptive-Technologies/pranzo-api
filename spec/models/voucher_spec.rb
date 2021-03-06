@@ -10,6 +10,11 @@ RSpec.describe Voucher, type: :model do
       is_expected.to have_db_column(:active)
         .of_type(:boolean)
     }
+
+    it {
+      is_expected.to have_db_column(:issuer_id)
+        .of_type(:integer)
+    }
   end
 
   describe 'Factory' do
@@ -27,10 +32,12 @@ RSpec.describe Voucher, type: :model do
       is_expected.to have_many(:transactions)
         .dependent(:destroy)
     }
+
     it {
       is_expected.to have_one(:owner)
         .dependent(:destroy)
     }
+
     describe 'belongs_to a owner that can be a user(role: consumer)' do
       let!(:user) { create(:consumer, email: 'registered@mail.com') }
       let!(:registered_owner) { create(:owner, user: user) }
@@ -51,7 +58,7 @@ RSpec.describe Voucher, type: :model do
     end
 
     describe '#issuer and #vendor' do
-      let!(:vendor) { create(:vendor) }
+      let(:vendor) { create(:vendor) }
       let(:issuing_user) { create(:user, vendor: vendor) }
       subject { create(:voucher, issuer: issuing_user) }
 

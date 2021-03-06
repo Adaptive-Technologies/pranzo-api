@@ -3,9 +3,8 @@
 class Voucher < ApplicationRecord
   attr_readonly :code
   validates_presence_of :value
-  validates :transactions, length: { maximum: 10 } # this needs to correspond to the voucher value
   has_many :transactions, dependent: :destroy
-  has_one :owner, dependent: :destroy
+  has_one :owner, dependent: :destroy # TODO: Really, is this correct
   belongs_to :issuer, class_name: 'User'
   has_one :vendor, through: :issuer
 
