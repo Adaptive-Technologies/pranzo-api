@@ -3,7 +3,7 @@
 class Voucher < ApplicationRecord
   attr_readonly :code
   validates_presence_of :value
-  validates :transactions, length: { maximum: 10 }
+  validates :transactions, length: { maximum: 10 } # this needs to correspond to the voucher value
   has_many :transactions, dependent: :destroy
   has_one :owner, dependent: :destroy
   belongs_to :issuer, class_name: 'User'
@@ -36,7 +36,7 @@ class Voucher < ApplicationRecord
     owner&.user&.email || owner.email if owner
   end
 
-  def attach_pdf_card
+  def attach_pdf_card # this name is way off...
     qrcode = RQRCode::QRCode.new(code)
     %w[dark white].each do |type|
       generate_qr_png(qrcode, type)
@@ -44,19 +44,6 @@ class Voucher < ApplicationRecord
   end
 
   def generate_qr_png(qrcode, type)
-    # color = type == 'dark' ? 'black' : 'white'
-    # png = qrcode.as_png(
-    #   bit_depth: 1,
-    #   border_modules: 4,
-    #   color_mode: ChunkyPNG::COLOR_GRAYSCALE,
-    #   color: color,
-    #   file: nil,
-    #   fill: ChunkyPNG::Color::TRANSPARENT,
-    #   module_px_size: 6,
-    #   resize_exactly_to: false,
-    #   resize_gte_to: false,
-    #   size: 60
-    # )
     color = type == 'dark' ? '000' : 'FFF'
     svg = qrcode.as_svg(
       offset: 0,
@@ -66,12 +53,9 @@ class Voucher < ApplicationRecord
       standalone: true
     )
     io = StringIO.new
-    # io.puts(png.to_s)
     io.puts(svg)
     io.rewind
-    # eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.png')")
     eval("qr_#{type}.attach(io: io, filename: 'qr_#{type}#{code}.svg')")
-
   end
 
   def active?

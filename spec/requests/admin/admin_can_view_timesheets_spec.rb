@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'GET /admin/timesheets' do
+  let!(:time) { Timecop.travel(Time.local(2020, 8, 10, 8, 0, 0)) }
   let(:employee_1) { create(:user, role: :employee,  name: 'Kalle') }
   let(:employee_2) { create(:user, role: :employee,  name: 'Anders') }
   let(:admin) { create(:user, role: :admin, name: 'Thomas') }
@@ -28,15 +29,15 @@ RSpec.describe 'GET /admin/timesheets' do
            start_time: '09:00',
            end_time: '10:00')
     create(:time_sheet,
-          date: Date.today.months_ago(1).beginning_of_month + 17,
-          user: employee_1,
-          start_time: '09:00',
-          end_time: '10:00')
+           date: Date.today.months_ago(1).beginning_of_month + 17,
+           user: employee_1,
+           start_time: '09:00',
+           end_time: '10:00')
     create(:time_sheet,
-          date: Date.today.months_ago(1).beginning_of_month + 19,
-          user: employee_1,
-          start_time: '09:00',
-          end_time: '10:00')
+           date: Date.today.months_ago(1).beginning_of_month + 19,
+           user: employee_1,
+           start_time: '09:00',
+           end_time: '10:00')
     create(:time_sheet,
            date: Date.today.beginning_of_month + 15,
            user: employee_2,
@@ -49,6 +50,7 @@ RSpec.describe 'GET /admin/timesheets' do
            start_time: '09:00',
            end_time: '10:00')
   end
+
   describe 'as an :admin user' do
     before do
       get '/admin/timesheets',
@@ -111,7 +113,6 @@ RSpec.describe 'GET /admin/timesheets' do
       it 'is expected to calculate "total hours"' do
         expect(response_json['total_hours']).to eq '3.0'
       end
-
     end
   end
 end

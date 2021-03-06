@@ -69,6 +69,6 @@ This generator takes more options and can be configured with several templates.
 
 There are currently 3 templates available.
 ```ruby
-# CustomCardGenerator.new(<voucher obj>, <render:boolean/default: true>, <variant:integer>, <locale:ssymbol/deafault: :sv>)
+# CustomCardGenerator.new(<voucher obj>, <render:boolean/default: true>, <variant:integer>, <locale:symbol/default: :sv>)
 CustomCardGenerator.new(voucher, true, 1, :sv)
 ```
