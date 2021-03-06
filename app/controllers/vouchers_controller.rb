@@ -36,8 +36,6 @@ class VouchersController < ApplicationController
 
   def find_voucher
     @voucher = Voucher.find_by!(code: params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { message: 'This is an invalid voucher' }, status: 422
   end
 
   def set_owner
@@ -57,6 +55,6 @@ class VouchersController < ApplicationController
   end
 
   def voucher_not_found
-    render json: { message: 'The voucher code is invalid, try again.' }, status: 404
+    render json: { message: 'The voucher code is invalid, try again.' }, status: 200
   end
 end

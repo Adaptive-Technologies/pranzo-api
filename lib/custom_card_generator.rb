@@ -201,7 +201,7 @@ class CustomCardGenerator < Prawn::Document
   end
 
   def generate_file
-    @path = Rails.public_path.join('card.pdf')
+    @path = Rails.public_path.join('q')
     render_file(@path)
   end
 end
