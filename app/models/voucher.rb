@@ -3,6 +3,7 @@
 class Voucher < ApplicationRecord
   PERMITTED_SERVING_VALUES = [10, 15].freeze
   DEFAULT_SERVINGS_VALUE = 10
+  PERMITTED_CASH_VALUES = [100, 250, 500].freeze # should this be handled by the model?
   attr_readonly :code
   validates_presence_of :value, :variant
   enum variant: { cash: 0, servings: 1 }

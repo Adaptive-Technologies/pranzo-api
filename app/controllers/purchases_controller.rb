@@ -2,7 +2,9 @@
 
 class PurchasesController < ApplicationController
   before_action :get_vendor
-  before_action :validate_value, if: proc { params[:value] }
+  before_action :validate_value, if: proc { params[:value] && params[:variant] == 'servings' }
+  before_action :validate_cash_value, if: proc { params[:variant] == 'cash' }
+
   def create
     user = User.find_by_email params[:email]
     owner = Owner.create(user: user, email: user&.email || params[:email])
@@ -35,6 +37,12 @@ class PurchasesController < ApplicationController
   def validate_value
     unless Voucher::PERMITTED_SERVING_VALUES.include? params[:value].to_i
       render json: { message: 'We couldn\'t create the voucher as requested.' }, status: 422
+    end
+  end
+
+  def validate_cash_value
+    unless Voucher::PERMITTED_CASH_VALUES.include? params[:value].to_i
+      render json: { message: 'You have to provide a valid value.' }, status: 422
     end
   end
 end
