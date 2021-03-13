@@ -12,7 +12,8 @@ RSpec.describe 'POST /api/vouchers/purchases', type: :request do
            params: {
              email: 'thomas@craft.com',
              stripe_token: card_token,
-             vendor: 'FastFood'
+             vendor: 'FastFood',
+             variant: 'servings'
            },
            headers: {}
     end
@@ -31,7 +32,8 @@ RSpec.describe 'POST /api/vouchers/purchases', type: :request do
            params: {
              email: 'another_thomas@craft.com',
              stripe_token: card_token,
-             vendor: 'FastFood'
+             vendor: 'FastFood',
+             variant: 'servings'
            },
            headers: {}
     end
@@ -50,7 +52,8 @@ RSpec.describe 'POST /api/vouchers/purchases', type: :request do
            params: {
              email: 'another_thomas@craft.com',
              stripe_token: card_token,
-             vendor: 'FastFood2'
+             vendor: 'FastFood2',
+             variant: 'servings'
            },
            headers: {}
     end
@@ -62,6 +65,28 @@ RSpec.describe 'POST /api/vouchers/purchases', type: :request do
       expect(response_json)
         .to have_key('message')
         .and have_value('You have to provide a vendor')
+    end
+  end
+
+  describe 'without variant' do
+    before do
+      post '/api/vouchers/purchases',
+           params: {
+             email: 'another_thomas@craft.com',
+             stripe_token: card_token,
+             vendor: 'FastFood',
+             variant: nil
+           },
+           headers: {}
+    end
+    it {
+      expect(response).to have_http_status 422
+    }
+
+    it 'is expected to respond with error message' do
+      expect(response_json)
+        .to have_key('message')
+        .and have_value('Variant can\'t be blank')
     end
   end
 end

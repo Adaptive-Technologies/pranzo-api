@@ -7,7 +7,7 @@ RSpec.describe 'POST /admin/vouchers', type: :request do
   describe 'with valid data' do
     before do
       post '/admin/vouchers',
-           params: { voucher: { value: 10 } },
+           params: { voucher: { value: 10, variant: 'servings' } },
            headers: valid_auth_headers_for_admin
     end
 
@@ -28,7 +28,7 @@ RSpec.describe 'POST /admin/vouchers', type: :request do
     }
 
     it 'is expected to return error message' do
-      expect(response_json['message']).to eq "Value can't be blank"
+      expect(response_json['message']).to eq 'Value can\'t be blank and Variant can\'t be blank'
     end
   end
 end

@@ -2,7 +2,7 @@
 
 class Voucher < ApplicationRecord
   attr_readonly :code
-  validates_presence_of :value
+  validates_presence_of :value, :variant
   enum variant: { cash: 0, servings: 1 }
   has_many :transactions, dependent: :destroy
   has_one :owner, dependent: :destroy

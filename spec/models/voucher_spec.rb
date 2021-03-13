@@ -22,7 +22,7 @@ RSpec.describe Voucher, type: :model do
     }
   end
 
-  describe 'Factory' do
+  describe 'factories' do
     it {
       expect(create(:voucher)).to be_valid
     }
@@ -85,7 +85,12 @@ RSpec.describe Voucher, type: :model do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :value }
+    it {
+      is_expected.to validate_presence_of :variant
+    }
+    it {
+      is_expected.to validate_presence_of :value
+    }
 
     describe ':transactions count for voucher with value 10' do
       subject { create(:voucher, value: 10) }
