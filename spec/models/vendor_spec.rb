@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Vendor, type: :model do
+  subject { create(:vendor) }
   describe 'Database table' do
     it {
       is_expected.to have_db_column(:name)
@@ -15,6 +16,13 @@ RSpec.describe Vendor, type: :model do
     it {
       expect(create(:vendor)).to be_valid
     }
+  end
+
+  describe 'Validations' do
+    it { is_expected.to validate_uniqueness_of :name }
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :description }
+    it { is_expected.to validate_presence_of :primary_email }
   end
 
   describe 'Associations' do

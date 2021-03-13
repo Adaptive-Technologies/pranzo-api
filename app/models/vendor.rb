@@ -8,6 +8,7 @@ class Vendor < ApplicationRecord
   has_one_attached :logotype
 
   validates_presence_of %i[name description primary_email]
+  validates_uniqueness_of :name
 
   after_create :create_system_user
 
