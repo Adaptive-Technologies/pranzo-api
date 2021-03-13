@@ -4,6 +4,7 @@ RSpec.describe CustomCardGenerator do
   before do
     allow(SecureRandom).to receive(:alphanumeric).with(5).and_return('QQQQQ')
   end
+
   describe 'with a valid voucher' do
     let!(:voucher) { create(:voucher, value: 10) }
     subject { described_class.new(voucher, true, 1, :en) }

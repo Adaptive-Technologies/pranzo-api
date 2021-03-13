@@ -3,8 +3,9 @@
 class Voucher < ApplicationRecord
   attr_readonly :code
   validates_presence_of :value
+  enum variant: { cash: 0, servings: 1 }
   has_many :transactions, dependent: :destroy
-  has_one :owner, dependent: :destroy # TODO: Really, is this correct
+  has_one :owner, dependent: :destroy
   belongs_to :issuer, class_name: 'User'
   has_one :vendor, through: :issuer
 
@@ -14,6 +15,7 @@ class Voucher < ApplicationRecord
   has_one_attached :qr_dark
   has_one_attached :qr_white
   has_one_attached :pdf_card
+
 
   def white_qr_code_path
     Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_white.key) : qr_white.service_url(expires_in: 1.hour, disposition: 'inline')

@@ -15,16 +15,33 @@ RSpec.describe Voucher, type: :model do
       is_expected.to have_db_column(:issuer_id)
         .of_type(:integer)
     }
+
+    it {
+      is_expected.to have_db_column(:variant)
+        .of_type(:integer)
+    }
   end
 
   describe 'Factory' do
     it {
       expect(create(:voucher)).to be_valid
     }
+    it {
+      expect(create(:servings_voucher)).to be_valid
+    }
+    it {
+      expect(create(:cash_voucher)).to be_valid
+    }
   end
 
   describe 'attributes' do
     it { is_expected.to have_readonly_attribute(:code) }
+    # TODO: should I make the variant attr read only?
+
+    it {
+      is_expected.to define_enum_for(:variant)
+        .with_values(cash: 0, servings: 1)
+    }
   end
 
   describe 'associations' do
