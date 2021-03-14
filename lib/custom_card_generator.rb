@@ -107,11 +107,11 @@ class CustomCardGenerator < Prawn::Document
     # This logic is a bit of a mess. What we are currently doing is to handle
     # the dummy logo on a dark background when branding == 'bocado'. Hence the comments.
     if branding == 'bocado'
-      move_up 10
+      move_up 15
       logo = "#{Rails.root}/lib/bocado_logo_color.png"
       # logo = "#{Rails.root}/lib/fast_shopping_inverted.png"
       indent(orientation == :left ? 10 : 0) do
-        image logo, scale: 0.035, position: orientation
+        image logo, scale: 0.15, position: orientation
         # image logo, scale: 0.09, position: orientation
       end
     else
@@ -201,7 +201,7 @@ class CustomCardGenerator < Prawn::Document
   end
 
   def generate_file
-    @path = Rails.public_path.join('q')
+    @path = Rails.public_path.join('card.pdf')
     render_file(@path)
   end
 end
