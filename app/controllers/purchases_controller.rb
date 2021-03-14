@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class PurchasesController < ApplicationController
+  include ValueValidations
+
   before_action :get_vendor
-  before_action :validate_servings_value, if: proc { params[:value] && params[:variant] == 'servings' }
-  before_action :validate_cash_value, if: proc { params[:variant] == 'cash' }
+  before_action :validate_servings_value, if: proc { params[:value] && params[:variant] == 'servings' }, only: :create
+  before_action :validate_cash_value, if: proc { params[:variant] == 'cash' }, only: :create
 
   def create
     user = User.find_by_email params[:email]
@@ -32,17 +34,5 @@ class PurchasesController < ApplicationController
     @vendor = Vendor.find_by!(name: params['vendor'])
   rescue ActiveRecord::RecordNotFound
     render json: { message: 'You have to provide a vendor' }, status: 422
-  end
-
-  def validate_servings_value
-    unless Voucher::PERMITTED_SERVING_VALUES.include? params[:value].to_i
-      render json: { message: 'We couldn\'t create the voucher as requested.' }, status: 422
-    end
-  end
-
-  def validate_cash_value
-    unless Voucher::PERMITTED_CASH_VALUES.include? params[:value].to_i
-      render json: { message: 'You have to provide a valid value.' }, status: 422
-    end
   end
 end
