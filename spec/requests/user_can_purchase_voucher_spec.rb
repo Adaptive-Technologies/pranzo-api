@@ -198,7 +198,7 @@ RSpec.describe 'POST /api/vouchers/purchases', type: :request do
       end
     end
 
-    describe 'with an invalaid value' do
+    describe 'with an invalid value' do
       before do
         post '/api/vouchers/purchases',
              params: {

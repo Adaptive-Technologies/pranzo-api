@@ -2,7 +2,7 @@
 
 class PurchasesController < ApplicationController
   before_action :get_vendor
-  before_action :validate_value, if: proc { params[:value] && params[:variant] == 'servings' }
+  before_action :validate_servings_value, if: proc { params[:value] && params[:variant] == 'servings' }
   before_action :validate_cash_value, if: proc { params[:variant] == 'cash' }
 
   def create
@@ -13,7 +13,7 @@ class PurchasesController < ApplicationController
       owner: owner,
       value: value,
       active: true,
-      issuer: @vendor.try(:system_user),
+      issuer: @vendor.try(:system_user), # It's issued by a system user
       variant: params[:variant]
     )
     if voucher.persisted?
@@ -34,7 +34,7 @@ class PurchasesController < ApplicationController
     render json: { message: 'You have to provide a vendor' }, status: 422
   end
 
-  def validate_value
+  def validate_servings_value
     unless Voucher::PERMITTED_SERVING_VALUES.include? params[:value].to_i
       render json: { message: 'We couldn\'t create the voucher as requested.' }, status: 422
     end
