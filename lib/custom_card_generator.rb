@@ -121,11 +121,22 @@ class CustomCardGenerator < Prawn::Document
     end
   end
 
+  def value_display
+    if @voucher.cash?
+      display = "#{@voucher.value}SEK"
+    else
+      display = @voucher.value
+    end
+  end
+
   def card_header_centered
     fill_color @sub_header_color
     font 'Gotham'
-    draw_text I18n.t('voucher.title').gsub(' ', ''), size: 16, style: :normal, at: [75, 70]
-    draw_text "#{I18n.t('voucher.value')} #{@voucher.value}", size: 12, style: :light, at: [95, 55]
+    move_down 35
+    text I18n.t("voucher.title.#{@voucher.variant}").gsub(' ', ''), size: 16, style: :normal, align: :center
+
+    text "#{I18n.t('voucher.value')} #{value_display}", size: 12, style: :light, align: :center
+
   end
 
   def card_header_side_aligned(orientation)
@@ -138,7 +149,7 @@ class CustomCardGenerator < Prawn::Document
     padded_box(box_position, 5, width: 150, height: 75) do
       font 'Gotham'
       fill_color @header_color
-      title = I18n.t('voucher.title').split(' ')
+      title = I18n.t("voucher.title.#{@voucher.variant}").split(' ')
       text title[0], size: 20, style: :bold, align: orientation, leading: -5, character_spacing: 0.5
       fill_color @text_color
       text title[1], size: 20, style: :normal, align: orientation, leading: -5, character_spacing: 0.5
