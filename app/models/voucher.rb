@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 class Voucher < ApplicationRecord
+  PERMITTED_SERVING_VALUES = [10, 15].freeze
+  DEFAULT_SERVINGS_VALUE = 10
+  PERMITTED_CASH_VALUES = [100, 250, 500].freeze # should this be handled by the model?
   attr_readonly :code
-  validates_presence_of :value
+  validates_presence_of :value, :variant
+  enum variant: { cash: 0, servings: 1 }
   has_many :transactions, dependent: :destroy
-  has_one :owner, dependent: :destroy # TODO: Really, is this correct
+  has_one :owner, dependent: :destroy
   belongs_to :issuer, class_name: 'User'
   has_one :vendor, through: :issuer
 

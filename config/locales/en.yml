@@ -11,7 +11,9 @@
             base:
               limit_exceeded: "Voucher value limit exceeded"
   voucher:
-    title: 'LUNCH CARD'
+    title:
+      servings: 'LUNCH CARD'
+      cash: 'GIFT CARD'
     value: 'VALUE'
     code: 'Code:'
     lead_text: 'Please present card when placing order.'

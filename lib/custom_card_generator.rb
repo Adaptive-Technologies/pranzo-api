@@ -25,18 +25,18 @@ class CustomCardGenerator < Prawn::Document
     case variant
     when 1
       @svg_file = IO.read("#{Rails.root}/lib/assets/color_1.svg")
-      set_card_color()
-      background_centered()
+      set_card_color
+      background_centered
       powered_by(:left)
       logo('bocado', :right)
-      card_header_centered()
-      custom_text()
+      card_header_centered
+      custom_text
       # custom_text_side_aligned(:right)
       qr_code('dark', :right)
     when 2
       @svg_file = IO.read("#{Rails.root}/lib/assets/card_2_color_2.svg")
-      set_card_color()
-      background_side_aligned()
+      set_card_color
+      background_side_aligned
       powered_by(:left)
       logo('dummy', :right)
       card_header_side_aligned(:right)
@@ -45,8 +45,8 @@ class CustomCardGenerator < Prawn::Document
       custom_text_side_aligned(:right)
     when 3
       @svg_file = IO.read("#{Rails.root}/lib/assets/card_3_color_6.svg")
-      set_card_color()
-      background_side_aligned()
+      set_card_color
+      background_side_aligned
       powered_by(:right)
       logo('bocado', :left)
       card_header_side_aligned(:left)
@@ -54,7 +54,7 @@ class CustomCardGenerator < Prawn::Document
       card_value_side_aligned(:right)
       custom_text_side_aligned(:left)
     end
-    generate_file() if render
+    generate_file if render
   end
 
   def set_card_color
@@ -107,11 +107,11 @@ class CustomCardGenerator < Prawn::Document
     # This logic is a bit of a mess. What we are currently doing is to handle
     # the dummy logo on a dark background when branding == 'bocado'. Hence the comments.
     if branding == 'bocado'
-      move_up 10
+      move_up 15
       logo = "#{Rails.root}/lib/bocado_logo_color.png"
       # logo = "#{Rails.root}/lib/fast_shopping_inverted.png"
       indent(orientation == :left ? 10 : 0) do
-        image logo, scale: 0.035, position: orientation
+        image logo, scale: 0.15, position: orientation
         # image logo, scale: 0.09, position: orientation
       end
     else
@@ -121,11 +121,21 @@ class CustomCardGenerator < Prawn::Document
     end
   end
 
+  def value_display
+    display = if @voucher.cash?
+                "#{@voucher.value}SEK"
+              else
+                @voucher.value
+              end
+  end
+
   def card_header_centered
     fill_color @sub_header_color
     font 'Gotham'
-    draw_text I18n.t('voucher.title').gsub(' ', ''), size: 16, style: :normal, at: [75, 70]
-    draw_text "#{I18n.t('voucher.value')} #{@voucher.value}", size: 12, style: :light, at: [95, 55]
+    move_down 35
+    text I18n.t("voucher.title.#{@voucher.variant}").gsub(' ', ''), size: 16, style: :normal, align: :center
+
+    text "#{I18n.t('voucher.value')} #{value_display}", size: 12, style: :light, align: :center
   end
 
   def card_header_side_aligned(orientation)
@@ -138,7 +148,7 @@ class CustomCardGenerator < Prawn::Document
     padded_box(box_position, 5, width: 150, height: 75) do
       font 'Gotham'
       fill_color @header_color
-      title = I18n.t('voucher.title').split(' ')
+      title = I18n.t("voucher.title.#{@voucher.variant}").split(' ')
       text title[0], size: 20, style: :bold, align: orientation, leading: -5, character_spacing: 0.5
       fill_color @text_color
       text title[1], size: 20, style: :normal, align: orientation, leading: -5, character_spacing: 0.5
@@ -153,11 +163,22 @@ class CustomCardGenerator < Prawn::Document
     when :right
       box_position = top_placement(orientation, 100, '-', 50, '-')
     end
-    padded_box(box_position, 5, width: 45, height: 45) do
+    padded_box(box_position, 5, width: 75, height: 45) do
       fill_color @sub_header_color
       font 'Gotham'
-      text I18n.t('voucher.value').upcase.to_s, size: 4, style: :light, align: :center, valign: :top, leading: -10, character_spacing: 3
-      text @voucher.value.to_s, size: 30, style: :bold, align: :center, valign: :center, leading: 0
+      # binding.pry
+
+      if @voucher.servings?
+        text I18n.t('voucher.value').upcase.to_s,
+             size: 4, style: :light, align: :center, valign: :top, leading: -10, character_spacing: 3
+        text @voucher.value.to_s, size: 30, style: :bold, align: :center, valign: :center, leading: 0
+      end
+      if @voucher.cash?
+        text 'SEK',
+             size: 8, style: :light, align: :center, valign: :top, leading: -10, character_spacing: 3
+        text @voucher.value.to_s, size: 26, style: :bold, align: :center, valign: :center, leading: 0
+
+      end
     end
   end
 
@@ -190,7 +211,7 @@ class CustomCardGenerator < Prawn::Document
              when 'dark'
                [202, 46]
              when 'white-left'
-              [202, 46]
+               [202, 46]
              else
                [5, 46]
              end
@@ -201,7 +222,7 @@ class CustomCardGenerator < Prawn::Document
   end
 
   def generate_file
-    @path = Rails.public_path.join('q')
+    @path = Rails.public_path.join('card.pdf')
     render_file(@path)
   end
 end

@@ -6,5 +6,12 @@ FactoryBot.define do
     code { SecureRandom.alphanumeric(5) }
     active { false }
     issuer factory: :user
+    variant { :servings }
+    factory :servings_voucher do
+      variant { :servings }
+    end
+    factory :cash_voucher do
+      variant { :cash }
+    end
   end
 end

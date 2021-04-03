@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_10_073521) do
+ActiveRecord::Schema.define(version: 2021_03_13_075945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2021_01_10_073521) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "code"
     t.bigint "issuer_id"
+    t.integer "variant"
     t.index ["issuer_id"], name: "index_vouchers_on_issuer_id"
   end
 

@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 class VouchersController < ApplicationController
+  include ValueValidations
+
   before_action :authenticate_user!, only: %i[create]
   before_action :find_voucher, only: %i[show update]
+  before_action :validate_servings_value, if: proc { voucher_params[:value] && voucher_params[:variant] == 'servings' }, only: :create
+  before_action :validate_cash_value, if: proc { voucher_params[:variant] == 'cash' }, only: :create
   after_action :set_owner, only: %i[update]
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
@@ -51,10 +55,11 @@ class VouchersController < ApplicationController
   end
 
   def voucher_params
-    params.require(:voucher).permit(:value, :command, :owner)
+    params.require(:voucher).permit(:value, :command, :owner, :variant)
   end
 
   def voucher_not_found
     render json: { message: 'The voucher code is invalid, try again.' }, status: 200
   end
+
 end
