@@ -20,14 +20,28 @@ RSpec.describe 'POST /api/vendors', type: :request do
                  city: 'York',
                  country: 'USA'
                }]
+             },
+             user: {
+               name: 'Karl Andersson',
+               email: 'karl@mail.com',
+               password: 'password',
+               password_confirmation: 'password'
              }
            },
            headers: {}
     end
 
     it {
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status 201
     }
+
+    it 'is expected to respond with representation of the new resource' do
+      expect(response_json['vendor']['users'].count).to eq 2
+    end
+
+    it 'is expected to have associaited users' do
+      expect(Vendor.last.users.count).to eq 2
+    end
 
     it 'is expected to save vendor in database' do
       expect(Vendor.last.name).to eq 'The Restaurant'
