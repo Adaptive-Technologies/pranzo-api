@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 class VendorsController < ApplicationController
+  rescue_from ActiveModel::ValidationError, with: :render_error_message
   def create
     vendor = Vendor.create(vendor_params)
+    user_create(vendor) if params[:user]
     if vendor.persisted?
-      render json: { vendor: vendor }
+      render json: vendor, serializer: Vendors::ShowSerializer, status: 201
     else
       render json: { message: vendor.errors.full_messages.to_sentence }, status: 422
     end
@@ -25,5 +27,20 @@ class VendorsController < ApplicationController
             :primary_email,
             addresses_attributes: %i[street post_code city country]
           )
+  end
+
+  def user_params
+    params.require(:user)
+          .permit(:name, :email, :password, :password_confirmation)
+  end
+
+  def user_create(vendor)
+    attributes = user_params.merge!(vendor_id: vendor.id)
+    user = User.create(attributes)
+    raise ActiveModel::ValidationError, user if user.invalid?
+  end
+
+  def render_error_message(exception)
+    render json: { message: exception.model.errors.full_messages.to_sentence }, status: 422
   end
 end
