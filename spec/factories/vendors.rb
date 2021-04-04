@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :vendor do
     name { 'Bocado' }
-    description { 'Instagrram friendly food...' }
+    description { 'Instagram friendly food...' }
     primary_email { 'primary@mail.com' }
     after(:build) do |vendor|
       vendor.logotype.attach(
