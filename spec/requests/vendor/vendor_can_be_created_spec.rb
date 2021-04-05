@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: true 
 
 RSpec.describe 'POST /api/vendors', type: :request do
   let!(:existing_user) { create(:user, email: 'existing_user@mail.com') }
@@ -62,8 +62,16 @@ RSpec.describe 'POST /api/vendors', type: :request do
       post '/api/vendors',
            params: {
              vendor: {
-               name: 'The Restaurant'
-             }
+               name: 'The Restaurant',
+               description: '',
+               primary_email: '',
+             },
+             user: {
+              name: '',
+              email: '',
+              password: '',
+              password_confirmation: ''
+            }
            },
            headers: {}
     end
@@ -72,10 +80,10 @@ RSpec.describe 'POST /api/vendors', type: :request do
       expect(response).to have_http_status 422
     }
 
-    it 'responds with error message' do
+    it 'is expected to respond with error message' do
       expect(response_json)
         .to have_key('message')
-        .and have_value("Description can't be blank and Primary email can't be blank")
+        .and have_value("Description can't be blank and Primary email can't be blank and remember to create a user account for yourself")
     end
   end
 
@@ -89,7 +97,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
                primary_email: 'the_restaurant@mail.com',
              },
              user: {
-              name: 'Exicting User',
+              name: 'Existing User',
               email: 'existing_user@mail.com',
               password: 'password',
               password_confirmation: 'password'
@@ -102,7 +110,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
       expect(response).to have_http_status 422
     }
 
-    it 'responds with error message' do
+    it 'is expected to respond with error message' do
       expect(response_json)
         .to have_key('message')
         .and have_value("Email has already been taken")
