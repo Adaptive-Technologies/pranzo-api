@@ -83,7 +83,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
     it 'is expected to respond with error message' do
       expect(response_json)
         .to have_key('message')
-        .and have_value("Description can't be blank and Primary email can't be blank")
+        .and have_value("Description can't be blank and Primary email can't be blank and remember to create a user account for yourself")
     end
   end
 
