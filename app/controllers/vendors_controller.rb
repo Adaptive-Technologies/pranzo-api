@@ -1,10 +1,10 @@
-# frozen_string_literal: true
+# frozen_string_literal: true 
 
 class VendorsController < ApplicationController
   rescue_from ActiveModel::ValidationError, with: :render_error_message
   def create
     vendor = Vendor.create(vendor_params)
-    user_create(vendor) if params[:user]
+    user_create(vendor) unless user_params.values.any? &:empty?
     if vendor.persisted?
       render json: vendor, serializer: Vendors::ShowSerializer, status: 201
     else
