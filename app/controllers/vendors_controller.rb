@@ -10,10 +10,7 @@ class VendorsController < ApplicationController
     if vendor.persisted?
       render json: vendor, serializer: Vendors::ShowSerializer, status: 201
     else
-
-      render json: {
-        message: vendor.errors.full_messages.to_sentence.concat(@user_params_message)
-      }, status: 422
+      raise ActiveModel::ValidationError, vendor
     end
   end
 
@@ -50,6 +47,6 @@ class VendorsController < ApplicationController
   end
 
   def render_error_message(exception)
-    render json: { message: exception.model.errors.full_messages.to_sentence }, status: 422
+    render json: { message: exception.model.errors.full_messages.to_sentence.concat(@user_params_message) }, status: 422
   end
 end
