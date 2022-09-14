@@ -77,10 +77,10 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
     end
 
     it {
-      expect(response).to have_http_status 200 # TODO: we should respond with 404
+      expect(response).to have_http_status 404
     }
 
-    it 'is expected to return voucher details' do
+    it 'is expected to return an error message' do
       expect(response_json['message'])
         .to eq 'The voucher code is invalid, try again.'
     end

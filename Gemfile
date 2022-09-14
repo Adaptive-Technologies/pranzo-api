@@ -33,7 +33,7 @@ group :development, :test do
   gem 'faker'
   gem 'timecop'
   gem 'pdf-inspector', require: "pdf/inspector"
-    gem 'stripe-ruby-mock', '~> 2.5.8', require: 'stripe_mock'
+  gem 'stripe-ruby-mock', '~> 2.5.8', require: 'stripe_mock'
 
 end
 
