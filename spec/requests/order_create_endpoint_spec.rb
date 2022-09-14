@@ -40,7 +40,7 @@ RSpec.describe 'POST /api/orders', type: :request do
     end
 
     it 'is expected to include "incoming order" in websocket message' do
-      time = DateTime.now.in_time_zone .to_s(:time)
+      time = DateTime.now.in_time_zone.to_s(:time)
       expect(
         JSON.parse(
           channels['kitchen_notifications'].first
@@ -64,7 +64,7 @@ RSpec.describe 'POST /api/orders', type: :request do
       expect(response).to have_http_status 201
     }
     it 'is expected to asociate user with the instance of Order' do
-      expect(Order.last.user).to an_instance_of User
+      expect(Order.last.user).to be_an_instance_of User
     end
 
     it 'is expected to retun the order with user_id attribute' do
@@ -78,7 +78,7 @@ RSpec.describe 'POST /api/orders', type: :request do
     end
 
     it 'is expected to include "incoming order from :user.name" in websocket message' do
-      time = DateTime.now.in_time_zone .to_s(:time)
+      time = DateTime.now.in_time_zone.to_s(:time)
       expect(
         JSON.parse(
           channels['kitchen_notifications'].first
