@@ -23,7 +23,8 @@ RSpec.describe 'POST /auth/sign_in', type: :request do
           'provider' => 'email',
           'allow_password_change' => true,
           'role' => 'admin',
-          'name' => admin.name
+          'name' => admin.name,
+          'vendor_id' => nil
         }
       }
     end
@@ -56,7 +57,8 @@ RSpec.describe 'POST /auth/sign_in', type: :request do
           'provider' => 'email',
           'role' => 'consumer',
           'allow_password_change' => true,
-          'name' => user.name
+          'name' => user.name,
+          'vendor_id' => nil
         }
       }
     end

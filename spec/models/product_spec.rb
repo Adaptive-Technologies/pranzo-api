@@ -12,7 +12,7 @@ RSpec.describe Product, type: :model do
     it {
       is_expected.to have_db_column(:services)
         .of_type(:text)
-        .with_options(array: true, default: [])
+        .with_options(default: [])
     }
   end
 
@@ -125,7 +125,6 @@ RSpec.describe Product, type: :model do
       is_expected.to have_many(:orders)
         .through(:items)
     }
-
     it {
       is_expected.to have_and_belong_to_many(:categories)
     }

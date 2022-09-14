@@ -59,8 +59,9 @@ RSpec.describe 'GET /api/products', type: :request do
       expect(response).to have_http_status 200
     }
 
-    it 'is expected to return all products for both lunch and dinner service' do
-      expect(response_json.keys).to eq %w[tapas pica-pica drinks]
+
+    it 'is expected to return all products for both lunch  and dinner service' do
+      expect(response_json.keys).to match %w[tapas pica-pica drinks]
     end
   end
 end

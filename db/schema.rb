@@ -12,8 +12,43 @@
 
 ActiveRecord::Schema.define(version: 2020_08_31_193756) do
 
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "street"
+    t.string "post_code"
+    t.string "city"
+    t.string "country"
+    t.float "latitude"
+    t.float "longitude"
+    t.bigint "vendor_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["vendor_id"], name: "index_addresses_on_vendor_id"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -64,6 +99,14 @@ ActiveRecord::Schema.define(version: 2020_08_31_193756) do
     t.text "subtitle", null: false
     t.index ["locale"], name: "index_product_translations_on_locale"
     t.index ["product_id"], name: "index_product_translations_on_product_id"
+  create_table "owners", force: :cascade do |t|
+    t.bigint "voucher_id", null: false
+    t.bigint "user_id"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_owners_on_user_id"
+    t.index ["voucher_id"], name: "index_owners_on_voucher_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -84,6 +127,14 @@ ActiveRecord::Schema.define(version: 2020_08_31_193756) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_time_sheets_on_user_id"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.datetime "date"
+    t.bigint "voucher_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["voucher_id"], name: "index_transactions_on_voucher_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -109,14 +160,42 @@ ActiveRecord::Schema.define(version: 2020_08_31_193756) do
     t.json "tokens"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "vendor_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
+    t.index ["vendor_id"], name: "index_users_on_vendor_id"
   end
 
+  create_table "vendors", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "primary_email"
+  end
+
+  create_table "vouchers", force: :cascade do |t|
+    t.integer "value"
+    t.boolean "active", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "code"
+    t.bigint "issuer_id"
+    t.integer "variant"
+    t.index ["issuer_id"], name: "index_vouchers_on_issuer_id"
+  end
+
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "addresses", "vendors"
   add_foreign_key "items", "orders"
   add_foreign_key "items", "products"
   add_foreign_key "orders", "users"
+  add_foreign_key "owners", "users"
+  add_foreign_key "owners", "vouchers"
   add_foreign_key "time_sheets", "users"
+  add_foreign_key "transactions", "vouchers"
+  add_foreign_key "users", "vendors"
+  add_foreign_key "vouchers", "users", column: "issuer_id"
 end

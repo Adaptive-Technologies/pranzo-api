@@ -8,6 +8,8 @@ if Rails.env.production?
   abort('The Rails environment is running in production mode!')
 end
 require 'rspec/rails'
+require 'stripe_mock'
+require 'stripe/rails/testing'
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -41,4 +43,11 @@ RSpec.configure do |config|
   config.include Shoulda::Matchers::ActiveRecord, type: :model
   config.include JsonHelpers, type: :request
   config.include ActionCableHelpers, type: :request
+  config.before(:each) do
+    @stripe_test_helper = StripeMock.create_test_helper
+    StripeMock.start
+  end
+  config.after(:each) do
+    StripeMock.stop
+  end
 end

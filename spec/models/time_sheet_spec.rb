@@ -24,19 +24,27 @@ RSpec.describe TimeSheet, type: :model do
     let(:user) { create(:user) }
     let!(:time_sheets) do
       create(:time_sheet, date: Date.today.beginning_of_month + 15, user: user, start_time: '09:00', end_time: '15:00')
-      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 10, user: user, start_time: '09:00', end_time: '15:00')
       create(:time_sheet, date: Date.today.beginning_of_month + 16, user: user, start_time: '09:00', end_time: '15:00')
-      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 11, user: user, start_time: '09:00', end_time: '15:00')
+      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 15, user: user, start_time: '09:00', end_time: '15:00')
+      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 16, user: user, start_time: '09:00', end_time: '15:00')
+      create(:time_sheet, date: Date.today.months_ago(1).beginning_of_month + 17, user: user, start_time: '09:00', end_time: '15:00')
+
     end
     describe '#all' do
       it 'is expected to return all instances' do
-        expect(TimeSheet.all.count).to eq 4
+        expect(TimeSheet.all.count).to eq 5
       end
     end
 
     describe '#for_current_period' do
       it 'is expected to return instances for the curreent month period' do
         expect(TimeSheet.for_current_period.count).to eq 2
+      end
+    end
+
+    describe '#for_previous_period' do
+      it 'is expected to return instances for the previous month period' do
+        expect(TimeSheet.for_previous_period.count).to eq 3
       end
     end
   end

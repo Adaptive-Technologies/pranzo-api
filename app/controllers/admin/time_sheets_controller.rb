@@ -3,11 +3,12 @@
 class Admin::TimeSheetsController < ApplicationController
   before_action :authenticate_user!
   before_action :format_options, only: :create
+  before_action :get_user, only: :create
   def create
     if @error
       render json: @error, status: 422
     else
-      time_sheet = current_user.time_sheets.create(@options)
+      time_sheet = @user.time_sheets.create(@options)
       if time_sheet.persisted?
         render json: {
           timesheet: serialize(time_sheet), message: 'Your time sheet was submitted'
@@ -18,10 +19,10 @@ class Admin::TimeSheetsController < ApplicationController
 
   def index
     if current_user.admin?
-      time_sheets = TimeSheet.for_current_period.group_by { |ts| ts.user.name }
+      time_sheets = params[:previous] == 'true' ? TimeSheet.for_previous_period.group_by(&:user) : TimeSheet.for_current_period.group_by(&:user)
       render json: { users: serialize_grouped_collection(time_sheets) }
     else
-      time_sheets = current_user.time_sheets.for_current_period
+      time_sheets = params[:previous] == 'true' ? current_user.time_sheets.for_previous_period : current_user.time_sheets.for_current_period
       render json: {
         user: Users::ShowSerializer.new(current_user),
         time_sheets: serialize_collection(time_sheets),
@@ -46,10 +47,14 @@ class Admin::TimeSheetsController < ApplicationController
   end
 
   def serialize_grouped_collection(time_sheets)
-    serialized = time_sheets.map do |group_key, sheets|
+    serialized = time_sheets.map do |group_object, sheets|
       serialized_sheets = serialize_collection(sheets)
       total_hours = sheets.pluck(:duration).sum
-      [group_key, { time_sheets: serialized_sheets, total_hours: total_hours }]
+      [group_object.name, {
+        user: Users::ShowSerializer.new(group_object),
+        time_sheets: serialized_sheets,
+        total_hours: total_hours
+      }]
     end.to_h
     serialized
   end
@@ -70,9 +75,11 @@ class Admin::TimeSheetsController < ApplicationController
     @error = { message: 'Your request could not be fullfilled' }
   end
 
-
   def authenticate_user!
     super
   end
 
+  def get_user
+    @user = valid_params[:employee_id] ? User.find(valid_params[:employee_id]) : current_user
+  end
 end

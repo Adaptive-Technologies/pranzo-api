@@ -18,8 +18,11 @@ Bundler.require(*Rails.groups)
 
 module BocadoApi
   class Application < Rails::Application
+    config.eager_load_paths += %W[#{config.root}/lib]
     config.load_defaults 6.0
     config.api_only = true
+    config.i18n.default_locale = :en
+    config.i18n.available_locales = %i[en sv]
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
@@ -31,5 +34,10 @@ module BocadoApi
       end
     end
     config.i18n.available_locales = %i[en sv]
+    config.stripe.secret_key = if !ActiveModel::Type::Boolean.new.cast(ENV['PRE_PRODUCTION']) && Rails.env.production?
+                                 Rails.application.credentials.stripe[:sk_live_key]
+                               else
+                                 Rails.application.credentials.stripe[:sk_test_key]
+                               end
   end
 end

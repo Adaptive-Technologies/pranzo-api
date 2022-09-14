@@ -29,10 +29,24 @@ RSpec.describe User, type: :model do
       is_expected.to have_many(:time_sheets)
         .dependent(:destroy)
     }
+
+    it {
+      is_expected.to belong_to(:vendor)
+        .optional(true)
+    }
+
+    it {
+      is_expected.to have_many(:vouchers)
+    }
   end
 
-  describe '#role' do
+
+  describe '"role" attribute' do
     subject { create(:user) }
+    it {
+      is_expected.to define_enum_for(:role)
+        .with_values(consumer: 1, employee: 90, admin: 99, system_user: 999)
+    }
     it { is_expected.to respond_to :consumer? }
     it { is_expected.to respond_to :consumer! }
     it { is_expected.to respond_to :employee? }

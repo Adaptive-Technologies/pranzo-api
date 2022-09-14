@@ -1,0 +1,20 @@
+sv:
+  activerecord:
+    errors:
+      models:
+        transaction:
+          attributes:
+            voucher:
+              limit_exceeded: "limit exceeded"
+        voucher:
+          attributes:
+            base:
+              limit_exceeded: "Voucher value limit exceeded"
+  voucher:
+    title:
+      servings: 'LUNCH KORT'
+      cash: 'PRESENT KORT'
+    value: 'VÄRDE'
+    code: 'Kod:'
+    lead_text: 'Vänligen uppge koden eller visa upp kortet vid beställning.'
+    validity: 'Aktiverad i %{date}. Giltig tills uttömd. Kontrollera saldo online på: bit.ly/pranzo_card'
