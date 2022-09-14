@@ -40,9 +40,10 @@ RSpec.describe Address, type: :model do
       end
     end
 
-    describe 'persised address' do
-
-      before { subject.save}
+    describe 'persisted address' do
+      before do
+        subject.save
+      end
       it 'has longitude' do
         expect(subject.longitude).to_not eq nil
       end

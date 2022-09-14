@@ -1,8 +1,8 @@
 Geocoder.configure(
   timeout: 10, # geocoding service timeout (secs)
-  # lookup: :google,
-  lookup: :pickpoint,
-  api_key: 'zoRiYf4cAP3ZfELE28kS',
+  lookup: :google,
+  # lookup: :pickpoint,
+  api_key: 'AIzaSyC4slvWy8btLEoMcdrtVw0T3ZPX47vunN4',
   # ip_lookup: :freegeoip,      # name of IP address geocoding service (symbol)
   # language: :en,              # ISO-639 language code
   # use_https: false,           # use HTTPS for lookup requests? (if supported)

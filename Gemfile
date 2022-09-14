@@ -11,11 +11,11 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise_token_auth'
 gem 'geocoder'
 gem 'globalize'
-gem 'image_processing', '~> 1.2'
+gem "image_processing", ">= 1.12.2"
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'prawn'
 gem 'prawn-svg'
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 5.6', '>= 5.6.5'
 gem 'rack-cors'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
 gem 'redis', '~> 4.0'
@@ -24,6 +24,11 @@ gem 'rest-client'
 gem 'rqrcode'
 gem 'stripe-rails'
 gem 'validate_url'
+# security warnings fixes
+gem "jmespath", ">= 1.6.1"
+gem 'addressable', '~> 2.8', '>= 2.8.1'
+gem 'rexml', '~> 3.2', '>= 3.2.5'
+
 
 group :development, :test do
   gem 'factory_bot_rails'
