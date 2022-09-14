@@ -1,22 +1,21 @@
 # frozen_string_literal: true
 
 RSpec.describe CustomCardGenerator do
-  before do
-    allow(SecureRandom).to receive(:alphanumeric).with(5).and_return('12345')
+  let(:pdf) do
+    file = File.open(subject.path)
+    PDF::Inspector::Text.analyze_file(file)
   end
-
+  before do
+    allow(SecureRandom).to receive(:alphanumeric)
+      .with(5)
+      .and_return('12345')
+  end
   describe 'with a valid voucher' do
-
     context 'swedish version' do
       describe 'of variant :servings' do
+        let(:servings_voucher) { create(:servings_voucher, value: 10) }
         context 'using design 1' do
-          let!(:servings_voucher) { create(:servings_voucher, value: 10) }
           subject { described_class.new(servings_voucher, true, 1, :sv) }
-          let(:pdf) do
-            file = File.open(subject.path)
-            # binding.pry
-            PDF::Inspector::Text.analyze_file(file)
-          end
 
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
@@ -31,13 +30,7 @@ RSpec.describe CustomCardGenerator do
         end
 
         context 'using design 2' do
-          let!(:servings_voucher) { create(:servings_voucher, value: 10) }
           subject { described_class.new(servings_voucher, true, 2, :sv) }
-          let(:pdf) do
-            file = File.open(subject.path)
-            # binding.pry
-            PDF::Inspector::Text.analyze_file(file)
-          end
 
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
@@ -55,13 +48,13 @@ RSpec.describe CustomCardGenerator do
       end
 
       describe 'of variant :cash' do
+        let(:cash_voucher) { create(:cash_voucher, value: 200) }
         context 'using design 1' do
-          let!(:cash_voucher) { create(:cash_voucher, value: 200) }
           subject { described_class.new(cash_voucher, true, 1, :sv) }
-          let(:pdf) do
-            file = File.open(subject.path)
-            PDF::Inspector::Text.analyze_file(file)
-          end
+          # let(:pdf) do
+          #   file = File.open(subject.path)
+          #   PDF::Inspector::Text.analyze_file(file)
+          # end
 
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
@@ -78,10 +71,10 @@ RSpec.describe CustomCardGenerator do
         context 'using design 2' do
           let!(:cash_voucher) { create(:cash_voucher, value: 200) }
           subject { described_class.new(cash_voucher, true, 2, :sv) }
-          let(:pdf) do
-            file = File.open(subject.path)
-            PDF::Inspector::Text.analyze_file(file)
-          end
+          # let(:pdf) do
+          #   file = File.open(subject.path)
+          #   PDF::Inspector::Text.analyze_file(file)
+          # end
 
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
@@ -98,17 +91,12 @@ RSpec.describe CustomCardGenerator do
         end
       end
     end
-    
+
     context 'english version' do
+      let(:servings_voucher) { create(:servings_voucher, value: 10) }
       describe 'of variant :servings' do
         context 'using design 1' do
-          let!(:servings_voucher) { create(:servings_voucher, value: 10) }
           subject { described_class.new(servings_voucher, true, 1, :en) }
-          let(:pdf) do
-            file = File.open(subject.path)
-            # binding.pry
-            PDF::Inspector::Text.analyze_file(file)
-          end
 
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
@@ -123,14 +111,7 @@ RSpec.describe CustomCardGenerator do
         end
 
         context 'using design 2' do
-          let!(:servings_voucher) { create(:servings_voucher, value: 10) }
           subject { described_class.new(servings_voucher, true, 2, :en) }
-          let(:pdf) do
-            file = File.open(subject.path)
-            # binding.pry
-            PDF::Inspector::Text.analyze_file(file)
-          end
-
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
           }
@@ -147,13 +128,9 @@ RSpec.describe CustomCardGenerator do
       end
 
       describe 'of variant :cash' do
+        let(:cash_voucher) { create(:cash_voucher, value: 200) }
         context 'using design 1' do
-          let!(:cash_voucher) { create(:cash_voucher, value: 200) }
           subject { described_class.new(cash_voucher, true, 1, :en) }
-          let(:pdf) do
-            file = File.open(subject.path)
-            PDF::Inspector::Text.analyze_file(file)
-          end
 
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
@@ -168,13 +145,7 @@ RSpec.describe CustomCardGenerator do
         end
 
         context 'using design 2' do
-          let!(:cash_voucher) { create(:cash_voucher, value: 200) }
           subject { described_class.new(cash_voucher, true, 2, :en) }
-          let(:pdf) do
-            file = File.open(subject.path)
-            PDF::Inspector::Text.analyze_file(file)
-          end
-
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
           }
@@ -189,9 +160,6 @@ RSpec.describe CustomCardGenerator do
           end
         end
       end
-
     end
-
-
   end
 end

@@ -2,8 +2,9 @@
 
 FactoryBot.define do
   factory :product do
-    name { 'MyString' }
+    name { Faker::Restaurant.name  }
     price { 9.99 }
+    subtitle { Faker::Restaurant.description }
     services { ['lunch'] }
     image_url { 'https://picsum.photos/800' }
     categories { |a| [a.association(:category)] }

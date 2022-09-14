@@ -33,6 +33,7 @@ module BocadoApi
                  max_age: 0
       end
     end
+    config.i18n.available_locales = %i[en sv]
     config.stripe.secret_key = if !ActiveModel::Type::Boolean.new.cast(ENV['PRE_PRODUCTION']) && Rails.env.production?
                                  Rails.application.credentials.stripe[:sk_live_key]
                                else

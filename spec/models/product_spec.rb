@@ -3,6 +3,7 @@
 RSpec.describe Product, type: :model do
   describe 'Database table' do
     it { is_expected.to have_db_column :name }
+
     it {
       is_expected.to have_db_column(:price)
         .of_type(:decimal)
@@ -19,28 +20,28 @@ RSpec.describe Product, type: :model do
     subject { create(:product) }
 
     describe '#services' do
-      it 'contains "lunch"' do
+      it 'is expected to be valid with value "lunch"' do
         subject.services << 'lunch'
         expect(subject.valid?).to be_truthy
       end
 
-      it 'contains "dinner"' do
-        subject.services << 'lunch'
+      it 'is expected to be valid with value "dinner"' do
+        subject.services << 'dinner'
         expect(subject.valid?).to be_truthy
       end
 
-      it 'contains an invalid value' do
+      it 'is expected NOT to be valid with value an invalid value' do
         subject.services << 'something_invalid'
         subject.valid?
         expect(subject.errors[:services])
           .to include('"something_invalid" is an invalid value')
       end
 
-      it 'is an empty array' do
+      it 'is expected NOT to be valid with value of an empty array' do
         subject.services = []
         subject.valid?
         expect(subject.errors[:services])
-          .to include('must include at least one value')
+        .to include('must include at least one value')
       end
     end
 
@@ -83,6 +84,32 @@ RSpec.describe Product, type: :model do
         expect(subject.errors[:image_url])
           .to include('is not a valid URL')
       end
+    end
+  end
+
+  describe 'Translations' do
+    subject { create(:product) }
+    before do
+      subject.update(subtitle: 'Swedish subtitle', locale: :sv)
+    end
+
+    after { I18n.locale = :en }
+
+    it {
+      is_expected.to respond_to(:translations)
+    }
+
+    it {
+      is_expected.to respond_to(:subtitle)
+    }
+
+    it 'is expected to have multiple translations' do
+      expect(subject.translations.count).to eq 2
+    end
+
+    it 'is expected to display translated value for the right locale' do
+      I18n.locale = :sv
+      expect(subject.subtitle).to eq 'Swedish subtitle'
     end
   end
 

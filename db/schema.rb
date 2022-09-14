@@ -51,7 +51,6 @@ ActiveRecord::Schema.define(version: 2021_03_13_075945) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
-    t.text "promo"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -61,6 +60,16 @@ ActiveRecord::Schema.define(version: 2021_03_13_075945) do
     t.bigint "product_id", null: false
     t.index ["category_id", "product_id"], name: "index_categories_products_on_category_id_and_product_id"
     t.index ["product_id", "category_id"], name: "index_categories_products_on_product_id_and_category_id"
+  end
+
+  create_table "category_translations", force: :cascade do |t|
+    t.bigint "category_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "promo", null: false
+    t.index ["category_id"], name: "index_category_translations_on_category_id"
+    t.index ["locale"], name: "index_category_translations_on_locale"
   end
 
   create_table "items", force: :cascade do |t|
@@ -88,6 +97,16 @@ ActiveRecord::Schema.define(version: 2021_03_13_075945) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_owners_on_user_id"
     t.index ["voucher_id"], name: "index_owners_on_voucher_id"
+  end
+
+  create_table "product_translations", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "subtitle", null: false
+    t.index ["locale"], name: "index_product_translations_on_locale"
+    t.index ["product_id"], name: "index_product_translations_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
