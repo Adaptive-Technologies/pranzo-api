@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class VendorsController < ApplicationController
-  before_action :user_params_present
+  before_action :user_params_present, only: [:create]
   rescue_from ActiveModel::ValidationError, with: :render_error_message
   def create
     vendor = Vendor.create(vendor_params)

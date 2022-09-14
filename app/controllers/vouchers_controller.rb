@@ -59,7 +59,7 @@ class VouchersController < ApplicationController
   end
 
   def voucher_not_found
-    render json: { message: 'The voucher code is invalid, try again.' }, status: 200
+    render json: { message: 'The voucher code is invalid, try again.' }, status: 404
   end
 
 end

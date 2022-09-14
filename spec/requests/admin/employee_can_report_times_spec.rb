@@ -32,6 +32,7 @@ RSpec.describe '/admin/timesheets', type: :request do
 
   it 'is expected to return the duration' do
     expect(response_json['timesheet']['duration']).to eq '6.0'
+  end
   describe 'GET /admin/timesheets' do
     before do
       post '/admin/timesheets',
