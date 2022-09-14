@@ -165,7 +165,6 @@ RSpec.describe 'POST /api/vouchers/purchases', type: :request do
     end
 
     describe 'with a valid value' do
-
       [100, 250, 500].each do |value|
         describe "of #{value}" do
           before do
@@ -206,7 +205,7 @@ RSpec.describe 'POST /api/vouchers/purchases', type: :request do
                stripe_token: card_token,
                vendor: 'FastFood',
                variant: 'cash',
-               value: 30000
+               value: 30_000
              },
              headers: {}
       end

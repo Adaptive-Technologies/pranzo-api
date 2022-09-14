@@ -37,10 +37,10 @@ RSpec.describe 'POST /api/vendors', type: :request do
     }
 
     it 'is expected to respond with representation of the new resource' do
-      expect(response_json['vendor']['users'].count).to eq 2
+      expect(response_json['vendor']['users'].count).to eq 2 #TODO: There is a system user created every time a Vendor is instantiated
     end
 
-    it 'is expected to have associaited users' do
+    it 'is expected to have associated users' do
       expect(Vendor.last.users.count).to eq 2
     end
 

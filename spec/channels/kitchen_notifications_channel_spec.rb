@@ -16,10 +16,10 @@ RSpec.describe KitchenNotificationsChannel, type: :channel do
 
     it 'is expected to broadcast to "kitchen_notifications"' do
       expect do
-        ActionCable.server.broadcast('kitchen_notifications', data: { message: 'incoming order' })
+        ActionCable.server.broadcast('kitchen_notifications', { data: { message: 'incoming order' } })
       end
         .to have_broadcasted_to('kitchen_notifications')
-        .with(data: { message: 'incoming order' })
+        .with({ data: { message: 'incoming order' } })
     end
   end
 end
