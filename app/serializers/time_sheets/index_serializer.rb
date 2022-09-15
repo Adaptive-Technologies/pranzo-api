@@ -3,7 +3,7 @@ class TimeSheets::IndexSerializer < ActiveModel::Serializer
   # belongs_to :user, serializer: Users::ShowSerializer
 
   def date
-    object.date.to_s(:long)
+    object.date.to_fs(:long)
   end
 
   def start_time
