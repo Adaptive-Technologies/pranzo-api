@@ -22,7 +22,7 @@ class PurchasesController < ApplicationController
       render json: { message: 'success', voucher: voucher }, status: 201
     else
       # TODO: Change the error message for missisng :variant
-      # the genric one is not good UX
+      # the generic one is not good UX
       # a better message is "You have to provide a voucher variant"
       render json: { message: voucher.errors.full_messages.to_sentence }, status: 422
     end
