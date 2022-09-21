@@ -61,7 +61,6 @@ RSpec.describe 'POST /auth', type: :request do
     end
 
     it 'is expected to return an error message' do
-      binding.pry
       expect(response_json['errors']['email'])
         .to eq ["can't be blank"]
     end

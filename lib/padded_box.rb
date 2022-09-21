@@ -24,7 +24,6 @@ module PaddedBox
     opt = args.extract_options!
     bg_color = opt.delete(:bg_color)
     padding = args.delete_at(1)
-    # binding.pry
     bounding_box *args, opt do
       fill_bg_color bg_color if bg_color
       bounding_box([padding, bounds.height - padding], width: bounds.width - 2 * padding, height: bounds.height - 2 * padding) do

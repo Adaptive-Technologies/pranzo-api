@@ -166,7 +166,6 @@ class CustomCardGenerator < Prawn::Document
     padded_box(box_position, 5, width: 75, height: 45) do
       fill_color @sub_header_color
       font 'Gotham'
-      # binding.pry
 
       if @voucher.servings?
         text I18n.t('voucher.value').upcase.to_s,
