@@ -51,11 +51,7 @@ RSpec.describe CustomCardGenerator do
         let(:cash_voucher) { create(:cash_voucher, value: 200) }
         context 'using design 1' do
           subject { described_class.new(cash_voucher, true, 1, :sv) }
-          # let(:pdf) do
-          #   file = File.open(subject.path)
-          #   PDF::Inspector::Text.analyze_file(file)
-          # end
-
+          
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
           }
@@ -71,10 +67,6 @@ RSpec.describe CustomCardGenerator do
         context 'using design 2' do
           let!(:cash_voucher) { create(:cash_voucher, value: 200) }
           subject { described_class.new(cash_voucher, true, 2, :sv) }
-          # let(:pdf) do
-          #   file = File.open(subject.path)
-          #   PDF::Inspector::Text.analyze_file(file)
-          # end
 
           it {
             is_expected.to be_an_instance_of CustomCardGenerator

@@ -21,7 +21,7 @@ class Vendor < ApplicationRecord
   def create_system_user
     system_user = User.new(
       email: primary_email,
-      name: 'System User', #TODO: Should this name include vendor name? 
+      name: "#{name} (System User)", #TODO: Should this name include vendor name? 
       role: 'system_user',
       vendor: self
     )

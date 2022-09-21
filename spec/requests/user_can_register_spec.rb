@@ -45,6 +45,27 @@ RSpec.describe 'POST /auth', type: :request do
     end
   end
 
+  describe 'with an missing email address' do
+    before do
+      post '/auth',
+           params: {
+             email: '',
+             password: 'password',
+             password_confirmation: 'password'
+           },
+           headers: headers
+    end
+
+    it 'is expected to return a 422 response status' do
+      expect(response).to have_http_status 422
+    end
+
+    it 'is expected to return an error message' do
+      expect(response_json['errors']['email'])
+        .to eq ["can't be blank"]
+    end
+  end
+
   describe 'with an invalid email address' do
     before do
       post '/auth',
