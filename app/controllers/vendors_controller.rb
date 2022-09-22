@@ -16,7 +16,13 @@ class VendorsController < ApplicationController
 
   def show
     vendor = Vendor.find(params[:id])
-    render json: { vendor: vendor }
+    render json: vendor, serializer: Vendors::ShowSerializer
+  end
+
+  def update
+    vendor = Vendor.find(params[:id])
+    vendor.update(vendor_params)
+    render json: vendor, serializer: Vendors::ShowSerializer
   end
 
   private
@@ -39,7 +45,7 @@ class VendorsController < ApplicationController
   end
 
   def user_create(vendor)
-    user =  User.find_or_create_by(email: user_params[:email]) do |instance|
+    user = User.find_or_create_by(email: user_params[:email]) do |instance|
       instance.update(user_params)
     end
     user.vendor = vendor

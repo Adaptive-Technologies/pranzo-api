@@ -11,6 +11,7 @@ class Vendor < ApplicationRecord
   validates_uniqueness_of :name
 
   after_create :create_system_user
+  after_update :update_system_user
 
   def system_user
     User.system_user.where(vendor: self).first
@@ -21,10 +22,15 @@ class Vendor < ApplicationRecord
   def create_system_user
     system_user = User.new(
       email: primary_email,
-      name: "#{name} (System User)", #TODO: Should this name include vendor name? 
+      name: "#{name} (System User)",  
       role: 'system_user',
       vendor: self
     )
     system_user.save(validate: false)
+  end
+
+  def update_system_user
+    user = User.find_by(email: primary_email)
+    user.update!(name: "#{name} (System User)")
   end
 end
