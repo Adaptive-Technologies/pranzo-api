@@ -26,9 +26,9 @@ RSpec.describe Vendor, type: :model do
   end
 
   describe 'Associations' do
-    # xit { is_expected.to have_and_belong_to_many :categories }
     it { is_expected.to have_many :addresses }
     it { is_expected.to have_many :users }
+    it { is_expected.to have_many(:vouchers).through(:users) }
   end
 
   describe '#logotype' do

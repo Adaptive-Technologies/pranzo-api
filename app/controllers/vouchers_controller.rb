@@ -11,7 +11,7 @@ class VouchersController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
-    vouchers = Voucher.all
+    vouchers = current_user.admin? ? Voucher.all : current_user.vendor.vouchers
     render json: vouchers, each_serializer: Vouchers::ShowSerializer
   end
 
@@ -20,6 +20,7 @@ class VouchersController < ApplicationController
   end
 
   def create
+    # we need to validate current_user is a vendor
     voucher = Voucher.create(voucher_params.merge(issuer: current_user))
     if voucher.persisted?
       render json: { message: 'Voucher was created' }, status: 201

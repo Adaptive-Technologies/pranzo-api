@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     resources :orders, only: [:create]
     resources :services, only: [:index]
     resources :products, only: [:index]
-    resources :vendors, only: %i[create show update]
+    resources :vendors, only: %i[create show update] do
+      resources :vouchers, only: [:create, :index]
+    end
   end
 end
