@@ -11,7 +11,7 @@ class VouchersController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
-    vouchers = Voucher.all
+    vouchers = current_user.admin? Voucher.all : current_user.vendor.vouchers
     render json: vouchers, each_serializer: Vouchers::ShowSerializer
   end
 
