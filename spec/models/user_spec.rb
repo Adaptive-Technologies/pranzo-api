@@ -45,7 +45,7 @@ RSpec.describe User, type: :model do
     subject { create(:user) }
     it {
       is_expected.to define_enum_for(:role)
-        .with_values(consumer: 1, employee: 90, admin: 99, system_user: 999)
+        .with_values(consumer: 1, employee: 90, admin: 99, vendor: 100, system_user: 999)
     }
     it { is_expected.to respond_to :consumer? }
     it { is_expected.to respond_to :consumer! }
