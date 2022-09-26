@@ -16,7 +16,7 @@ describe Vouchers::ShowSerializer, type: :serializer do
   end
   
   it 'is expected to contain relevant keys' do
-    expected_keys = %w[id code active value current_value email transactions]
+    expected_keys = %w[id code active value variant current_value email transactions]
     expect(subject['voucher'].keys).to match expected_keys
   end
 
@@ -27,6 +27,7 @@ describe Vouchers::ShowSerializer, type: :serializer do
         'active' => an_instance_of(FalseClass),
         'code' => an_instance_of(String),
         'current_value' => an_instance_of(Integer),
+        'variant' => an_instance_of(String),
         'email' => a_string_including('@'),
         'value' => an_instance_of(Integer),
         'transactions' => an_instance_of(Array)
