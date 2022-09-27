@@ -37,6 +37,13 @@ class VouchersController < ApplicationController
     end
   end
 
+  def generate_card
+    voucher = Voucher.find(params[:voucher_id])
+    if voucher.generate_pdf_card then
+      render json: { message: 'Card was successfylly generated', url: voucher.pdf_card_path}, status: :created
+    end
+  end
+
   private
 
   def find_voucher

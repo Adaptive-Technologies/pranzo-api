@@ -20,7 +20,9 @@ Rails.application.routes.draw do
     resources :services, only: [:index]
     resources :products, only: [:index]
     resources :vendors, only: %i[create show update] do
-      resources :vouchers, only: [:create, :index]
+      resources :vouchers, only: [:create, :index] do
+        post :generate_card, controller: :vouchers, action: :generate_card
+      end
     end
   end
 end
