@@ -13,7 +13,7 @@ class Voucher < ApplicationRecord
   has_one :vendor, through: :issuer
 
   before_validation :generate_code, on: :create
-  after_create :attach_pdf_card
+  after_create :attach_qr_codes
 
   has_one_attached :qr_dark
   has_one_attached :qr_white
@@ -39,14 +39,19 @@ class Voucher < ApplicationRecord
     owner&.user&.email || owner.email if owner
   end
 
-  def attach_pdf_card # this name is way off...
+  def attach_qr_codes
     qrcode = RQRCode::QRCode.new(code)
     %w[dark white].each do |type|
-      generate_qr_png(qrcode, type)
+      generate_qr_svg(qrcode, type)
     end
   end
 
-  def generate_qr_png(qrcode, type)
+  def generate_pdf_card
+    file = CustomCardGenerator.new(self, true, self.variant, :sv)
+    self.pdf_card.attach(io: File.open(file.path), filename: "#{code}-card.pdf")
+  end
+
+  def generate_qr_svg(qrcode, type)
     color = type == 'dark' ? '000' : 'FFF'
     svg = qrcode.as_svg(
       offset: 0,

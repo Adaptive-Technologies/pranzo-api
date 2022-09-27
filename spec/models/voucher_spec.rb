@@ -186,6 +186,14 @@ RSpec.describe Voucher, type: :model do
     end
   end
 
+  describe '#generate_pdf_card' do
+    subject { create(:voucher) }
+    it do
+      expect do
+        subject.generate_pdf_card
+      end.to change { subject.pdf_card.attached? }.from(false).to(true)
+    end
+  end
   describe '#activate!' do
     describe 'inactive voucher' do
       subject { create(:voucher) }
