@@ -20,18 +20,30 @@ class Voucher < ApplicationRecord
   has_one_attached :pdf_card
 
   def white_qr_code_path
-    Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_white.key) : ActiveStorage::Blob.service.url(self.qr_white.key, expires_in: 1.hour, disposition: 'inline', filename: self.qr_white.attachment.filename, content_type: 'image/svg
+    if Rails.env.test?
+      ActiveStorage::Blob.service.path_for(qr_white.key)
+    else
+      ActiveStorage::Blob.service.url(qr_white.key, expires_in: 1.hour, disposition: 'inline', filename: qr_white.attachment.filename, content_type: 'image/svg
     +xml')
+    end
   end
 
   def dark_qr_code_path
-    Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_dark.key) : ActiveStorage::Blob.service.url(self.qr_dark.key, expires_in: 1.hour, disposition: 'inline', filename: self.qr_dark.attachment.filename, content_type: 'image/svg
+    if Rails.env.test?
+      ActiveStorage::Blob.service.path_for(qr_dark.key)
+    else
+      ActiveStorage::Blob.service.url(qr_dark.key, expires_in: 1.hour, disposition: 'inline', filename: qr_dark.attachment.filename, content_type: 'image/svg
     +xml')
+    end
   end
 
   def pdf_card_path
-    Rails.env.test? ? ActiveStorage::Blob.service.path_for(pdf_card.key) : ActiveStorage::Blob.service.url(self.pdf_card.key, expires_in: 1.hour, disposition: 'inline', filename: self.pdf_card.attachment.filename, content_type: 'applica
+    if Rails.env.test?
+      ActiveStorage::Blob.service.path_for(pdf_card.key)
+    else
+      ActiveStorage::Blob.service.url(pdf_card.key, expires_in: 1.hour, disposition: 'inline', filename: pdf_card.attachment.filename, content_type: 'applica
     tion/pdf')
+    end
   end
 
   def generate_code
@@ -51,7 +63,7 @@ class Voucher < ApplicationRecord
 
   def generate_pdf_card
     file = CustomCardGenerator.new(self, true, 1, :sv)
-    self.pdf_card.attach(io: File.open(file.path), filename: "#{code}-card.pdf")
+    pdf_card.attach(io: File.open(file.path), filename: "#{code}-card.pdf")
   end
 
   def generate_qr_svg(qrcode, type)
