@@ -187,7 +187,9 @@ RSpec.describe Voucher, type: :model do
   end
 
   describe '#generate_pdf_card' do
-    subject { create(:voucher) }
+    let(:vendor) { create(:vendor) }
+    let(:user) { create(:user, vendor: vendor) }
+    subject { create(:voucher, issuer: user) }
     it do
       expect do
         subject.generate_pdf_card
