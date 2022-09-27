@@ -27,9 +27,7 @@ RSpec.describe 'POST /api/vendors/:vendor_id/vouchers/:voucher_id/generate_card'
       file = File.open(Voucher.last.pdf_card_path)
       PDF::Inspector::Text.analyze_file(file)
     end
-
-
-
+    
     it 'is expected to have content based on voucher data' do
       expect(pdf.strings)
         .to include('LUNCHKORT')
