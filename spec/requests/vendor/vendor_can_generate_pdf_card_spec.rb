@@ -14,7 +14,6 @@ RSpec.describe 'POST /api/vendors/:vendor_id/vouchers/:voucher_id/generate_card'
   it { is_expected.to have_http_status :created }
 
   it 'is expected to include url to pdf resource' do
-    binding.pry
     expect(response_json).to have_key 'url'
   end
 end
