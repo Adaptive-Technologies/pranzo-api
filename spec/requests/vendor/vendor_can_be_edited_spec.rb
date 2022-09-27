@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'GET /api/vendors/:id', type: :request do
+RSpec.describe 'PUT /api/vendors/:id', type: :request do
   let(:vendor) { create(:vendor, name: 'The Restaurant') }
   let(:user) { create(:user, email: 'existing_user@mail.com', vendor: vendor) }
   let(:credentials) { user.create_new_auth_token }

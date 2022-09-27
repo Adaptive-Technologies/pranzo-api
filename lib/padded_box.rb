@@ -25,8 +25,10 @@ module PaddedBox
     bg_color = opt.delete(:bg_color)
     padding = args.delete_at(1)
     bounding_box *args, opt do
-      fill_bg_color bg_color if bg_color
+      # fill_bg_color bg_color if bg_color
+      # set_stroke_color 'ffffff' # Open this to clearly see the bounds set to darker hex color if needed
       bounding_box([padding, bounds.height - padding], width: bounds.width - 2 * padding, height: bounds.height - 2 * padding) do
+        # stroke_bounds # Open this to clearly see the bounds
         block.call
       end
     end

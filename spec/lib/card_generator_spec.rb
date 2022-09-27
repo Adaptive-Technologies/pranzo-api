@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe CustomCardGenerator do
+  let(:vendor) {create(:vendor, name: 'Lerjedalens Spis & Bar')}
+  let(:user) {create(:user, vendor: vendor)}
   let(:pdf) do
     file = File.open(subject.path)
     PDF::Inspector::Text.analyze_file(file)
@@ -13,7 +15,7 @@ RSpec.describe CustomCardGenerator do
   describe 'with a valid voucher' do
     context 'swedish version' do
       describe 'of variant :servings' do
-        let(:servings_voucher) { create(:servings_voucher, value: 10) }
+        let(:servings_voucher) { create(:servings_voucher, value: 10, issuer: user) }
         context 'using design 1' do
           subject { described_class.new(servings_voucher, true, 1, :sv) }
 
@@ -37,6 +39,7 @@ RSpec.describe CustomCardGenerator do
           }
 
           it 'is expected to contain voucher data' do
+            # binding.pry
             expect(pdf.strings)
               .to include('LUNCH')
               .and include('KORT')
@@ -48,7 +51,7 @@ RSpec.describe CustomCardGenerator do
       end
 
       describe 'of variant :cash' do
-        let(:cash_voucher) { create(:cash_voucher, value: 200) }
+        let(:cash_voucher) { create(:cash_voucher, value: 200, issuer: user) }
         context 'using design 1' do
           subject { described_class.new(cash_voucher, true, 1, :sv) }
           
@@ -65,8 +68,26 @@ RSpec.describe CustomCardGenerator do
         end
 
         context 'using design 2' do
-          let!(:cash_voucher) { create(:cash_voucher, value: 200) }
+          let!(:cash_voucher) { create(:cash_voucher, value: 200, issuer: user) }
           subject { described_class.new(cash_voucher, true, 2, :sv) }
+
+          it {
+            is_expected.to be_an_instance_of CustomCardGenerator
+          }
+
+          it 'is expected to contain voucher data' do
+            expect(pdf.strings)
+              .to include('PRESENT')
+              .and include('KORT')
+              .and include('KOD: 12345')
+              .and include('SEK')
+              .and include('200')
+          end
+        end
+
+        context 'using design 3' do
+          let!(:cash_voucher) { create(:cash_voucher, value: 200, issuer: user) }
+          subject { described_class.new(cash_voucher, true, 3, :sv) }
 
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
@@ -85,7 +106,7 @@ RSpec.describe CustomCardGenerator do
     end
 
     context 'english version' do
-      let(:servings_voucher) { create(:servings_voucher, value: 10) }
+      let(:servings_voucher) { create(:servings_voucher, value: 10, issuer: user) }
       describe 'of variant :servings' do
         context 'using design 1' do
           subject { described_class.new(servings_voucher, true, 1, :en) }
@@ -120,7 +141,7 @@ RSpec.describe CustomCardGenerator do
       end
 
       describe 'of variant :cash' do
-        let(:cash_voucher) { create(:cash_voucher, value: 200) }
+        let(:cash_voucher) { create(:cash_voucher, value: 200, issuer: user) }
         context 'using design 1' do
           subject { described_class.new(cash_voucher, true, 1, :en) }
 
