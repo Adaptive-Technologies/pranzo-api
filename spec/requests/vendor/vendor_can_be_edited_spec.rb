@@ -25,7 +25,7 @@ RSpec.describe 'GET /api/vendors/:id', type: :request do
         .and have_value('The New Restaurant')
     end
 
-    it 'is exprected to rename the System User' do
+    it 'is expected to rename the System User' do
       system_user = User.find_by(email: vendor.primary_email)
       expect(system_user.name).to eq 'The New Restaurant (System User)'
     end

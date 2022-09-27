@@ -2,6 +2,11 @@ require_relative './credentials'
 
 RSpec.describe 'POST /api/vendors/:vendor_id/vouchers/:voucher_id/generate_card', type: :request do
   include_context 'credentials'
+  before do
+    allow(SecureRandom).to receive(:alphanumeric)
+      .with(5)
+      .and_return('12345')
+  end
   let(:voucher) { create(:servings_voucher, issuer: vendor_user, active: true) }
 
   before do
@@ -15,5 +20,21 @@ RSpec.describe 'POST /api/vendors/:vendor_id/vouchers/:voucher_id/generate_card'
 
   it 'is expected to include url to pdf resource' do
     expect(response_json).to have_key 'url'
+  end
+
+  describe 'card content' do
+    let(:pdf) do
+      file = File.open(Voucher.last.pdf_card_path)
+      PDF::Inspector::Text.analyze_file(file)
+    end
+
+
+
+    it 'is expected to have content based on voucher data' do
+      expect(pdf.strings)
+        .to include('LUNCHKORT')
+        .and include('Kod: 12345')
+        .and include('VÄRDE 10')
+    end
   end
 end

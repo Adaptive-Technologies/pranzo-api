@@ -40,7 +40,7 @@ RSpec.describe 'POST /api/orders', type: :request do
     end
 
     it 'is expected to include "incoming order" in websocket message' do
-      time = DateTime.now.in_time_zone.to_s(:time)
+      time = DateTime.now.in_time_zone.to_fs(:time)
       expect(
         JSON.parse(
           channels['kitchen_notifications'].first
@@ -78,7 +78,7 @@ RSpec.describe 'POST /api/orders', type: :request do
     end
 
     it 'is expected to include "incoming order from :user.name" in websocket message' do
-      time = DateTime.now.in_time_zone.to_s(:time)
+      time = DateTime.now.in_time_zone.to_fs(:time)
       expect(
         JSON.parse(
           channels['kitchen_notifications'].first

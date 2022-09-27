@@ -44,6 +44,7 @@ RSpec.configure do |config|
   config.include JsonHelpers, type: :request
   config.include ActionCableHelpers, type: :request
   config.before(:each) do
+    I18n.locale = :en
     @stripe_test_helper = StripeMock.create_test_helper
     StripeMock.start
   end
