@@ -20,15 +20,18 @@ class Voucher < ApplicationRecord
   has_one_attached :pdf_card
 
   def white_qr_code_path
-    Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_white.key) : qr_white.service_url(expires_in: 1.hour, disposition: 'inline')
+    Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_white.key) : ActiveStorage::Blob.service.url(self.qr_white.key, expires_in: 1.hour, disposition: 'inline', filename: self.qr_white.attachment.filename, content_type: 'image/svg
+    +xml')
   end
 
   def dark_qr_code_path
-    Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_dark.key) : qr_dark.service_url(expires_in: 1.hour, disposition: 'inline')
+    Rails.env.test? ? ActiveStorage::Blob.service.path_for(qr_dark.key) : ActiveStorage::Blob.service.url(self.qr_dark.key, expires_in: 1.hour, disposition: 'inline', filename: self.qr_dark.attachment.filename, content_type: 'image/svg
+    +xml')
   end
 
   def pdf_card_path
-    Rails.env.test? ? ActiveStorage::Blob.service.path_for(pdf_card.key) : pdf_card.service_url(expires_in: 1.hour, disposition: 'inline')
+    Rails.env.test? ? ActiveStorage::Blob.service.path_for(pdf_card.key) : ActiveStorage::Blob.service.url(self.pdf_card.key, expires_in: 1.hour, disposition: 'inline', filename: self.pdf_card.attachment.filename, content_type: 'applica
+    tion/pdf')
   end
 
   def generate_code
