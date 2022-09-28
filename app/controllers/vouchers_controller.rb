@@ -31,6 +31,7 @@ class VouchersController < ApplicationController
 
   def update
     if voucher_params[:command] == 'activate' && @voucher.activate!
+      PassKitService.enroll(@voucher.code, @voucher.value) if params[:voucher][:activate_wallet]
       render json: { message: 'Voucher is now active' }, status: 201
     else
       render json: { message: @voucher.errors.full_messages.to_sentence }, status: 422
