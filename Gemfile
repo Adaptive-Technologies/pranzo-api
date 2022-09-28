@@ -29,6 +29,7 @@ gem 'validate_url'
 gem "jmespath", ">= 1.6.1"
 gem 'addressable', '~> 2.8', '>= 2.8.1'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
+gem 'jwt'
 
 
 group :development, :test do
@@ -46,5 +47,5 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'listen', '~> 3.7', '>= 3.7.1'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen', '~> 2.1'
 end

@@ -160,6 +160,7 @@ GEM
       ruby-vips (>= 2.0.17, < 3)
     jmespath (1.6.1)
     jsonapi-renderer (0.2.2)
+    jwt (2.5.0)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -309,10 +310,10 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (5.1.0)
       activesupport (>= 5.2.0)
-    spring (2.1.1)
-    spring-watcher-listen (2.0.1)
+    spring (4.1.0)
+    spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
-      spring (>= 1.2, < 3.0)
+      spring (>= 4)
     stripe (5.55.0)
     stripe-rails (2.3.4)
       rails (>= 5.1)
@@ -358,6 +359,7 @@ DEPENDENCIES
   guard-rspec
   image_processing (>= 1.12.2)
   jmespath (>= 1.6.1)
+  jwt
   listen (~> 3.7, >= 3.7.1)
   pdf-inspector
   pg (>= 0.18, < 2.0)
@@ -375,7 +377,7 @@ DEPENDENCIES
   rspec-rails
   shoulda-matchers
   spring
-  spring-watcher-listen (~> 2.0.0)
+  spring-watcher-listen (~> 2.1)
   stripe-rails
   stripe-ruby-mock (~> 3.1.0.rc2)
   timecop
