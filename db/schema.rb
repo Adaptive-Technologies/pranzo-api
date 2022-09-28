@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_15_204725) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_28_220503) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -190,6 +190,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_15_204725) do
     t.string "code"
     t.bigint "issuer_id"
     t.integer "variant"
+    t.string "pass_kit_id"
     t.index ["issuer_id"], name: "index_vouchers_on_issuer_id"
   end
 

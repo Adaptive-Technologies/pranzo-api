@@ -8,6 +8,7 @@ class VouchersController < ApplicationController
   before_action :validate_servings_value, if: proc { voucher_params[:value] && voucher_params[:variant] == 'servings' }, only: :create
   before_action :validate_cash_value, if: proc { voucher_params[:variant] == 'cash' }, only: :create
   after_action :set_owner, only: %i[update]
+  after_action :set_pass_kit, only: %i[update]
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
@@ -31,7 +32,6 @@ class VouchersController < ApplicationController
 
   def update
     if voucher_params[:command] == 'activate' && @voucher.activate!
-      PassKitService.enroll(@voucher.code, @voucher.value) if params[:voucher][:activate_wallet]
       render json: { message: 'Voucher is now active' }, status: 201
     else
       render json: { message: @voucher.errors.full_messages.to_sentence }, status: 422
@@ -60,6 +60,13 @@ class VouchersController < ApplicationController
         voucher: @voucher,
         user: associated_user
       )
+    end
+  end
+
+  def set_pass_kit
+    if params[:voucher][:activate_wallet] && !@voucher.pass_kit_id?
+      pass_kit = PassKitService.enroll(@voucher.code, @voucher.value).symbolize_keys
+      @voucher.update(pass_kit_id: pass_kit[:id])
     end
   end
 

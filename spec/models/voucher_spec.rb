@@ -20,6 +20,11 @@ RSpec.describe Voucher, type: :model do
       is_expected.to have_db_column(:variant)
         .of_type(:integer)
     }
+
+    it {
+      is_expected.to have_db_column(:pass_kit_id)
+        .of_type(:string)
+    }
   end
 
   describe 'factories' do
