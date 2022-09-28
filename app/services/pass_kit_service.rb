@@ -69,7 +69,7 @@ module PassKitService
 
   # And this one of course.
   # Also first iteration
-  def self.consume_points(code, points, program_id = '6J04tre0z4XYq6NuvPhEx8')
+  def self.consume(code, points, program_id = LUNCH_CARDS_PROGRAM)
     payload = {
       programId: program_id,
       externalId: code,
@@ -78,6 +78,23 @@ module PassKitService
     }
     begin
       json = RestClient.put(API_URL + '/members/member/points/burn', payload.to_json,
+                            { Authorization: token, content_type: :json, accept: :json })
+      JSON.parse(json)
+    rescue StandardError => e
+      JSON.parse(e.response.body)
+    end
+  end
+
+  # And this one!
+  # Again, this is the first iteration
+  def self.refill(code, points, program_id = LUNCH_CARDS_PROGRAM)
+    payload = {
+      programId: program_id,
+      externalId: code,
+      points: points
+    }
+    begin
+      json = RestClient.put(API_URL + '/members/member/points/earn', payload.to_json,
                             { Authorization: token, content_type: :json, accept: :json })
       JSON.parse(json)
     rescue StandardError => e

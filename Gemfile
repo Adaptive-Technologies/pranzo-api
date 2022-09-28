@@ -11,7 +11,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise_token_auth'
 gem 'geocoder'
 gem 'globalize'
-gem "image_processing", ">= 1.12.2"
+gem 'image_processing', '>= 1.12.2'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'prawn'
 gem 'prawn-svg'
@@ -26,11 +26,10 @@ gem 'rqrcode'
 gem 'stripe-rails'
 gem 'validate_url'
 # security warnings fixes
-gem "jmespath", ">= 1.6.1"
 gem 'addressable', '~> 2.8', '>= 2.8.1'
-gem 'rexml', '~> 3.2', '>= 3.2.5'
+gem 'jmespath', '>= 1.6.1'
 gem 'jwt'
-
+gem 'rexml', '~> 3.2', '>= 3.2.5'
 
 group :development, :test do
   gem 'factory_bot_rails'
@@ -41,6 +40,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'stripe-ruby-mock', '~> 3.1.0.rc2', require: 'stripe_mock'
   gem 'timecop'
+  gem 'webmock', '~> 3.14'
 end
 
 group :development do
