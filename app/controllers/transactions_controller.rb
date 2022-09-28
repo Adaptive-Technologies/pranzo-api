@@ -4,6 +4,7 @@ class TransactionsController < ApplicationController
   def create
     voucher = Voucher.find(params[:voucher_id])
     transaction = voucher.transactions.create(date: Date.today)
+    PassKitService.consume(voucher.code, 1) if voucher.pass_kit_id?
     if transaction.persisted?
       voucher.reload
       render json: {

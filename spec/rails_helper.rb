@@ -9,7 +9,9 @@ if Rails.env.production?
 end
 require 'rspec/rails'
 require 'stripe_mock'
+require 'webmock/rspec'
 require 'stripe/rails/testing'
+require 'pass_kit_stubs'
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e

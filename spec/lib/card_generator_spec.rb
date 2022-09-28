@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe CustomCardGenerator do
-  let(:vendor) {create(:vendor, name: 'Lerjedalens Spis & Bar')}
-  let(:user) {create(:user, vendor: vendor)}
+  let(:vendor) { create(:vendor, name: 'Lerjedalens Spis & Bar') }
+  let(:user) { create(:user, vendor: vendor) }
   let(:pdf) do
     file = File.open(subject.path)
     PDF::Inspector::Text.analyze_file(file)
@@ -54,7 +54,7 @@ RSpec.describe CustomCardGenerator do
         let(:cash_voucher) { create(:cash_voucher, value: 200, issuer: user) }
         context 'using design 1' do
           subject { described_class.new(cash_voucher, true, 1, :sv) }
-          
+
           it {
             is_expected.to be_an_instance_of CustomCardGenerator
           }
