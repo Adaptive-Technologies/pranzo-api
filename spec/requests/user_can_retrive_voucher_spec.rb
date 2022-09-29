@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe 'GET /api/vouchers/:code', type: :request do
-  before do
-    allow(SecureRandom).to receive(:alphanumeric).with(5).and_return('QQQQQ')
-  end
 
   describe 'with a valid code and non-registerd owner' do
     let!(:owner) { create(:owner, voucher: voucher, email: 'thomas@craft.com') }
@@ -29,7 +26,7 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
 
     it {
       expect(JSON.parse(response.body, { symbolize_names: true })[:voucher])
-        .to have_key(:code).and have_value('QQQQQ')
+        .to have_key(:code).and have_value('12345')
     }
 
     it {
@@ -62,7 +59,7 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
 
     it {
       expect(response_json['voucher'])
-        .to have_key('code').and have_value('QQQQQ')
+        .to have_key('code').and have_value('12345')
     }
 
     it {

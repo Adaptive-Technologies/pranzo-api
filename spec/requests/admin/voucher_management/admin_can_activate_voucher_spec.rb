@@ -4,11 +4,6 @@ require_relative '../credentials'
 
 RSpec.describe 'PUT /admin/vouchers/:id', type: :request do
   include_context 'credentials'
-  before do
-    allow(SecureRandom).to receive(:alphanumeric)
-      .with(5)
-      .and_return('12345')
-  end
 
   describe 'without an owner' do
     describe 'for an inactive voucher' do

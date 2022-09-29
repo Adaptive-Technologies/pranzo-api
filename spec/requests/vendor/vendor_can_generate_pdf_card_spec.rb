@@ -2,11 +2,7 @@ require_relative './credentials'
 
 RSpec.describe 'POST /api/vendors/:vendor_id/vouchers/:voucher_id/generate_card', type: :request do
   include_context 'credentials'
-  before do
-    allow(SecureRandom).to receive(:alphanumeric)
-      .with(5)
-      .and_return('12345')
-  end
+
   let(:voucher) { create(:servings_voucher, issuer: vendor_user, active: true) }
 
   before do

@@ -7,11 +7,7 @@ RSpec.describe CustomCardGenerator do
     file = File.open(subject.path)
     PDF::Inspector::Text.analyze_file(file)
   end
-  before do
-    allow(SecureRandom).to receive(:alphanumeric)
-      .with(5)
-      .and_return('12345')
-  end
+
   describe 'with a valid voucher' do
     context 'swedish version' do
       describe 'of variant :servings' do

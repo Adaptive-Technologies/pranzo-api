@@ -1,9 +1,4 @@
 RSpec.describe PassKitService do
-  before do
-    allow(SecureRandom).to receive(:alphanumeric)
-      .with(5)
-      .and_return('12345')
-  end
   let(:vendor) { create(:vendor, name: 'Lerjedalens Spis & Bar') }
   let(:user) { create(:user, vendor: vendor) }
   let!(:voucher) { create(:servings_voucher, value: 10, issuer: user) }

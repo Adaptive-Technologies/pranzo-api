@@ -4,9 +4,7 @@ require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 require 'validate_url/rspec_matcher'
-if Rails.env.production?
-  abort('The Rails environment is running in production mode!')
-end
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 require 'stripe_mock'
 require 'webmock/rspec'
@@ -49,6 +47,9 @@ RSpec.configure do |config|
     I18n.locale = :en
     @stripe_test_helper = StripeMock.create_test_helper
     StripeMock.start
+    allow(SecureRandom).to receive(:alphanumeric)
+      .with(5)
+      .and_return('12345')
   end
   config.after(:each) do
     StripeMock.stop
