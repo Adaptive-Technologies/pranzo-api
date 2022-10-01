@@ -5,10 +5,15 @@ class VouchersController < ApplicationController
 
   before_action :authenticate_user!, only: %i[create]
   before_action :find_voucher, only: %i[show update]
-  before_action :validate_servings_value, if: proc { voucher_params[:value] && voucher_params[:variant] == 'servings' }, only: :create
+  before_action :validate_servings_value, if: proc {
+                                                voucher_params[:value] && voucher_params[:variant] == 'servings'
+                                              }, only: :create
   before_action :validate_cash_value, if: proc { voucher_params[:variant] == 'cash' }, only: :create
-  after_action :set_owner, only: %i[update]
+  # The order of after_create is 
+  after_action :send_activation_email, only: [:update]
+  after_action :create_pdf, only: [:update]
   after_action :set_pass_kit, only: %i[update]
+  after_action :set_owner, only: %i[update]
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
@@ -40,8 +45,8 @@ class VouchersController < ApplicationController
 
   def generate_card
     voucher = Voucher.find(params[:voucher_id])
-    if voucher.generate_pdf_card then
-      render json: { message: 'Card was successfylly generated', url: voucher.pdf_card_path}, status: :created
+    if voucher.generate_pdf_card
+      render json: { message: 'Card was successfylly generated', url: voucher.pdf_card_path }, status: :created
     end
   end
 
@@ -70,6 +75,15 @@ class VouchersController < ApplicationController
     end
   end
 
+  def create_pdf
+    options = params[:voucher][:pdf_options].permit!.to_h.symbolize_keys
+    params[:voucher][:activate_pdf] == 'true' && @voucher.generate_pdf_card(options)
+  end
+
+  def send_activation_email
+    @voucher.owner.email && VoucherDistributionMailer.activation(@voucher).deliver
+  end
+
   def voucher_params
     params.require(:voucher).permit(:value, :command, :owner, :variant)
   end
@@ -77,5 +91,4 @@ class VouchersController < ApplicationController
   def voucher_not_found
     render json: { message: 'The voucher code is invalid, try again.' }, status: 404
   end
-
 end

@@ -4,12 +4,13 @@ require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 require 'validate_url/rspec_matcher'
-abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
+
 require 'stripe_mock'
 require 'webmock/rspec'
 require 'stripe/rails/testing'
 require 'pass_kit_stubs'
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -34,6 +35,20 @@ module ActionCableHelpers
   end
 end
 
+module EmailHelpers
+  def email_queue
+    ActionMailer::Base.deliveries.size
+  end
+
+  def email
+    ActionMailer::Base.deliveries.last
+  end
+
+  def email_html_part
+    ActionMailer::Base.deliveries.last.body.parts.detect{|p| p.content_type.match(/text\/html/)}.body.to_s
+  end
+end
+
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
@@ -43,6 +58,7 @@ RSpec.configure do |config|
   config.include Shoulda::Matchers::ActiveRecord, type: :model
   config.include JsonHelpers, type: :request
   config.include ActionCableHelpers, type: :request
+  config.include EmailHelpers, type: :request
   config.before(:each) do
     I18n.locale = :en
     @stripe_test_helper = StripeMock.create_test_helper

@@ -24,19 +24,19 @@ class Voucher < ApplicationRecord
       ActiveStorage::Blob.service.path_for(qr_white.key)
     else
       ActiveStorage::Blob.service.url(qr_white.key, expires_in: 1.hour, disposition: 'inline', filename: qr_white.attachment.filename, content_type: 'image/svg
-    +xml')
+      +xml')
     end
   end
-
+  
   def dark_qr_code_path
     if Rails.env.test?
       ActiveStorage::Blob.service.path_for(qr_dark.key)
     else
       ActiveStorage::Blob.service.url(qr_dark.key, expires_in: 1.hour, disposition: 'inline', filename: qr_dark.attachment.filename, content_type: 'image/svg
-    +xml')
+      +xml')
     end
   end
-
+  
   def pdf_card_path
     if Rails.env.test?
       ActiveStorage::Blob.service.path_for(pdf_card.key)
@@ -61,8 +61,8 @@ class Voucher < ApplicationRecord
     end
   end
 
-  def generate_pdf_card
-    file = CustomCardGenerator.new(self, true, 1, :sv)
+  def generate_pdf_card(options = { variant: 1, language: :sv })
+    file = CustomCardGenerator.new(self, true, options[:variant], options[:language])
     pdf_card.attach(io: File.open(file.path), filename: "#{code}-card.pdf")
   end
 

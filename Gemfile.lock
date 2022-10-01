@@ -120,6 +120,10 @@ GEM
     digest (3.1.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    email_spec (2.2.0)
+      htmlentities (~> 4.3.3)
+      launchy (~> 2.1)
+      mail (~> 2.7)
     erubi (1.11.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -153,6 +157,7 @@ GEM
       rspec (>= 2.99.0, < 4.0)
     hashdiff (1.0.1)
     hashery (2.1.2)
+    htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
@@ -164,6 +169,8 @@ GEM
     jmespath (1.6.1)
     jsonapi-renderer (0.2.2)
     jwt (2.5.0)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -359,6 +366,7 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   devise_token_auth
+  email_spec (= 2.2.0)
   factory_bot_rails
   faker
   geocoder

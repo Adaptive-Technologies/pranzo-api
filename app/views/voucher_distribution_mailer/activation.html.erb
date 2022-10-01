@@ -1,0 +1,7 @@
+<p>Här är ditt nya Pranzo kort utfärdat av <%= @voucher.vendor.name%></p>
+<% if @voucher.pass_kit_id %>
+<p>Du kan även lägga till ditt kort till Apple Wallet eller Googgle Wallet</p>
+
+<a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">
+<% end %>
+<p>Hälsningar från Pranzo.se</p>
