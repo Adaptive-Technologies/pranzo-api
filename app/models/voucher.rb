@@ -62,7 +62,7 @@ class Voucher < ApplicationRecord
   end
 
   def generate_pdf_card(options = { variant: 1, language: :sv })
-    file = CustomCardGenerator.new(self, true, options[:variant], options[:language])
+    file = CustomCardGenerator.new(self, true, options[:variant].to_i, options[:language].to_sym)
     pdf_card.attach(io: File.open(file.path), filename: "#{code}-card.pdf")
   end
 

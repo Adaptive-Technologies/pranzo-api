@@ -151,7 +151,7 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
             activate_wallet: false,
             activate_pdf: true,
             pdf_options: {
-              variant: 2,
+              variant: 3,
               language: :en
             }
           } },
