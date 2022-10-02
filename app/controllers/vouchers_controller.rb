@@ -9,7 +9,7 @@ class VouchersController < ApplicationController
                                                 voucher_params[:value] && voucher_params[:variant] == 'servings'
                                               }, only: :create
   before_action :validate_cash_value, if: proc { voucher_params[:variant] == 'cash' }, only: :create
-  # The order of after_create is 
+  # The order of after_create is
   after_action :send_activation_email, only: [:update]
   after_action :create_pdf, only: [:update]
   after_action :set_pass_kit, only: %i[update]
@@ -76,12 +76,14 @@ class VouchersController < ApplicationController
   end
 
   def create_pdf
-    options = params[:voucher][:pdf_options].permit!.to_h.symbolize_keys
-    params[:voucher][:activate_pdf] == 'true' && @voucher.generate_pdf_card(options)
+    if options = params[:voucher][:pdf_options]
+      options = params[:voucher][:pdf_options].permit!.to_h.symbolize_keys
+      params[:voucher][:activate_pdf] == 'true' && @voucher.generate_pdf_card(options)
+    end
   end
 
   def send_activation_email
-    @voucher.owner.email && VoucherDistributionMailer.activation(@voucher).deliver
+    (@voucher.owner && @voucher.owner.email) && VoucherDistributionMailer.activation(@voucher).deliver
   end
 
   def voucher_params
