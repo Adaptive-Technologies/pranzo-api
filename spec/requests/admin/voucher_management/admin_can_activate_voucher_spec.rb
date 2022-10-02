@@ -7,7 +7,7 @@ RSpec.describe 'PUT /admin/vouchers/:id', type: :request do
 
   describe 'without an owner' do
     describe 'for an inactive voucher' do
-      subject { create(:voucher, active: false) }
+      subject { create(:voucher, active: false, issuer: admin) }
       before do
         put "/admin/vouchers/#{subject.code}",
             params: { voucher: { command: 'activate' } },
@@ -31,7 +31,7 @@ RSpec.describe 'PUT /admin/vouchers/:id', type: :request do
     end
 
     describe 'for an active voucher' do
-      subject { create(:voucher, active: true) }
+      subject { create(:voucher, active: true, issuer: admin) }
       before do
         put "/admin/vouchers/#{subject.code}",
             params: { voucher: { command: 'activate' } },
@@ -53,7 +53,7 @@ RSpec.describe 'PUT /admin/vouchers/:id', type: :request do
   describe 'with an email' do
     describe 'that is not registered for a user' do
       describe 'for an inactive voucher' do
-        subject { create(:voucher, active: false) }
+        subject { create(:voucher, active: false, issuer: admin) }
         before do
           put "/admin/vouchers/#{subject.code}",
               params: { voucher: {
@@ -87,7 +87,7 @@ RSpec.describe 'PUT /admin/vouchers/:id', type: :request do
     describe 'that belongs to a registered user' do
       let!(:registered_user) { create(:consumer, email: 'registered_user@mail.com') }
       describe 'for an inactive voucher' do
-        subject { create(:voucher, active: false) }
+        subject { create(:voucher, active: false, issuer: admin) }
         before do
           put "/admin/vouchers/#{subject.code}",
               params: { voucher: {
@@ -121,7 +121,7 @@ RSpec.describe 'PUT /admin/vouchers/:id', type: :request do
   end
 
   describe 'with activate digital wallet request' do
-    subject { create(:voucher, active: false) }
+    subject { create(:voucher, active: false, issuer: admin) }
     before do
       put "/admin/vouchers/#{subject.code}",
           params: { voucher: {
