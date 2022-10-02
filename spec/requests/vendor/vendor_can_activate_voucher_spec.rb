@@ -7,6 +7,7 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
   describe 'without an owner' do
     describe 'for an inactive voucher' do
       subject { create(:voucher, active: false, issuer: vendor_user) }
+
       before do
         put "/api/vendors/#{vendor.id}/vouchers/#{subject.code}",
             params: { voucher: { command: 'activate' } },
@@ -53,6 +54,7 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
     describe 'that is not registered for a user' do
       describe 'for an inactive voucher' do
         subject { create(:voucher, active: false, issuer: vendor_user) }
+
         before do
           put "/api/vendors/#{vendor.id}/vouchers/#{subject.code}",
               params: { voucher: {
@@ -87,6 +89,7 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
       let!(:registered_user) { create(:consumer, email: 'registered_user@mail.com') }
       describe 'for an inactive voucher' do
         subject { create(:voucher, active: false, issuer: vendor_user) }
+
         before do
           put "/api/vendors/#{vendor.id}/vouchers/#{subject.code}",
               params: { voucher: {
@@ -121,6 +124,7 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
 
   describe 'with activate digital wallet request' do
     subject { create(:voucher, active: false, issuer: vendor_user) }
+
     before do
       put "/api/vendors/#{vendor.id}/vouchers/#{subject.code}",
           params: { voucher: {
@@ -166,4 +170,5 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
       expect(email_html_part).to include "https://pub1.pskt.io/#{Voucher.last.pass_kit_id}"
     end
   end
+
 end
