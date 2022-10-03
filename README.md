@@ -72,3 +72,7 @@ There are currently 3 templates available.
 # CustomCardGenerator.new(<voucher obj>, <render:boolean/default: true>, <variant:integer>, <locale:symbol/default: :sv>)
 CustomCardGenerator.new(voucher, true, 1, :sv)
 ```
+
+# Formatting Emails
+
+An interesting solution is the [MJML gem](https://github.com/sighmon/mjml-rails). A PR with good examples [can be found here](https://github.com/CraftAcademy/gigafood/pull/69)
