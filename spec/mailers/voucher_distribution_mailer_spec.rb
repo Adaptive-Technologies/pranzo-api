@@ -11,7 +11,7 @@ RSpec.describe VoucherDistributionMailer, type: :mailer do
 
   describe 'mail headers' do
     it 'is expected to have a subject' do
-      expect(subject.subject).to eq('Ditt Pranzo kort hos The Other Place')
+      expect(subject.subject).to eq('Ditt Pranzo kort hos The Other Place / Your Pranzo-card at The Other Place')
     end
 
     it 'is expected to have a recipient' do
