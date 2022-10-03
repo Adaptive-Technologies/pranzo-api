@@ -88,7 +88,7 @@ class VouchersController < ApplicationController
 
   def set_pass_kit
     if params[:voucher][:activate_wallet] && !@voucher.pass_kit_id?
-      pass_kit = PassKitService.enroll(@voucher.code, @voucher.value).symbolize_keys
+      pass_kit = PassKitService.enroll(@voucher.code, @voucher.value, @voucher.vendor.name).symbolize_keys
       @voucher.update(pass_kit_id: pass_kit[:id])
     end
   end
