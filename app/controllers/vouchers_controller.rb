@@ -28,11 +28,17 @@ class VouchersController < ApplicationController
 
   def create
     # we need to validate current_user is a vendor
-    voucher = Voucher.create(voucher_params.merge(issuer: current_user))
-    if voucher.persisted?
-      render json: { message: 'Voucher was created' }, status: 201
+    if params[:command] == 'batch'
+      amount = params[:amount].to_i
+      amount.times { Voucher.create(voucher_params.merge(issuer: current_user)) }
+      render json: { message: "#{amount} new vouchers was created" }, status: 201
     else
-      render json: { message: voucher.errors.full_messages.to_sentence }, status: 422
+      voucher = Voucher.create(voucher_params.merge(issuer: current_user))
+      if voucher.persisted?
+        render json: { message: 'Voucher was created' }, status: 201
+      else
+        render json: { message: voucher.errors.full_messages.to_sentence }, status: 422
+      end
     end
   end
 
