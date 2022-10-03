@@ -148,11 +148,11 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
           params: { voucher: {
             command: 'activate',
             email: 'new_user@mail.com',
-            activate_wallet: false,
-            activate_pdf: true,
+            activate_wallet: 'true',
+            activate_pdf: 'true',
             pdf_options: {
-              variant: 3,
-              language: :en
+              variant: '3',
+              language: 'en'
             }
           } },
           headers: valid_auth_headers_for_vendor_user
