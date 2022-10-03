@@ -66,12 +66,6 @@ class VouchersController < ApplicationController
         send_activation_email
       end
     end
-    # Async do |action|
-    #   action.async { set_owner }
-    #   action.async { set_pass_kit }
-    #   action.async { create_pdf }
-    #   action.async { send_activation_email }
-    # end
   end
 
   def set_owner
@@ -94,9 +88,9 @@ class VouchersController < ApplicationController
   end
 
   def create_pdf
-    if options = params[:voucher][:pdf_options]
+    if params[:voucher][:activate_pdf]
       options = params[:voucher][:pdf_options].permit!.to_h.symbolize_keys
-      params[:voucher][:activate_pdf] == 'true' && @voucher.generate_pdf_card(options)
+      @voucher.generate_pdf_card(options)
     end
   end
 
