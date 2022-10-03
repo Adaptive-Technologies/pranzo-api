@@ -10,10 +10,11 @@ class VouchersController < ApplicationController
                                               }, only: :create
   before_action :validate_cash_value, if: proc { voucher_params[:variant] == 'cash' }, only: :create
   # The order of after_create is
-  after_action :send_activation_email, only: [:update]
-  after_action :create_pdf, only: [:update]
-  after_action :set_pass_kit, only: %i[update]
-  after_action :set_owner, only: %i[update]
+  # after_action :send_activation_email, only: [:update]
+  # after_action :create_pdf, only: [:update]
+  # after_action :set_pass_kit, only: %i[update]
+  # after_action :set_owner, only: %i[update]
+  after_action :distribute, only: %i[update]
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
@@ -54,6 +55,23 @@ class VouchersController < ApplicationController
 
   def find_voucher
     @voucher = Voucher.find_by!(code: params[:id])
+  end
+
+  def distribute
+    Async do |action|
+      action.async do
+        set_owner
+        set_pass_kit
+        create_pdf
+        send_activation_email
+      end
+    end
+    # Async do |action|
+    #   action.async { set_owner }
+    #   action.async { set_pass_kit }
+    #   action.async { create_pdf }
+    #   action.async { send_activation_email }
+    # end
   end
 
   def set_owner

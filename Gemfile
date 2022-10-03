@@ -30,6 +30,7 @@ gem 'addressable', '~> 2.8', '>= 2.8.1'
 gem 'jmespath', '>= 1.6.1'
 gem 'jwt'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
+gem 'async'
 
 group :development, :test do
   gem 'factory_bot_rails'
