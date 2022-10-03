@@ -158,7 +158,7 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
           headers: valid_auth_headers_for_vendor_user
     end
 
-    it 'is expected to invoke #generate_pdf_card and attach file' do    
+    it 'is expected to invoke #generate_pdf_card and attach file' do
       expect(subject.pdf_card.attached?).to eq true
     end
 
@@ -170,5 +170,4 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
       expect(email_html_part).to include "https://pub1.pskt.io/#{Voucher.last.pass_kit_id}"
     end
   end
-
 end
