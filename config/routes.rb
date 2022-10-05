@@ -25,5 +25,6 @@ Rails.application.routes.draw do
         post :generate_card, controller: :vouchers, action: :generate_card
       end
     end
+    post :validate_user, controller: :users #, action: :validate_user
   end
 end
