@@ -201,6 +201,7 @@ RSpec.describe Voucher, type: :model do
       end.to change { subject.pdf_card.attached? }.from(false).to(true)
     end
   end
+
   describe '#activate!' do
     describe 'inactive voucher' do
       subject { create(:voucher) }
@@ -220,6 +221,18 @@ RSpec.describe Voucher, type: :model do
           .from({})
           .to({ base: [{ error: 'Voucher is already activated' }] })
       end
+    end
+  end
+
+  describe '#current_value' do
+    let(:vendor) { create(:vendor) }
+    let(:user) { create(:user, vendor: vendor) }
+    let!(:transaction) { create(:transaction, voucher: subject, amount: 200) }
+    subject { create(:cash_voucher, value: 500, issuer: user) }
+    it { is_expected.to respond_to :current_value }
+
+    it 'is expected to return a value reduced by the sum of transactions' do
+      expect(subject.current_value).to eq 300
     end
   end
 end

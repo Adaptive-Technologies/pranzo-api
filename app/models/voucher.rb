@@ -93,4 +93,8 @@ class Voucher < ApplicationRecord
       update(active: true)
     end
   end
+
+  def current_value
+    value - transactions.pluck(:amount).sum
+  end
 end
