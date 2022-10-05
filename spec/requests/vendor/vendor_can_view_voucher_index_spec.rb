@@ -4,12 +4,16 @@ require_relative './credentials.rb'
 RSpec.describe 'GET /api/vendors/:vendor_id/vouchers', type: :request do
   include_context 'credentials'
   let!(:s_vouchers) { 5.times { create(:servings_voucher, issuer: vendor_user, active: true) } }
-  let!(:c_vouchers) { 5.times { create(:cash_voucher, issuer: vendor_user, active: true) } }
+  let!(:c_vouchers) { 5.times { create(:cash_voucher, issuer: vendor_user, active: true, value: [250, 500, 1009].sample) } }
   let!(:other_vouchers) { 5.times { create(:voucher, active: true) } }
   let!(:transactions) do
-    vouchers_collection = Voucher.all
-    10.times do
-      create(:transaction, voucher: vouchers_collection[rand(0...9)])
+    servings_vouchers_collection = Voucher.where(variant: 'servings')
+    cash_vouchers_collection = Voucher.where(variant: 'cash')
+    5.times do
+      create(:transaction, voucher: servings_vouchers_collection[rand(0...4)])
+    end
+    5.times do
+      create(:transaction, voucher: cash_vouchers_collection[rand(0...4)], amount: [50, 120, 210].sample)
     end
   end
     before do

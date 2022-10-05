@@ -76,3 +76,8 @@ CustomCardGenerator.new(voucher, true, 1, :sv)
 # Formatting Emails
 
 An interesting solution is the [MJML gem](https://github.com/sighmon/mjml-rails). A PR with good examples [can be found here](https://github.com/CraftAcademy/gigafood/pull/69)
+
+# Activity log
+One way to gather data of usage, but also to track att activities of a vendor, could be to make use of [Public Activity](https://rubygems.org/gems/public_activity) gem. 
+
+# 

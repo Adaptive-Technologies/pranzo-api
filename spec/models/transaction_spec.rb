@@ -10,6 +10,11 @@ RSpec.describe Transaction, type: :model do
       is_expected.to have_db_column(:voucher_id)
         .of_type(:integer)
     }
+
+    it {
+      is_expected.to have_db_column(:amount)
+        .of_type(:integer)
+    }
   end
 
   describe 'Factory' do
