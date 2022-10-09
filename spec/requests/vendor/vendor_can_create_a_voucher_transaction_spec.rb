@@ -65,9 +65,12 @@ RSpec.describe 'GET /api/vendor/:vendor_id/vouchers/:voucher_id/transactions', t
     end
 
     it {
-      binding.pry
       expect(response).to have_http_status 422
     }
+
+    it 'is expected to respond with error message' do
+      expect(response_json['message']).to eq "Voucher limit exceeded"
+    end
 
   end
 end

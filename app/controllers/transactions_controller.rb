@@ -13,7 +13,7 @@ class TransactionsController < ApplicationController
         voucher: Vouchers::ShowSerializer.new(@voucher)
       }, status: 201
     else
-      render json: { message: transaction.errors.full_messages.to_sentance }, status: 422
+      render json: { message: transaction.errors.full_messages.to_sentence }, status: 422
     end
   end
 
