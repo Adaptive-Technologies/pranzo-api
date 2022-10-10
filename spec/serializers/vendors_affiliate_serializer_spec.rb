@@ -1,4 +1,4 @@
-describe Vendors::ShowSerializer do
+describe Vendors::AffiliateSerializer do
   let(:vendor) { create(:vendor) }
   let(:serialization) do
     ActiveModelSerializers::SerializableResource.new(
@@ -13,7 +13,7 @@ describe Vendors::ShowSerializer do
   end
   
   it 'is expected to contain relevant keys' do
-    expected_keys = %w[id name description primary_email affiliates users addresses]
+    expected_keys = %w[id name primary_email users]
     expect(subject['vendor'].keys).to match expected_keys
   end
 
@@ -22,11 +22,8 @@ describe Vendors::ShowSerializer do
       'vendor' => {
         'id' => an_instance_of(Integer),
         'name' => an_instance_of(String),
-        'description' => an_instance_of(String),
         'primary_email' => a_string_including('@'),
         'users' => an_instance_of(Array),
-        'addresses' => an_instance_of(Array),
-        'affiliates' => an_instance_of(Array)
       }
     )
   end

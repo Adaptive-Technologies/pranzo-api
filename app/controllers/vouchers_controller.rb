@@ -9,16 +9,11 @@ class VouchersController < ApplicationController
                                                 voucher_params[:value] && voucher_params[:variant] == 'servings'
                                               }, only: :create
   before_action :validate_cash_value, if: proc { voucher_params[:variant] == 'cash' }, only: :create
-  # The order of after_create is
-  # after_action :send_activation_email, only: [:update]
-  # after_action :create_pdf, only: [:update]
-  # after_action :set_pass_kit, only: %i[update]
-  # after_action :set_owner, only: %i[update]
   after_action :distribute, only: %i[update]
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
-    vouchers = current_user.admin? ? Voucher.all : current_user.vendor.vouchers
+    vouchers = current_user.admin? ? Voucher.all : current_user.vendor.vouchers.to_a.append(current_user.vendor.affiliated_vouchers).flatten
     render json: vouchers, each_serializer: Vouchers::ShowSerializer
   end
 

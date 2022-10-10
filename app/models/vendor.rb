@@ -7,6 +7,8 @@ class Vendor < ApplicationRecord
 
   has_one_attached :logotype
   has_many :vouchers, through: :users
+  has_many :affiliations
+  has_many :affiliates, through: :affiliations
 
   validates_presence_of %i[name description primary_email]
   validates_uniqueness_of :name
@@ -18,12 +20,26 @@ class Vendor < ApplicationRecord
     User.system_user.where(vendor: self).first
   end
 
+  def is_affiliated_with?(args)
+    affiliation = Affiliation.find_by(vendor_id: args[:vendor_id], affiliate_id: id)
+    affiliation ? true : false
+  end
+
+  def affiliated_vouchers
+    vouchers = []
+    affiliations = Affiliation.where(affiliate: self)
+    affiliations.each do |aff| 
+      vouchers.append(aff.vendor.vouchers.where(affiliate_network: true, active: true))
+    end
+    vouchers.flatten
+  end
+
   private
 
   def create_system_user
     system_user = User.new(
       email: primary_email,
-      name: "#{name} (System User)",  
+      name: "#{name} (System User)",
       role: 'system_user',
       vendor: self
     )

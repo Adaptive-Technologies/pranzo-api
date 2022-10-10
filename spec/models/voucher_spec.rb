@@ -25,6 +25,11 @@ RSpec.describe Voucher, type: :model do
       is_expected.to have_db_column(:pass_kit_id)
         .of_type(:string)
     }
+
+    it {
+      is_expected.to have_db_column(:affiliate_network)
+        .of_type(:boolean)
+    }
   end
 
   describe 'factories' do
@@ -233,6 +238,26 @@ RSpec.describe Voucher, type: :model do
 
     it 'is expected to return a value reduced by the sum of transactions' do
       expect(subject.current_value).to eq 300
+    end
+  end
+
+  describe 'belonging to affiliates' do
+    let(:vendor) { create(:vendor) }
+    let(:affiliate) { create(:vendor) }
+    let!(:voucher_1) do
+      create(:cash_voucher, value: 500, issuer: vendor.system_user, affiliate_network: true, active: true)
+    end
+    let!(:voucher_2) do
+      create(:cash_voucher, value: 500, issuer: vendor.system_user, affiliate_network: true, active: false)
+    end
+    let!(:affiliation) { vendor.affiliates << affiliate }
+
+    it 'is expected to include in the "affiliated_vouchers" collection of :active' do
+      expect(affiliate.affiliated_vouchers).to include(voucher_1)
+    end
+
+    it 'is expected NOT to include an voucher in the "affiliated_vouchers" collection if NOT :active' do
+      expect(affiliate.affiliated_vouchers).not_to include(voucher_2)
     end
   end
 end
