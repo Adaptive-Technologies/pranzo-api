@@ -27,6 +27,24 @@ RSpec.describe 'GET /api/vendor/:vendor_id/vouchers/:voucher_id/transactions', t
     end
   end
 
+  describe 'servings voucher with zero current value' do
+    let(:voucher) { create(:servings_voucher, active: true, value: 10) }
+    let!(:transactions) { 10.times { create(:transaction, voucher: voucher) } }
+
+    before do
+      post "/api/vendors/#{vendor.id}/vouchers/#{voucher.id}/transactions",
+           headers: valid_auth_headers_for_vendor_user
+    end
+
+    it {
+      expect(response).to have_http_status 422
+    }
+
+    it 'is expected to respond with error message' do
+      expect(response_json['message']).to eq 'Voucher limit exceeded'
+    end
+  end
+
   describe 'cash voucher' do
     let(:voucher) { create(:cash_voucher, active: true, value: 500, pass_kit_id: 'qwerty') }
 
@@ -54,9 +72,9 @@ RSpec.describe 'GET /api/vendor/:vendor_id/vouchers/:voucher_id/transactions', t
     end
   end
 
-  describe 'cash voucher with zeor current value' do
+  describe 'cash voucher with zero current value' do
     let(:voucher) { create(:cash_voucher, active: true, value: 100) }
-    let!(:transaction) {create(:transaction, voucher: voucher, amount: 100)}
+    let!(:transaction) { create(:transaction, voucher: voucher, amount: 100) }
 
     before do
       post "/api/vendors/#{vendor.id}/vouchers/#{voucher.id}/transactions",
@@ -69,8 +87,7 @@ RSpec.describe 'GET /api/vendor/:vendor_id/vouchers/:voucher_id/transactions', t
     }
 
     it 'is expected to respond with error message' do
-      expect(response_json['message']).to eq "Voucher limit exceeded"
+      expect(response_json['message']).to eq 'Voucher limit exceeded'
     end
-
   end
 end
