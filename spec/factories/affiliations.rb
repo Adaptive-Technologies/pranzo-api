@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :affiliation do
-    vendor { nil }
-    affiliate { nil }
+    vendor 
+    affiliate factory: :vendor 
   end
 end
