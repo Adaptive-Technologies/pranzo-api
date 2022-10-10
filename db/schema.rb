@@ -190,7 +190,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_10_121815) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "primary_email"
-    t.boolean "affiliate_network"
   end
 
   create_table "vouchers", force: :cascade do |t|
