@@ -80,4 +80,6 @@ An interesting solution is the [MJML gem](https://github.com/sighmon/mjml-rails)
 # Activity log
 One way to gather data of usage, but also to track att activities of a vendor, could be to make use of [Public Activity](https://rubygems.org/gems/public_activity) gem. 
 
-# 
+# Affiliations
+
+The affiliation set-up is influenced by [this gist](https://gist.github.com/jibiel/5c18d36b93891cced991791529fc1686). Not sure if this the way to go, but I don't want to spend to much time onn this ;-) 
