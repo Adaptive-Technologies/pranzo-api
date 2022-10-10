@@ -12,7 +12,6 @@ describe Vendors::ShowSerializer do
     expect(subject.keys).to match ['vendor']
   end
   
-
   it 'is expected to contain relevant keys' do
     expected_keys = %w[id name description primary_email affiliates users addresses]
     expect(subject['vendor'].keys).to match expected_keys
