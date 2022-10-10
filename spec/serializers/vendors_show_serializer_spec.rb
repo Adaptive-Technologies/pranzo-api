@@ -14,7 +14,7 @@ describe Vendors::ShowSerializer do
   
 
   it 'is expected to contain relevant keys' do
-    expected_keys = %w[id name description primary_email users addresses]
+    expected_keys = %w[id name description primary_email affiliates users addresses]
     expect(subject['vendor'].keys).to match expected_keys
   end
 
@@ -26,7 +26,8 @@ describe Vendors::ShowSerializer do
         'description' => an_instance_of(String),
         'primary_email' => a_string_including('@'),
         'users' => an_instance_of(Array),
-        'addresses' => an_instance_of(Array)
+        'addresses' => an_instance_of(Array),
+        'affiliates' => an_instance_of(Array)
       }
     )
   end
