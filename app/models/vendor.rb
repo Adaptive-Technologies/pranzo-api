@@ -25,6 +25,15 @@ class Vendor < ApplicationRecord
     affiliation ? true : false
   end
 
+  def affiliated_vouchers
+    vouchers = []
+    affiliations = Affiliation.where(affiliate: self)
+    affiliations.each do |aff| 
+      vouchers.append(aff.vendor.vouchers.where(affiliate_network: true, active: true))
+    end
+    vouchers.flatten
+  end
+
   private
 
   def create_system_user
