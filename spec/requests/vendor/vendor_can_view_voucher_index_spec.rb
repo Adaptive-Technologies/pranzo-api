@@ -31,10 +31,9 @@ RSpec.describe 'GET /api/vendors/:vendor_id/vouchers', type: :request do
       create(:transaction, voucher: cash_vouchers_collection[rand(0...4)], amount: [50, 75].sample)
     end
   end
-  
+
   describe 'without affiliation' do
     before do
-      # vendor.reload
       get "/api/vendors/#{vendor.id}/vouchers",
           headers: valid_auth_headers_for_vendor_user
     end
@@ -51,7 +50,6 @@ RSpec.describe 'GET /api/vendors/:vendor_id/vouchers', type: :request do
     let!(:affiliation) { another_vendor.affiliates << vendor }
 
     before do
-      # vendor.reload
       get "/api/vendors/#{vendor.id}/vouchers",
           headers: valid_auth_headers_for_vendor_user
     end
