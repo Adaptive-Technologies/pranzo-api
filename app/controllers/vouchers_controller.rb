@@ -14,7 +14,11 @@ class VouchersController < ApplicationController
 
   def index
     vouchers = current_user.admin? ? Voucher.all : current_user.vendor.vouchers.to_a.append(current_user.vendor.affiliated_vouchers).flatten
-    render json: vouchers, each_serializer: Vouchers::ShowSerializer
+    if vouchers
+      render json: vouchers, each_serializer: Vouchers::ShowSerializer
+    else
+      render json: { vouchers: [] }
+    end
   end
 
   def show
