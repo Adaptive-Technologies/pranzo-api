@@ -3,7 +3,10 @@
 class TransactionsController < ApplicationController
   before_action :find_voucher
   def create
-    transaction = @voucher.transactions.create(date: Date.today, amount: params[:value] ? params[:value].to_i : 1 )
+    transaction = @voucher.transactions.create(
+      date: Date.today, 
+      amount: params[:value] ? params[:value].to_i : 1, 
+      honored_by: params[:honored_by] &&  params[:honored_by] )
     points = params[:value] ? params[:value] : 1
     PassKitService.consume(@voucher.code, points) if @voucher.pass_kit_id?
     if transaction.persisted?
