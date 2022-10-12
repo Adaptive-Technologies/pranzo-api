@@ -24,3 +24,6 @@
 **/.DS_Store
 public/card.pdf
 public/card_*.pdf
+
+credentials.txt
+fly.toml

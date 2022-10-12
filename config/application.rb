@@ -38,10 +38,10 @@ module BocadoApi
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
     config.i18n.available_locales = %i[en sv]
-    config.stripe.secret_key = if !ActiveModel::Type::Boolean.new.cast(ENV['PRE_PRODUCTION']) && Rails.env.production?
-                                 Rails.application.credentials.stripe[:sk_live_key]
-                               else
-                                 Rails.application.credentials.stripe[:sk_test_key]
-                               end
+    # config.stripe.secret_key = if !ActiveModel::Type::Boolean.new.cast(ENV['PRE_PRODUCTION']) && Rails.env.production?
+    #                              Rails.application.credentials.stripe[:sk_live_key]
+    #                            else
+    #                              Rails.application.credentials.stripe[:sk_test_key]
+    #                            end
   end
 end
