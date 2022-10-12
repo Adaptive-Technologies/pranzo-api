@@ -3,7 +3,7 @@
 require_relative './credentials'
 RSpec.describe 'GET /api/vendor/:vendor_id/vouchers/:voucher_id/transactions', type: :request do
   include_context 'credentials'
-  describe 'servings voucher' do
+  describe 'cash voucher issued by affiliate' do
     let(:partner) { create(:vendor) }
     let!(:voucher) do
       create(:cash_voucher, issuer: partner.system_user, affiliate_network: true, pass_kit_id: 'qwerty')
