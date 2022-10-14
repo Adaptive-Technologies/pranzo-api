@@ -9,6 +9,7 @@ class Vendor < ApplicationRecord
   has_many :vouchers, through: :users
   has_many :affiliations
   has_many :affiliates, through: :affiliations
+  has_many :transactions, through: :vouchers
 
   validates_presence_of %i[name description primary_email]
   validates_uniqueness_of :name
