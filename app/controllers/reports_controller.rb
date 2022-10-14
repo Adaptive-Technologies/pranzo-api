@@ -13,22 +13,22 @@ class ReportsController < ApplicationController
   end
 
   def get_period
-    case params[:period]
-    when 'today'
-      @period = Date.today.all_day
-    when "yesterday"
-      @period = 1.day.ago.all_day
-    when "this_week"
-      @period = Date.today.all_week
-    when "last_week"
-      @period = 1.week.ago.all_week
-    when "this_month"
-      @period = Date.today.all_month
-    when 'last_month'
-      @period = 1.month.ago.all_month
-    else
-      @period = Date.today.all_day
-    end
+    @period = case params[:period]
+              when 'today'
+                Date.today.all_day
+              when 'yesterday'
+                1.day.ago.all_day
+              when 'this_week'
+                Date.today.all_week
+              when 'last_week'
+                1.week.ago.all_week
+              when 'this_month'
+                Date.today.all_month
+              when 'last_month'
+                1.month.ago.all_month
+              else
+                Date.today.all_day
+              end
     @period
   end
 end

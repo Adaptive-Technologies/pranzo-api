@@ -4,24 +4,51 @@ require_relative './credentials'
 
 RSpec.describe 'POST /api/vendors/:vendor_id/reports', type: :request do
   include_context 'credentials'
-  let!(:servings_voucher) { create(:servings_voucher, issuer: vendor_user) }
-  let!(:cash_voucher) { create(:cash_voucher, value: 250, issuer: vendor_user) }
+  let!(:servings_voucher) { create(:servings_voucher, value: 15, issuer: vendor_user) }
+  let!(:servings_voucher_2) { create(:servings_voucher, value: 15, issuer: vendor_user) }
+  let!(:servings_voucher_3) { create(:servings_voucher, value: 15, issuer: vendor_user) }
+  let!(:cash_voucher) { create(:cash_voucher, value: 1000, issuer: vendor_user) }
   let!(:transactions) do
-    Timecop.freeze(1.month.ago.beginning_of_month)
-    create(:transaction, voucher: servings_voucher)
+    Timecop.freeze(1.week.ago.beginning_of_week)
+    create(:transaction, voucher: servings_voucher_3)
+    create(:transaction, voucher: cash_voucher, amount: 100)
+    create(:transaction, voucher: cash_voucher, amount: 150)
+    Timecop.return
+    Timecop.freeze(1.week.ago.beginning_of_week + 1.day)
+    create(:transaction, voucher: servings_voucher_2)
+    Timecop.return
+    Timecop.freeze(1.week.ago.beginning_of_week + 3.day)
+    create(:transaction, voucher: servings_voucher_2)
+    Timecop.return
+    Timecop.freeze(1.week.ago.beginning_of_week + 5.day)
+    create(:transaction, voucher: servings_voucher_2)
     create(:transaction, voucher: cash_voucher, amount: 100)
     Timecop.return
-    Timecop.freeze(1.week.ago.beginning_of_week)
+    Timecop.freeze(3.day.ago)
+    create(:transaction, voucher: servings_voucher_3)
+    create(:transaction, voucher: servings_voucher_2)
     create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher_2)
     create(:transaction, voucher: servings_voucher)
+    Timecop.return
+    Timecop.freeze(2.day.ago)
+    create(:transaction, voucher: servings_voucher_3)
+    create(:transaction, voucher: servings_voucher_2)
     create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher_2)
     create(:transaction, voucher: servings_voucher)
+    Timecop.return
+    Timecop.freeze(1.day.ago)
+    create(:transaction, voucher: servings_voucher_3)
+    create(:transaction, voucher: servings_voucher_2)
+    create(:transaction, voucher: servings_voucher_2)
+    create(:transaction, voucher: servings_voucher_2)
+    create(:transaction, voucher: servings_voucher_3)
     create(:transaction, voucher: servings_voucher)
-    create(:transaction, voucher: servings_voucher)
-    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher_2)
     create(:transaction, voucher: cash_voucher, amount: 75)
     Timecop.return
-    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher_3)
     create(:transaction, voucher: servings_voucher)
     create(:transaction, voucher: cash_voucher, amount: 50)
   end

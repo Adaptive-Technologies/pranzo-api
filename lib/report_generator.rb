@@ -23,7 +23,8 @@ class ReportGenerator < Prawn::Document
     logo
     generate_header(report_data[:report_period])
     generate_footer(report_data[:report_period])
-    generate_consuption_card_usage(report_data[:consumption_transactions], report_data[:consumption_total])
+    generate_boxes(report_data)
+
     generate_file
   end
 
@@ -46,32 +47,96 @@ class ReportGenerator < Prawn::Document
               size: 10, style: :light, at: [1, 10], color: '000000'
   end
 
-  def generate_consuption_card_usage(transactions, total)
+  def generate_boxes(report_data)
     padded_box([1, (@top_position - 70)], 1, width: 200, height: 50) do
-      top_of_box = 50
-      row_height = 20
-      draw_text 'FÖRBRUKNINGSKORT', size: 14, style: :normal, at: [1, top_of_box], color: '000000'
-      draw_text "Totalt mottagna: #{total}", size: 12, style: :light, at: [1, top_of_box - 20], color: '000000'
-      row = top_of_box - 40
-      draw_text 'Datum', size: 12, style: :normal, at: [1, row], color: '000000'
-      # draw_text 'Kl', size: 12, style: :normal, at: [140, row], color: '000000'
-      draw_text 'Antal', size: 12, style: :normal, at: [240, row], color: '000000'
+      generate_consuption_card_usage(report_data[:consumption_transactions], report_data[:consumption_total])
+      generate_cash_card_usage(report_data[:cash_transactions], report_data[:cash_total])
+    end
+  end
 
-      clean_transactions = transactions.uniq { |t| t.date.strftime('%Y-%m-%d') }
-      clean_transactions = JSON.parse(clean_transactions.to_json, symbolize_names: true)
-      transactions = JSON.parse(transactions.to_json, symbolize_names: true)
+  def generate_cash_card_usage(transactions, total)
+    top_of_box = 50
+    row_height = 20
+    row = top_of_box - 40
+    transactions = JSON.parse(transactions.to_json, symbolize_names: true)
+    draw_text 'PRESENTKORT', size: 14, style: :normal, at: [260, top_of_box], color: '000000'
+    draw_text "Totalt mottaget: #{total} kr.", size: 12, style: :light, at: [260, top_of_box - 20], color: '000000'
+
+    if @daily_report
+      draw_text 'Kl', size: 12, style: :normal, at: [260, row], color: '000000'
+      draw_text 'Mottaget', size: 12, style: :normal, at: [380, row], color: '000000'
+      transactions.each do |transaction|
+        row -= row_height
+        draw_text transaction[:date].to_datetime.strftime('%H:%M'), size: 12, style: :light, at: [260, row],
+                                                                       color: '000000'
+        draw_text "#{transaction[:amount]} kr", size: 12, style: :light, at: [380, row], color: '000000'
+      end
+    else
+      clean_transactions = JSON.parse(transactions.uniq do |t|
+        t[:date].to_date.strftime('%Y-%m-%d')
+      end.to_json, symbolize_names: true)
+      clean_transactions.each do |clean_tran|
+        transaction_amount = transactions.reduce(0) do |num, trans|
+          trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num += trans[:amount] : num
+        end
+        clean_tran[:aggregated_amount] = transaction_amount
+      end
       clean_transactions.each do |clean_tran|
         transaction_count = transactions.reduce(0) do |num, trans|
-          trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num = num + clean_tran[:amount] : num
+          trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num  += 1 : num
+        end
+        clean_tran[:aggregated_count] = transaction_count
+      end
+      draw_text 'Datum', size: 12, style: :normal, at: [260, row], color: '000000'
+      draw_text 'Total', size: 12, style: :normal, at: [380, row], color: '000000'
+      draw_text 'Antal mottagna', size: 12, style: :normal, at: [440, row], color: '000000'
+      clean_transactions.each do |transaction|
+        row -= row_height
+        draw_text transaction[:date].to_datetime.strftime('%Y-%m-%d'), size: 12, style: :light, at: [260, row],
+                                                                       color: '000000'
+        draw_text "#{transaction[:aggregated_amount]} kr", size: 12, style: :light, at: [380, row], color: '000000'
+        draw_text "#{transaction[:aggregated_count]} st", size: 12, style: :light, at: [440, row], color: '000000'
+      end
+    end
+  end
+
+  def generate_consuption_card_usage(transactions, total)
+    top_of_box = 50
+    row_height = 20
+    row = top_of_box - 40
+    transactions = JSON.parse(transactions.to_json, symbolize_names: true)
+
+    draw_text 'FÖRBRUKNINGSKORT', size: 14, style: :normal, at: [1, top_of_box], color: '000000'
+    draw_text "Totalt mottagna: #{total} st.", size: 12, style: :light, at: [1, top_of_box - 20], color: '000000'
+    if @daily_report
+      draw_text 'Kl', size: 12, style: :normal, at: [1, row], color: '000000'
+      draw_text 'Antal', size: 12, style: :normal, at: [200, row], color: '000000'
+      transactions.each do |transaction|
+        row -= row_height
+        draw_text transaction[:date].to_datetime.strftime('%H:%M'), size: 12, style: :light, at: [1, row],
+                                                                    color: '000000'
+        draw_text transaction[:amount], size: 12,
+                                        style: :light, at: [200, row], color: '000000'
+      end
+
+    else
+      draw_text 'Datum', size: 12, style: :normal, at: [1, row], color: '000000'
+      draw_text 'Antal', size: 12, style: :normal, at: [200, row], color: '000000'
+
+      clean_transactions = JSON.parse(transactions.uniq do |t|
+                                        t[:date].to_date.strftime('%Y-%m-%d')
+                                      end.to_json, symbolize_names: true)
+      clean_transactions.each do |clean_tran|
+        transaction_count = transactions.reduce(0) do |num, trans|
+          trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num += trans[:amount] : num
         end
         clean_tran[:count] = transaction_count
       end
-      # binding.pry
       clean_transactions.each do |transaction|
         row -= row_height
-        draw_text transaction[:date].to_datetime.strftime('%Y-%m-%d'), size: 12, style: :light, at: [1, row], color: '000000'
-        # draw_text transaction[:date].to_datetime.strftime('%H:%M'), size: 12, style: :light, at: [140, row], color: '000000'
-        draw_text transaction[:count], size: 12, style: :light, at: [240, row], color: '000000'
+        draw_text transaction[:date].to_datetime.strftime('%Y-%m-%d'), size: 12, style: :light, at: [1, row],
+                                                                       color: '000000'
+        draw_text transaction[:count], size: 12, style: :light, at: [200, row], color: '000000'
       end
     end
   end
