@@ -11,6 +11,17 @@ RSpec.describe 'POST /api/vendors/:vendor_id/reports', type: :request do
     create(:transaction, voucher: servings_voucher)
     create(:transaction, voucher: cash_voucher, amount: 100)
     Timecop.return
+    Timecop.freeze(1.week.ago.beginning_of_week)
+    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: servings_voucher)
+    create(:transaction, voucher: cash_voucher, amount: 75)
+    Timecop.return
+    create(:transaction, voucher: servings_voucher)
     create(:transaction, voucher: servings_voucher)
     create(:transaction, voucher: cash_voucher, amount: 50)
   end

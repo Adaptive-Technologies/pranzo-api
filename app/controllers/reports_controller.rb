@@ -21,7 +21,7 @@ class ReportsController < ApplicationController
     when "this_week"
       @period = Date.today.all_week
     when "last_week"
-      @period = 1.week_ago.all_week
+      @period = 1.week.ago.all_week
     when "this_month"
       @period = Date.today.all_month
     when 'last_month'
