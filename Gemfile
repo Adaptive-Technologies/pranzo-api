@@ -42,6 +42,7 @@ group :development, :test do
   gem 'stripe-ruby-mock', '~> 3.1.0.rc2', require: 'stripe_mock'
   gem 'timecop'
   gem 'webmock', '~> 3.14'
+  gem 'clipboard'
 end
 
 group :development do

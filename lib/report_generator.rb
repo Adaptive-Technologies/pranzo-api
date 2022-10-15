@@ -43,7 +43,13 @@ class ReportGenerator < Prawn::Document
   end
 
   def generate_footer(data)
-    draw_text "#{@vendor.name} KASSARAPPORT - bilaga. #{data[:beginning]} #{data[:end] != data[:beginning] ? ' - ' + data[:end] : ''}",
+    draw_text "#{@vendor.name} KASSARAPPORT - bilaga.
+     #{data[:beginning]} #{if data[:end] != data[:beginning]
+                             ' - ' + data[:end]
+                           else
+                             ''
+                           end}.
+     Skapad: #{DateTime.now.strftime('%Y-%m-%d %H:%M')}",
               size: 10, style: :light, at: [1, 10], color: '000000'
   end
 
@@ -56,7 +62,7 @@ class ReportGenerator < Prawn::Document
 
   def generate_cash_card_usage(transactions, total)
     top_of_box = 50
-    row_height = 20
+    row_height = 18
     row = top_of_box - 40
     transactions = JSON.parse(transactions.to_json, symbolize_names: true)
     draw_text 'PRESENTKORT', size: 14, style: :normal, at: [260, top_of_box], color: '000000'
@@ -68,7 +74,7 @@ class ReportGenerator < Prawn::Document
       transactions.each do |transaction|
         row -= row_height
         draw_text transaction[:date].to_datetime.strftime('%H:%M'), size: 12, style: :light, at: [260, row],
-                                                                       color: '000000'
+                                                                    color: '000000'
         draw_text "#{transaction[:amount]} kr", size: 12, style: :light, at: [380, row], color: '000000'
       end
     else
@@ -83,7 +89,7 @@ class ReportGenerator < Prawn::Document
       end
       clean_transactions.each do |clean_tran|
         transaction_count = transactions.reduce(0) do |num, trans|
-          trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num  += 1 : num
+          trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num += 1 : num
         end
         clean_tran[:aggregated_count] = transaction_count
       end
@@ -102,7 +108,7 @@ class ReportGenerator < Prawn::Document
 
   def generate_consuption_card_usage(transactions, total)
     top_of_box = 50
-    row_height = 20
+    row_height = 18
     row = top_of_box - 40
     transactions = JSON.parse(transactions.to_json, symbolize_names: true)
 
@@ -144,5 +150,6 @@ class ReportGenerator < Prawn::Document
   def generate_file
     @path = Rails.public_path.join('report.pdf')
     render_file(@path)
+
   end
 end

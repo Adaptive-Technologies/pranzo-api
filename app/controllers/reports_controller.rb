@@ -2,8 +2,18 @@ class ReportsController < ApplicationController
   before_action :get_period, only: :create
   before_action :get_vendor, only: :create
   def create
-    transactions = @vendor.transactions.where(date: @period).group_by { |transaction| transaction.voucher.variant }
-    ReportGeneratorService.generate({ period: @period, transactions: transactions.symbolize_keys, vendor: @vendor })
+    transactions = @vendor.transactions
+                          .where(date: @period)
+                          .order('created_at ASC')
+                          .group_by { |transaction| transaction.voucher.variant }
+    ReportGeneratorService.generate({
+                                      period: @period,
+                                      transactions: transactions.symbolize_keys,
+                                      vendor: @vendor
+                                    })
+
+    data = open(Rails.public_path.join('report.pdf'))
+    render json: { message: 'Your report is ready', report_as_base64: Base64.strict_encode64(data.read) }, status: :created
   end
 
   private
