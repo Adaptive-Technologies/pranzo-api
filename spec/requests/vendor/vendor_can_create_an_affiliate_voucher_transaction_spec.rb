@@ -82,7 +82,7 @@ RSpec.describe 'GET /api/vendor/:vendor_id/vouchers/:voucher_id/transactions', t
     end
 
     it {
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status 422
     }
 
     it 'is expected to include voucher data' do

@@ -16,7 +16,7 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
 
     it 'is expected to return voucher details' do
       expect(response_json['voucher'].keys)
-        .to match %w[id code active value variant current_value email transactions]
+        .to match %w[id code active value variant current_value email affiliate_network transactions]
     end
 
     it {
@@ -49,7 +49,7 @@ RSpec.describe 'GET /api/vouchers/:code', type: :request do
 
     it 'is expected to return voucher details' do
       expect(response_json['voucher'].keys)
-        .to match %w[id code active value variant current_value email transactions]
+        .to match %w[id code active value variant current_value email affiliate_network transactions]
     end
 
     it {

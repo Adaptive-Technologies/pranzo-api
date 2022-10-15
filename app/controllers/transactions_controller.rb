@@ -27,7 +27,7 @@ class TransactionsController < ApplicationController
   def check_requested_amount
     if @voucher.current_value - params[:value].to_i < 0
       render json: { message: 'The requested amount exceeds available balance', voucher: Vouchers::ShowSerializer.new(@voucher) },
-             status: 200
+             status: 422
     end
   end
 
