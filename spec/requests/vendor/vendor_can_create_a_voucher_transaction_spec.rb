@@ -87,7 +87,7 @@ RSpec.describe 'GET /api/vendor/:vendor_id/vouchers/:voucher_id/transactions', t
     }
 
     it 'is expected to respond with error message' do
-      expect(response_json['message']).to eq 'Voucher limit exceeded'
+      expect(response_json['message']).to eq 'The requested amount exceeds available balance'
     end
   end
 end

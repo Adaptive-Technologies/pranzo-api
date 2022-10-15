@@ -2,12 +2,14 @@
 
 class TransactionsController < ApplicationController
   before_action :find_voucher
+  before_action :check_requested_amount
   def create
     transaction = @voucher.transactions.create(
-      date: Date.today, 
-      amount: params[:value] ? params[:value].to_i : 1, 
-      honored_by: params[:honored_by] &&  params[:honored_by] )
-    points = params[:value] ? params[:value] : 1
+      date: Date.today,
+      amount: params[:value] ? params[:value].to_i : 1,
+      honored_by: params[:honored_by] && params[:honored_by]
+    )
+    points = params[:value] || 1
     PassKitService.consume(@voucher.code, points) if @voucher.pass_kit_id?
     if transaction.persisted?
       @voucher.reload
@@ -20,7 +22,14 @@ class TransactionsController < ApplicationController
     end
   end
 
-  private 
+  private
+
+  def check_requested_amount
+    if @voucher.current_value - params[:value].to_i < 0
+      render json: { message: 'The requested amount exceeds available balance', voucher: Vouchers::ShowSerializer.new(@voucher) },
+             status: 422
+    end
+  end
 
   def find_voucher
     @voucher = Voucher.find(params[:voucher_id])

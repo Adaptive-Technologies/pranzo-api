@@ -31,6 +31,7 @@ RSpec.describe Vendor, type: :model do
     it { is_expected.to have_many(:vouchers).through(:users) }
     it { is_expected.to have_many :affiliates }
     it { is_expected.to have_many(:affiliates).through(:affiliations) }
+    it { is_expected.to have_many(:transactions).through(:vouchers) }
   end
 
   describe '#logotype' do

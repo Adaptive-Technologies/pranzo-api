@@ -28,5 +28,10 @@ RSpec.describe Transaction, type: :model do
       is_expected.to belong_to(:voucher)
         .optional(false)
     }
+
+    it {
+      is_expected.to have_one(:vendor)
+        .through(:voucher)
+    }
   end
 end
