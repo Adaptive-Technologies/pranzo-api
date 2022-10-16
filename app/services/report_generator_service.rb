@@ -5,8 +5,8 @@ module ReportGeneratorService
     report_data = { vendor: data[:vendor],
                     cash_transactions: cash_transactions,
                     consumption_transactions: consumption_transactions,
-                    cash_total: cash_transactions.pluck(:amount).sum,
-                    consumption_total: consumption_transactions.pluck(:amount).sum,
+                    cash_total: cash_transactions ? cash_transactions.pluck(:amount).sum : 0,
+                    consumption_total: consumption_transactions ? consumption_transactions.pluck(:amount).sum : 0,
                     report_period: {
                       beginning: data[:period].begin.strftime('%Y-%m-%d'),
                       end: data[:period].end.strftime('%Y-%m-%d')

@@ -13,7 +13,9 @@ class ReportsController < ApplicationController
                                     })
 
     data = open(Rails.public_path.join('report.pdf'))
-    render json: { message: 'Your report is ready', report_as_base64: Base64.strict_encode64(data.read) }, status: :created
+    render json: { message: 'Your report is ready',
+                   report_as_base64: Base64.strict_encode64(data.read) },
+           status: :created
   end
 
   private
