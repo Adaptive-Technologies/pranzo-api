@@ -90,4 +90,20 @@ RSpec.describe 'POST /api/vendors/:vendor_id/reports', type: :request do
       expect(response_json).to have_key 'report_as_base64'
     end
   end
+
+  describe ':no transactions' do
+    
+    before do
+      create(:transaction, voucher: servings_voucher_3)
+      post "/api/vendors/#{vendor.id}/reports", params: { period: 'today' },
+                                                headers: valid_auth_headers_for_vendor_user
+    end
+    subject { response }
+
+    it { is_expected.to have_http_status 201 }
+
+    it 'is expected to include a base64 encoded pdf' do
+      expect(response_json).to have_key 'report_as_base64'
+    end
+  end
 end
