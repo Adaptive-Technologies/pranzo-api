@@ -44,6 +44,10 @@ module EmailHelpers
     ActionMailer::Base.deliveries.last
   end
 
+  def email_attachments
+    ActionMailer::Base.deliveries.last.attachments
+  end 
+
   def email_html_part
     ActionMailer::Base.deliveries.last.body.parts.detect{|p| p.content_type.match(/text\/html/)}.body.to_s
   end
