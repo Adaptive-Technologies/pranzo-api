@@ -67,7 +67,47 @@ class ReportGenerator < Prawn::Document
     transactions = JSON.parse(transactions.to_json, symbolize_names: true)
     draw_text 'PRESENTKORT', size: 14, style: :normal, at: [260, top_of_box], color: '000000'
     draw_text "Totalt mottaget: #{total} kr.", size: 12, style: :light, at: [260, top_of_box - 20], color: '000000'
+    cash_card_details(transactions) if transactions
 
+    # if @daily_report
+    #   draw_text 'Kl', size: 12, style: :normal, at: [260, row], color: '000000'
+    #   draw_text 'Mottaget', size: 12, style: :normal, at: [380, row], color: '000000'
+    #   transactions.each do |transaction|
+    #     row -= row_height
+    #     draw_text transaction[:date].to_datetime.strftime('%H:%M'), size: 12, style: :light, at: [260, row],
+    #                                                                 color: '000000'
+    #     draw_text "#{transaction[:amount]} kr", size: 12, style: :light, at: [380, row], color: '000000'
+    #   end
+    # else
+    #   clean_transactions = JSON.parse(transactions.uniq do |t|
+    #     t[:date].to_date.strftime('%Y-%m-%d')
+    #   end.to_json, symbolize_names: true)
+    #   clean_transactions.each do |clean_tran|
+    #     transaction_amount = transactions.reduce(0) do |num, trans|
+    #       trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num += trans[:amount] : num
+    #     end
+    #     clean_tran[:aggregated_amount] = transaction_amount
+    #   end
+    #   clean_transactions.each do |clean_tran|
+    #     transaction_count = transactions.reduce(0) do |num, trans|
+    #       trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num += 1 : num
+    #     end
+    #     clean_tran[:aggregated_count] = transaction_count
+    #   end
+    #   draw_text 'Datum', size: 12, style: :normal, at: [260, row], color: '000000'
+    #   draw_text 'Total', size: 12, style: :normal, at: [380, row], color: '000000'
+    #   draw_text 'Antal mottagna', size: 12, style: :normal, at: [440, row], color: '000000'
+    #   clean_transactions.each do |transaction|
+    #     row -= row_height
+    #     draw_text transaction[:date].to_datetime.strftime('%Y-%m-%d'), size: 12, style: :light, at: [260, row],
+    #                                                                    color: '000000'
+    #     draw_text "#{transaction[:aggregated_amount]} kr", size: 12, style: :light, at: [380, row], color: '000000'
+    #     draw_text "#{transaction[:aggregated_count]} st", size: 12, style: :light, at: [440, row], color: '000000'
+    #   end
+    # end
+  end
+
+  def cash_card_details(transactions)
     if @daily_report
       draw_text 'Kl', size: 12, style: :normal, at: [260, row], color: '000000'
       draw_text 'Mottaget', size: 12, style: :normal, at: [380, row], color: '000000'
@@ -114,6 +154,42 @@ class ReportGenerator < Prawn::Document
 
     draw_text 'FÖRBRUKNINGSKORT', size: 14, style: :normal, at: [1, top_of_box], color: '000000'
     draw_text "Totalt mottagna: #{total} st.", size: 12, style: :light, at: [1, top_of_box - 20], color: '000000'
+
+    consumption_card_details(transactions) if transactions
+    # if @daily_report
+    #   draw_text 'Kl', size: 12, style: :normal, at: [1, row], color: '000000'
+    #   draw_text 'Antal', size: 12, style: :normal, at: [200, row], color: '000000'
+    #   transactions.each do |transaction|
+    #     row -= row_height
+    #     draw_text transaction[:date].to_datetime.strftime('%H:%M'), size: 12, style: :light, at: [1, row],
+    #                                                                 color: '000000'
+    #     draw_text transaction[:amount], size: 12,
+    #                                     style: :light, at: [200, row], color: '000000'
+    #   end
+
+    # else
+    #   draw_text 'Datum', size: 12, style: :normal, at: [1, row], color: '000000'
+    #   draw_text 'Antal', size: 12, style: :normal, at: [200, row], color: '000000'
+
+    #   clean_transactions = JSON.parse(transactions.uniq do |t|
+    #                                     t[:date].to_date.strftime('%Y-%m-%d')
+    #                                   end.to_json, symbolize_names: true)
+    #   clean_transactions.each do |clean_tran|
+    #     transaction_count = transactions.reduce(0) do |num, trans|
+    #       trans[:date].to_date.strftime('%Y-%m-%d') == clean_tran[:date].to_date.strftime('%Y-%m-%d') ? num += trans[:amount] : num
+    #     end
+    #     clean_tran[:count] = transaction_count
+    #   end
+    #   clean_transactions.each do |transaction|
+    #     row -= row_height
+    #     draw_text transaction[:date].to_datetime.strftime('%Y-%m-%d'), size: 12, style: :light, at: [1, row],
+    #                                                                    color: '000000'
+    #     draw_text transaction[:count], size: 12, style: :light, at: [200, row], color: '000000'
+    #   end
+    # end
+  end
+
+  def consumption_card_details(transactions)
     if @daily_report
       draw_text 'Kl', size: 12, style: :normal, at: [1, row], color: '000000'
       draw_text 'Antal', size: 12, style: :normal, at: [200, row], color: '000000'
@@ -150,6 +226,5 @@ class ReportGenerator < Prawn::Document
   def generate_file
     @path = Rails.public_path.join('report.pdf')
     render_file(@path)
-
   end
 end
