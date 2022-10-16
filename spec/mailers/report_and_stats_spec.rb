@@ -16,7 +16,6 @@ RSpec.describe ReportAndStatsMailer, type: :mailer do
   end
   let(:report) { open(Rails.public_path.join('report.pdf')) }
 
-  # data = open(Rails.public_path.join('report.pdf'))
 
   describe 'distribute' do
     subject { described_class.distribute(report, user).deliver }
