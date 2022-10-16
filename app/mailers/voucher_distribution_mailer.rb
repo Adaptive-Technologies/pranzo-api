@@ -1,5 +1,5 @@
 class VoucherDistributionMailer < ApplicationMailer
-  default from: 'Pranzo - NO_REPY <no-reply@pranzo.se>'
+  default from: 'Pranzo - NO_REPLY <no-reply@pranzo.se>'
 
   def activation(voucher)
     @voucher = voucher

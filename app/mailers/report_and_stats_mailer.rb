@@ -1,5 +1,5 @@
 class ReportAndStatsMailer < ApplicationMailer
-  default from: 'Pranzo - NO_REPY <no-reply@pranzo.se>'
+  default from: 'Pranzo - NO_REPLY <no-reply@pranzo.se>'
 
   def distribute(report, current_user)
     attachments['report.pdf'] = File.read(report.path)
