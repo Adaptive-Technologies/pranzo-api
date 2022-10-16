@@ -48,7 +48,7 @@ class Vendor < ApplicationRecord
   end
 
   def update_system_user
-    user = User.find_by(email: primary_email)
-    user.update!(name: "#{name} (System User)")
+    user = User.find_by(email: primary_email_previously_was)
+    user.update!(name: "#{name} (System User)", email: primary_email)
   end
 end
