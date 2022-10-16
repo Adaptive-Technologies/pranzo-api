@@ -49,6 +49,6 @@ class Vendor < ApplicationRecord
 
   def update_system_user
     user = saved_change_to_attribute?(:primary_email) ? User.find_by(email: primary_email_previously_was) : User.find_by(email: primary_email)
-    user.update!(name: "#{name} (System User)", email: primary_email)
+    user.update(name: "#{name} (System User)", email: primary_email)
   end
 end
