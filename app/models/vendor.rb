@@ -29,7 +29,7 @@ class Vendor < ApplicationRecord
   def affiliated_vouchers
     vouchers = []
     affiliations = Affiliation.where(affiliate: self)
-    affiliations.each do |aff| 
+    affiliations.each do |aff|
       vouchers.append(aff.vendor.vouchers.where(affiliate_network: true, active: true))
     end
     vouchers.flatten
@@ -48,7 +48,7 @@ class Vendor < ApplicationRecord
   end
 
   def update_system_user
-    user = User.find_by(email: primary_email_previously_was)
+    user = saved_change_to_attribute?(:primary_email) ? User.find_by(email: primary_email_previously_was) : User.find_by(email: primary_email)
     user.update!(name: "#{name} (System User)", email: primary_email)
   end
 end
