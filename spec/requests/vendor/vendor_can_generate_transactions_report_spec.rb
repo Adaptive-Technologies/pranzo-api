@@ -132,12 +132,16 @@ RSpec.describe 'POST /api/vendors/:vendor_id/reports', type: :request do
   
       it { is_expected.to have_http_status 201 }
   
-      it 'is expected to include a base64 encoded pdf' do
+      it 'is expected NOT to include a base64 encoded pdf' do
         expect(response_json).not_to have_key 'report_as_base64'
       end
 
       it 'is expected to send email' do
         expect(email_queue).to eq 1
+      end
+
+      it 'is expected to iclude pdf attachmant' do
+        expect(email.attachments.count).to eq 1
       end
   
       it 'is expected to iclude link to passkit' do
