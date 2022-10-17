@@ -96,7 +96,7 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
                 command: 'activate',
                 email: 'registered_user@mail.com'
               } },
-              headers: valid_auth_headers_for_vendor_user.merge(LNG: 'sv')
+              headers: valid_auth_headers_for_vendor_user.merge(locale: 'en')
         end
 
         it {

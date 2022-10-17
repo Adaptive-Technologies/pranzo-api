@@ -1,4 +1,4 @@
- en:
+en:
   activerecord:
     errors:
       models:
@@ -12,10 +12,25 @@
               limit_exceeded: "Voucher value limit exceeded"
   voucher:
     title:
-      servings: 'LUNCH CARD'
-      cash: 'GIFT CARD'
-    value: 'VALUE'
-    code: 'Code:'
-    lead_text: 'Please present card when placing order.'
-    validity: 'Activated in %{date}. Valid until fully consumed. Check remaining value on-line: pranzo.se'
-    activated: "Voucher is now active"  
+      servings: "LUNCH CARD"
+      cash: "GIFT CARD"
+    value: "VALUE"
+    code: "Code:"
+    lead_text: "Please present card when placing order."
+    validity: "Activated in %{date}. Valid until fully consumed. Check remaining value on-line: pranzo.se"
+    activated: "Voucher is now active"
+    missing: "You have to provide a vendor"
+    not_found_message: "The voucher code is invalid, try again."
+    transaction_added: "Voucher %{code} was updated with a new transaction"
+    limit_exceeded_message: "The requested amount exceeds available balance"
+    created: "Voucher was created"
+    n_created: 
+      one: "%{count} new voucher was created."
+      other: "%{count} new vouchers was created"
+    card_generated: "Card was successfully generated"
+  affiliates:
+    added: "Your affiliate network has been expanded with %{name}"
+    not_added: "We could not add this vendor to your affiliate network at this time"
+  reports:
+    ready_and_delivered: "Your report is ready and have been sent to your primary email address."
+    ready: "Your report is ready"

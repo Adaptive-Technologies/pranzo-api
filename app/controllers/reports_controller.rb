@@ -15,10 +15,10 @@ class ReportsController < ApplicationController
     data = open(Rails.public_path.join('report.pdf'))
     if params[:command] == 'deliver'
       ReportAndStatsMailer.distribute(data, current_user).deliver
-      render json: { message: 'Your report is ready and have been sent to your primary email address.' },
+      render json: { message: I18n.t('reports.ready_and_delivered') },
              status: :created
     else
-      render json: { message: 'Your report is ready',
+      render json: { message: I18n.t('reports.ready'),
                      report_as_base64: Base64.strict_encode64(data.read) },
              status: :created
 

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
   around_action :switch_locale
 
   def switch_locale(&action)
-    locale = request.headers['LNG'] || I18n.default_locale
+    locale = request.headers['locale'] || I18n.default_locale
     I18n.with_locale(locale, &action)
   end
 

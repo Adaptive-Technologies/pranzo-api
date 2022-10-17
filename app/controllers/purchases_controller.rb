@@ -33,6 +33,6 @@ class PurchasesController < ApplicationController
   def get_vendor
     @vendor = Vendor.find_by!(name: params['vendor'])
   rescue ActiveRecord::RecordNotFound
-    render json: { message: 'You have to provide a vendor' }, status: 422
+    render json: { message: I18n.t('vendors.missing') }, status: 422
   end
 end

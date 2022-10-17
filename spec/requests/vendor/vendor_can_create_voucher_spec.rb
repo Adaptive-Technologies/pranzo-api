@@ -15,7 +15,7 @@ RSpec.describe 'POST /api/vendors/:id/vouchers', type: :request do
                                                        variant: 'servings'
                                                      }
                                                    },
-                                                   headers: valid_auth_headers_for_vendor_user
+                                                   headers: valid_auth_headers_for_vendor_user.merge(locale: 'en')
       end
 
       it {

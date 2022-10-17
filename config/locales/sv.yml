@@ -9,7 +9,7 @@ sv:
         voucher:
           attributes:
             base:
-              limit_exceeded: "Kupongen värde har överskridits"
+              limit_exceeded: "Kortets värde har överskridits"
   voucher:
     title:
       servings: 'LUNCH KORT'
@@ -17,6 +17,21 @@ sv:
     value: 'VÄRDE'
     code: 'Kod:'
     lead_text: 'Vänligen uppge koden eller visa upp kortet vid beställning.'
-    validity: 'Aktiverad i %{date}. Giltig tills uttömd. Kontrollera saldo online på: pranzo.se'
-    activated: "Kortet har aktiverats"  
+    validity: 'Aktiverad %{date}. Giltig tills uttömd. Kontrollera saldo online på: pranzo.se'
+    activated: "Kortet har aktiverats" 
+    missing: "Du måste ange ett företag"
+    not_found_message: "Den angivna koden är felaktig, var god försök igen."
+    transaction_added: "En transaktktion har lagts till till kortet med koden: %{code}"
+    limit_exceeded_message: "Det angivna beloppet överskrider kortets värde."
+    created: "Kortet har skapats"
+    n_created: 
+      one: "Ett nytt kort har skapats"
+      other: "%{count} nya kort har skapats"
+    card_generated: "Kortet har skapats"
+  affiliates:
+    added: "Ditt nätverk av affiliates har utökats med %{name}."
+    not_added: "Vi kunde inte lägga till det här företaget till ditt affiliatenätverk. Kontrollera dina uppgifter"
+  reports:
+    ready_and_delivered: "Din rapport är klar och har skickats till din e-postadress."
+    ready: "Din rapport är klar."
 

@@ -30,11 +30,11 @@ class VouchersController < ApplicationController
     if params[:command] == 'batch'
       amount = params[:amount].to_i
       amount.times { Voucher.create(voucher_params.merge(issuer: current_user)) }
-      render json: { message: "#{amount} new vouchers was created" }, status: 201
+      render json: { message: I18n.t('voucher.n_created', count: amount) }, status: 201
     else
       voucher = Voucher.create(voucher_params.merge(issuer: current_user))
       if voucher.persisted?
-        render json: { message: 'Voucher was created' }, status: 201
+        render json: { message: I18n.t('voucher.created') }, status: 201
       else
         render json: { message: voucher.errors.full_messages.to_sentence }, status: 422
       end
@@ -52,7 +52,7 @@ class VouchersController < ApplicationController
   def generate_card
     voucher = Voucher.find(params[:voucher_id])
     if voucher.generate_pdf_card
-      render json: { message: 'Card was successfylly generated', url: voucher.pdf_card_path }, status: :created
+      render json: { message: I18n.t('voucher.card_generated') , url: voucher.pdf_card_path }, status: :created
     end
   end
 
@@ -108,6 +108,6 @@ class VouchersController < ApplicationController
   end
 
   def voucher_not_found
-    render json: { message: 'The voucher code is invalid, try again.' }, status: 404
+    render json: { message: I18n.t('vouchers.not_found_message') }, status: 404
   end
 end

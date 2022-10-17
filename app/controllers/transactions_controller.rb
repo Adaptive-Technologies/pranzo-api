@@ -14,7 +14,7 @@ class TransactionsController < ApplicationController
     if transaction.persisted?
       @voucher.reload
       render json: {
-        message: "Voucher #{@voucher.code} was updated with a new transaction",
+        message: I18n.t('voucher.transaction_added', code: @voucher.code),
         voucher: Vouchers::ShowSerializer.new(@voucher)
       }, status: 201
     else
@@ -26,7 +26,7 @@ class TransactionsController < ApplicationController
 
   def check_requested_amount
     if @voucher.current_value - params[:value].to_i < 0
-      render json: { message: 'The requested amount exceeds available balance', voucher: Vouchers::ShowSerializer.new(@voucher) },
+      render json: { message: I18n.t('voucher.limit_exceeded_message'), voucher: Vouchers::ShowSerializer.new(@voucher) },
              status: 422
     end
   end
