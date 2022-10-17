@@ -35,7 +35,7 @@ RSpec.describe 'GET /api/vendors/:vendor_id/vouchers', type: :request do
   describe 'without affiliation' do
     before do
       get "/api/vendors/#{vendor.id}/vouchers",
-          headers: valid_auth_headers_for_vendor_user
+          headers: valid_auth_headers_for_vendor_user.merge!(LNG:"sv")
     end
     it {
       expect(response).to have_http_status 200

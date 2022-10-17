@@ -17,4 +17,5 @@
     value: 'VALUE'
     code: 'Code:'
     lead_text: 'Please present card when placing order.'
-    validity: 'Activated in %{date}. Valid until fully consumed. Check remaining value on-line: bit.ly/pranzo_card'
+    validity: 'Activated in %{date}. Valid until fully consumed. Check remaining value on-line: pranzo.se'
+    activated: "Voucher is now active"  

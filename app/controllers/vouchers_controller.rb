@@ -43,7 +43,7 @@ class VouchersController < ApplicationController
 
   def update
     if voucher_params[:command] == 'activate' && @voucher.activate!
-      render json: { message: 'Voucher is now active' }, status: 201
+      render json: { message: I18n.t('voucher.activated') }, status: 201
     else
       render json: { message: @voucher.errors.full_messages.to_sentence }, status: 422
     end

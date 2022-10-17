@@ -5,11 +5,11 @@ sv:
         transaction:
           attributes:
             voucher:
-              limit_exceeded: "limit exceeded"
+              limit_exceeded: "värdet översktidet"
         voucher:
           attributes:
             base:
-              limit_exceeded: "Voucher value limit exceeded"
+              limit_exceeded: "Kupongen värde har överskridits"
   voucher:
     title:
       servings: 'LUNCH KORT'
@@ -17,4 +17,6 @@ sv:
     value: 'VÄRDE'
     code: 'Kod:'
     lead_text: 'Vänligen uppge koden eller visa upp kortet vid beställning.'
-    validity: 'Aktiverad i %{date}. Giltig tills uttömd. Kontrollera saldo online på: bit.ly/pranzo_card'
+    validity: 'Aktiverad i %{date}. Giltig tills uttömd. Kontrollera saldo online på: pranzo.se'
+    activated: "Kortet har aktiverats"  
+
