@@ -5,7 +5,7 @@ class TransactionsController < ApplicationController
   before_action :check_requested_amount
   def create
     transaction = @voucher.transactions.create(
-      date: Date.today,
+      date: DateTime.now,
       amount: params[:value] ? params[:value].to_i : 1,
       honored_by: params[:honored_by] && params[:honored_by]
     )
