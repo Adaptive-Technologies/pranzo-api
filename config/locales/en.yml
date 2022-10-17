@@ -10,6 +10,8 @@ en:
           attributes:
             base:
               limit_exceeded: "Voucher value limit exceeded"
+  vendor:
+    missing: "You have to provide a vendor"
   voucher:
     title:
       servings: "LUNCH CARD"
@@ -19,7 +21,6 @@ en:
     lead_text: "Please present card when placing order."
     validity: "Activated in %{date}. Valid until fully consumed. Check remaining value on-line: pranzo.se"
     activated: "Voucher is now active"
-    missing: "You have to provide a vendor"
     not_found_message: "The voucher code is invalid, try again."
     transaction_added: "Voucher %{code} was updated with a new transaction"
     limit_exceeded_message: "The requested amount exceeds available balance"

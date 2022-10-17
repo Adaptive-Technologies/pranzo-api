@@ -10,6 +10,8 @@ sv:
           attributes:
             base:
               limit_exceeded: "Kortets värde har överskridits"
+  vendor:
+    missing: "Du måste ange ett företag"
   voucher:
     title:
       servings: 'LUNCH KORT'
@@ -19,7 +21,6 @@ sv:
     lead_text: 'Vänligen uppge koden eller visa upp kortet vid beställning.'
     validity: 'Aktiverad %{date}. Giltig tills uttömd. Kontrollera saldo online på: pranzo.se'
     activated: "Kortet har aktiverats" 
-    missing: "Du måste ange ett företag"
     not_found_message: "Den angivna koden är felaktig, var god försök igen."
     transaction_added: "En transaktktion har lagts till till kortet med koden: %{code}"
     limit_exceeded_message: "Det angivna beloppet överskrider kortets värde."

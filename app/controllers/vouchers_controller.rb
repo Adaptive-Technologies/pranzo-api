@@ -108,6 +108,6 @@ class VouchersController < ApplicationController
   end
 
   def voucher_not_found
-    render json: { message: I18n.t('vouchers.not_found_message') }, status: 404
+    render json: { message: I18n.t('voucher.not_found_message') }, status: 404
   end
 end
