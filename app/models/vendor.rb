@@ -14,8 +14,8 @@ class Vendor < ApplicationRecord
   validates_presence_of %i[name description primary_email]
   validates_uniqueness_of :name
 
-  after_create :create_system_user
-  after_update :update_system_user
+  after_save :create_system_user, unless: proc { users.pluck(:email).include? primary_email }
+  after_update :update_system_user, unless: proc { users.pluck(:email).include? primary_email }
 
   def system_user
     User.system_user.where(vendor: self).first
