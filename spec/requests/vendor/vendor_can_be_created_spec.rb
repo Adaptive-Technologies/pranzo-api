@@ -88,6 +88,9 @@ RSpec.describe 'POST /api/vendors', type: :request do
   # end
 
   describe 'Created by a Superadmin (TODO: this is with flaws!)' do
+    let(:admin) { create(:user, role: 'admin')}
+    let(:credentials) { admin.create_new_auth_token }
+    let(:valid_auth_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
     before do
       post '/api/vendors',
            params: {
@@ -103,7 +106,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
                password_confirmation: 'password'
              }
            },
-           headers: {} #we need to authenticate the admin
+           headers: valid_auth_headers
     end
 
     it {
@@ -116,6 +119,10 @@ RSpec.describe 'POST /api/vendors', type: :request do
 
     it 'is expected to have associated users' do
       expect(Vendor.last.users.count).to eq 2
+    end
+
+    it 'is expected NOt to associate the admin with vendor' do
+      expect(Vendor.last.users).not_to include admin
     end
 
     it 'is expected to save vendor in database' do
@@ -151,7 +158,41 @@ RSpec.describe 'POST /api/vendors', type: :request do
     end
 
     it 'is expected to save vendor in database' do
-      expect(Vendor.last.name).to eq 'The Other Restaurant'
+      expect(Vendor.last.name).to eq 'The Other Restaurant' 
+    end
+  end
+
+
+
+  describe 'with primary_email same as user.email' do
+    let(:credentials) { existing_user.create_new_auth_token }
+    let(:valid_auth_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
+    before do
+      post '/api/vendors',
+           params: {
+             vendor: {
+               name: 'The Other Restaurant',
+               description: 'The best food in this shithole town....',
+               primary_email: existing_user.email
+             }, user: {}
+           },
+           headers: valid_auth_headers
+    end
+
+    it {
+      expect(response).to have_http_status 201
+    }
+
+    it 'is expected to respond with representation of the new resource' do
+      expect(response_json['vendor']['users'].count).to eq 1 
+    end
+
+    it 'is expected to have associated users' do
+      expect(Vendor.last.system_user).to be nil
+    end
+
+    it 'is expected to save vendor in database' do
+      expect(Vendor.last.name).to eq 'The Other Restaurant' 
     end
   end
 end
