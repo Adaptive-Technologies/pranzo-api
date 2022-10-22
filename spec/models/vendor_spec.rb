@@ -21,7 +21,6 @@ RSpec.describe Vendor, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_uniqueness_of :name }
     it { is_expected.to validate_presence_of :name }
-    it { is_expected.to validate_presence_of :description }
     it { is_expected.to validate_presence_of :primary_email }
   end
 
@@ -43,10 +42,36 @@ RSpec.describe Vendor, type: :model do
   end
 
   describe '#system_user' do
-    let(:vendor) { create(:vendor, primary_email: 'my_primary@mail.com') }
-    subject { vendor.system_user }
-    it 'has the email of vendor' do
-      expect(subject.email).to eq vendor.primary_email
+    subject { vendor }
+
+    describe '::if there is no user at all' do
+      let(:vendor) { create(:vendor, primary_email: 'my_primary@mail.com') }
+
+      it do
+        expect(subject.system_user).not_to be nil
+      end
+    end
+
+    describe ':: if there is no user with the same email as primary email' do
+      let!(:user) { create(:user, email: 'another@mail.com', vendor: vendor) }
+      let(:vendor) { create(:vendor, primary_email: 'my_primary@mail.com') }
+
+      it do
+        expect(subject.system_user).not_to be nil
+      end
+
+      it do
+        expect(subject.system_user.email).to eq vendor.primary_email
+      end
+    end
+
+    describe '::if there is a user with the same email as primary email' do
+      let!(:user) { create(:user, email: 'my_primary@mail.com') }
+      let(:vendor) { create(:vendor, primary_email: 'my_primary@mail.com', users: [user]) }
+
+      it do
+        expect(subject.system_user).to be nil
+      end
     end
   end
 
