@@ -10,11 +10,12 @@ RSpec.describe 'POST /api/vendors', type: :request do
                name: 'The Restaurant',
                description: 'The best food in this shithole town....',
                primary_email: 'the_restaurant@mail.com',
+               vat_id: "DE259597697",
                addresses_attributes: [{
                  street: 'High Street 190',
                  post_code: '90900',
-                 city: 'Lucasville',
-                 country: 'USA'
+                 city: 'Berlin',
+                 country: 'Germay'
                }, {
                  street: 'Low Street 190',
                  post_code: '80000',
@@ -97,7 +98,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
              vendor: {
                name: 'The Restaurant',
                description: 'The best food in this shithole town....',
-               primary_email: 'the_restaurant@mail.com'
+               primary_email: 'the_restaurant@mail.com',
+               vat_id: 'DE259597697'
              },
              user: {
                name: 'Existing User',
@@ -139,7 +141,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
              vendor: {
                name: 'The Other Restaurant',
                description: 'The best food in this shithole town....',
-               primary_email: 'the_restaurant@mail.com'
+               primary_email: 'the_restaurant@mail.com',
+               vat_id: 'DE259597697'
              }, user: {}
            },
            headers: valid_auth_headers
@@ -173,7 +176,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
              vendor: {
                name: 'The Other Restaurant',
                description: 'The best food in this shithole town....',
-               primary_email: existing_user.email
+               primary_email: existing_user.email,
+               vat_id: 'DE259597697'
              }, user: {}
            },
            headers: valid_auth_headers

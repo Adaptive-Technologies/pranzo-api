@@ -64,7 +64,6 @@ RSpec.configure do |config|
   config.include ActionCableHelpers, type: :request
   config.include EmailHelpers, type: :request
   config.before(:each) do
-    allow(Valvat::Lookup).to receive(:validate).and_return(true)
     I18n.locale = :en
     @stripe_test_helper = StripeMock.create_test_helper
     StripeMock.start

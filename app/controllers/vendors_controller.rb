@@ -6,8 +6,8 @@ class VendorsController < ApplicationController
   def create
     vendor = current_user && !current_user.admin? ? current_user.create_vendor(vendor_params.merge(users: [current_user])) : Vendor.create(vendor_params)
     params[:user] ? user_create(vendor) : current_user.update(vendor: vendor)
-    vendor.reload
     if vendor.persisted?
+      vendor.reload
       render json: vendor, serializer: Vendors::ShowSerializer, status: 201
     else
       raise ActiveModel::ValidationError, vendor
@@ -33,6 +33,7 @@ class VendorsController < ApplicationController
             :name,
             :description,
             :primary_email,
+            :vat_id,
             addresses_attributes: %i[street post_code city country]
           )
   end
@@ -54,6 +55,6 @@ class VendorsController < ApplicationController
   end
 
   def render_error_message(exception)
-    render json: { message: exception.model.errors.full_messages.to_sentence.concat(@user_params_message) }, status: 422
+    render json: { message: exception.model.errors.full_messages.to_sentence }, status: 422
   end
 end
