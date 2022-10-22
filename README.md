@@ -83,3 +83,6 @@ One way to gather data of usage, but also to track att activities of a vendor, c
 # Affiliations
 
 The affiliation set-up is influenced by [this gist](https://gist.github.com/jibiel/5c18d36b93891cced991791529fc1686). Not sure if this the way to go, but I don't want to spend to much time onn this ;-) 
+
+# VAT nubet lookup 
+Int the MVP, the VAT lookup is done using the [ValVat gem](https://github.com/yolk/valvat).

@@ -15,9 +15,11 @@ class Vendor < ApplicationRecord
   validates_uniqueness_of :name
 
   validates :vat_id, valvat: true
-
+  before_validation :normalize_vat_number
   after_save :create_system_user, unless: proc { users.pluck(:email).include? primary_email }
-  after_update :update_system_user, unless: proc { users.pluck(:email).include? primary_email }
+  after_update :update_system_user, if: proc {
+                                          users.pluck(:email).include? primary_email && saved_change_to_attribute?(:primary_email) or saved_change_to_attribute?(:name)
+                                        }
 
   def system_user
     User.system_user.where(vendor: self).first
@@ -52,5 +54,9 @@ class Vendor < ApplicationRecord
   def update_system_user
     user = saved_change_to_attribute?(:primary_email) ? User.find_by(email: primary_email_previously_was) : User.find_by(email: primary_email)
     user.update(name: "#{name} (System User)", email: primary_email)
+  end
+
+  def normalize_vat_number
+    vat_id = Valvat::Utils.normalize(vat_id)
   end
 end
