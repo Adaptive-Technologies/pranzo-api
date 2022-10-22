@@ -31,6 +31,7 @@ gem 'jmespath', '>= 1.6.1'
 gem 'jwt'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
 gem 'async'
+gem 'valvat'
 
 group :development, :test do
   gem 'factory_bot_rails'

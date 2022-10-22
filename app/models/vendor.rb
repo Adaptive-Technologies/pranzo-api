@@ -11,8 +11,10 @@ class Vendor < ApplicationRecord
   has_many :affiliates, through: :affiliations
   has_many :transactions, through: :vouchers
 
-  validates_presence_of %i[name primary_email]
+  validates_presence_of %i[name vat_id primary_email]
   validates_uniqueness_of :name
+
+  validates :vat_id, valvat: true
 
   after_save :create_system_user, unless: proc { users.pluck(:email).include? primary_email }
   after_update :update_system_user, unless: proc { users.pluck(:email).include? primary_email }

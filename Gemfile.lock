@@ -348,6 +348,8 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
+    valvat (1.2.1)
+      rexml (>= 3.2, < 4.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     webmock (3.18.1)
@@ -401,6 +403,7 @@ DEPENDENCIES
   stripe-ruby-mock (~> 3.1.0.rc2)
   timecop
   validate_url
+  valvat
   webmock (~> 3.14)
 
 RUBY VERSION
