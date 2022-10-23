@@ -10,6 +10,7 @@ require 'stripe_mock'
 require 'webmock/rspec'
 require 'stripe/rails/testing'
 require 'pass_kit_stubs'
+require 'vat_stubs'
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 begin
   ActiveRecord::Migration.maintain_test_schema!
