@@ -14,6 +14,8 @@ require 'action_text/engine'
 require 'action_view/railtie'
 require 'action_cable/engine'
 
+Dir[File.join(__dir__, 'patches', '*.rb')].each { |file| require file }
+
 Bundler.require(*Rails.groups)
 
 module BocadoApi

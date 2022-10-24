@@ -24,7 +24,7 @@ RSpec.describe Vendor, type: :model do
         .of_type(:string)
     }
   end
-  
+
   describe 'Factory' do
     subject { create(:vendor) }
     it {
@@ -35,9 +35,9 @@ RSpec.describe Vendor, type: :model do
       expect(subject.system_user).to be_an_instance_of User
     }
 
-    it {
+    it 'is expected to have a legal_name set by Valvat lookup' do
       expect(subject.legal_name).not_to be nil
-    }
+    end
   end
 
   describe 'Validations' do
