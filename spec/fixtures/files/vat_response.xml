@@ -6,7 +6,7 @@
       <ns2:vatNumber>556012579001</ns2:vatNumber>
       <ns2:requestDate>2022-10-24+02:00</ns2:requestDate>
       <ns2:valid>true</ns2:valid>
-      <ns2:name>Aktiebolaget Volvo</ns2:name>
+      <ns2:name>The Other Place</ns2:name>
       <ns2:address>DC 24000 nARSC2 n405 08 GxC3x96TEBORG</ns2:address>
     </ns2:checkVatResponse>
   </env:Body>
