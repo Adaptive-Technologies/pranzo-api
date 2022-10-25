@@ -36,7 +36,7 @@ RSpec.describe Vendor, type: :model do
     }
 
     it 'is expected to have a legal_name set by Valvat lookup' do
-      expect(subject.legal_name).not_to be nil
+      expect(subject.legal_name).to eq "The Other Place"
     end
   end
 

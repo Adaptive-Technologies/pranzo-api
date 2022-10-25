@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Vendor < ApplicationRecord
-  attr_accessor :legal_name
+  attr_accessor :legal_address
 
   has_many :users
   has_many :addresses
