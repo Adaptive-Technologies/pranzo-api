@@ -11,11 +11,33 @@ RSpec.describe Vendor, type: :model do
       is_expected.to have_db_column(:primary_email)
         .of_type(:string)
     }
-  end
-  describe 'Factory' do
     it {
-      expect(create(:vendor)).to be_valid
+      is_expected.to have_db_column(:description)
+        .of_type(:text)
     }
+    it {
+      is_expected.to have_db_column(:vat_id)
+        .of_type(:string)
+    }
+    it {
+      is_expected.to have_db_column(:legal_name)
+        .of_type(:string)
+    }
+  end
+
+  describe 'Factory' do
+    subject { create(:vendor) }
+    it {
+      expect(subject).to be_valid
+    }
+
+    it {
+      expect(subject.system_user).to be_an_instance_of User
+    }
+
+    it 'is expected to have a legal_name set by Valvat lookup' do
+      expect(subject.legal_name).to eq "The Other Place"
+    end
   end
 
   describe 'Validations' do

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Vendor < ApplicationRecord
+  attr_accessor :legal_address
+
   has_many :users
   has_many :addresses
   accepts_nested_attributes_for :addresses
@@ -15,7 +17,8 @@ class Vendor < ApplicationRecord
   validates_uniqueness_of :name
 
   validates :vat_id, valvat: true
-  before_validation :normalize_vat_number
+  before_validation :valvat, if: proc { new_record? }
+
   after_save :create_system_user, unless: proc { users.pluck(:email).include? primary_email }
   after_update :update_system_user, if: proc {
                                           users.pluck(:email).include? primary_email && saved_change_to_attribute?(:primary_email) or saved_change_to_attribute?(:name)
@@ -56,7 +59,9 @@ class Vendor < ApplicationRecord
     user.update(name: "#{name} (System User)", email: primary_email)
   end
 
-  def normalize_vat_number
-    vat_id = Valvat::Utils.normalize(vat_id)
+  def valvat
+    self.vat_id = Valvat::Utils.normalize(vat_id)
+    data = Valvat.new(vat_id).exists?(detail: true)
+    self.legal_name = data[:name]
   end
 end

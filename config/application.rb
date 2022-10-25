@@ -13,8 +13,8 @@ require 'action_mailbox/engine'
 require 'action_text/engine'
 require 'action_view/railtie'
 require 'action_cable/engine'
-
 Bundler.require(*Rails.groups)
+Dir[File.join(__dir__, 'patches', '*.rb')].each { |file| require file }
 
 module BocadoApi
   class Application < Rails::Application
