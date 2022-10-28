@@ -13,7 +13,11 @@ class VouchersController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
-    vouchers = current_user.admin? ? Voucher.all : current_user.vendor.vouchers.to_a.append(current_user.vendor.affiliated_vouchers).flatten
+    vouchers = if current_user.admin?
+                 Voucher.all
+               else
+                 current_user.vendor.affiliated_vouchers ? current_user.vendor.vouchers.to_a.append(current_user.vendor.affiliated_vouchers).flatten : current_user.vendor.vouchers
+               end
     if vouchers
       render json: vouchers, each_serializer: Vouchers::ShowSerializer
     else
@@ -52,7 +56,7 @@ class VouchersController < ApplicationController
   def generate_card
     voucher = Voucher.find(params[:voucher_id])
     if voucher.generate_pdf_card
-      render json: { message: I18n.t('voucher.card_generated') , url: voucher.pdf_card_path }, status: :created
+      render json: { message: I18n.t('voucher.card_generated'), url: voucher.pdf_card_path }, status: :created
     end
   end
 
