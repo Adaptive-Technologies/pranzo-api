@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   has_many :orders, dependent: :destroy
   has_many :time_sheets, dependent: :destroy
-  has_many :vouchers, foreign_key: :issuer_id
+  has_many :vouchers, foreign_key: :issuer_id, dependent: :destroy
   belongs_to :vendor, optional: true
   # TODO: Decide if roles should be an arrau, meaning a user can have multiple roles
   enum role: { consumer: 1, employee: 90, admin: 99, vendor: 100, system_user: 999 }

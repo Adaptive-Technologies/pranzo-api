@@ -90,3 +90,14 @@ Int the MVP, the VAT lookup is done using the [ValVat gem](https://github.com/yo
 # Deployement
 
 This app is in production using [fly.io](https://fly.io/)
+
+### COMANDS
+LOGS: 
+```
+fly logs
+```
+
+CONSOLE: 
+```
+fly ssh console -C "/app/bin/rails console"
+```

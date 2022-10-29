@@ -3,8 +3,8 @@
 class Vendor < ApplicationRecord
   attr_accessor :legal_address
 
-  has_many :users
-  has_many :addresses
+  has_many :users, dependent: :destroy
+  has_many :addresses, dependent: :destroy
   accepts_nested_attributes_for :addresses
 
   has_one_attached :logotype
