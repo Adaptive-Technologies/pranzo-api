@@ -17,7 +17,6 @@ gem 'prawn'
 gem 'prawn-svg'
 gem 'puma', '~> 5.6', '>= 5.6.5'
 gem 'rack-cors'
-# gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
 gem 'rails', '~> 7.0', '>= 7.0.4'
 gem 'redis', '~> 4.0'
 gem 'res_os_ruby'
@@ -25,15 +24,16 @@ gem 'rest-client'
 gem 'rqrcode'
 gem 'stripe-rails'
 gem 'validate_url'
-# security warnings fixes
 gem 'addressable', '~> 2.8', '>= 2.8.1'
+gem 'async'
 gem 'jmespath', '>= 1.6.1'
 gem 'jwt'
+gem 'nokogiri', '~> 1.13', '>= 1.13.9'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
-gem 'async'
 gem 'valvat'
 
 group :development, :test do
+  gem 'clipboard'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'pdf-inspector', require: 'pdf/inspector'
@@ -43,7 +43,6 @@ group :development, :test do
   gem 'stripe-ruby-mock', '~> 3.1.0.rc2', require: 'stripe_mock'
   gem 'timecop'
   gem 'webmock', '~> 3.14'
-  gem 'clipboard'
 end
 
 group :development do
