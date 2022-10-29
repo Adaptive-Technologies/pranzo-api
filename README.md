@@ -86,3 +86,7 @@ The affiliation set-up is influenced by [this gist](https://gist.github.com/jibi
 
 # VAT nubet lookup 
 Int the MVP, the VAT lookup is done using the [ValVat gem](https://github.com/yolk/valvat).
+
+# Deployement
+
+This app is in production using [fly.io](https://fly.io/)

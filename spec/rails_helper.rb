@@ -47,16 +47,21 @@ module EmailHelpers
 
   def email_attachments
     ActionMailer::Base.deliveries.last.attachments
-  end 
+  end
 
   def email_html_part
-    ActionMailer::Base.deliveries.last.body.parts.detect{|p| p.content_type.match(/text\/html/)}.body.to_s
+    ActionMailer::Base.deliveries.last.body.parts.detect { |p| p.content_type.match(%r{text/html}) }.body.to_s
   end
 end
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
+  config.around(:context, use_transactional_fixtures: false) do |example|
+    self.use_transactional_tests = false
+    example.run
+    self.use_transactional_tests = true
+  end
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods

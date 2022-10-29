@@ -18,7 +18,7 @@ class VouchersController < ApplicationController
                else
                  current_user.vendor.affiliated_vouchers ? current_user.vendor.vouchers.to_a.append(current_user.vendor.affiliated_vouchers).flatten : current_user.vendor.vouchers
                end
-    if vouchers
+    if vouchers.any?
       render json: vouchers, each_serializer: Vouchers::ShowSerializer
     else
       render json: { vouchers: [] }
