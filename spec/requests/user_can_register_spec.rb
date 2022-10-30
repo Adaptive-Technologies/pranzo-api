@@ -22,6 +22,10 @@ RSpec.describe 'POST /auth', type: :request do
     it 'is expected to return a success message' do
       expect(response_json['status']).to eq 'success'
     end
+
+    it 'is expected to respond with user onject including name' do
+      expect(response_json['data']['name']).to eq 'Kalle'
+    end
   end
 
   describe 'with a non-matching password confirmation' do
