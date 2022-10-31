@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     resources :time_sheets, only: %i[create index], path: 'timesheets'
   end
   mount_devise_token_auth_for 'User',
-                              at: 'auth'
+                              at: 'auth',
                               controllers: { registrations: 'overrides/registrations' }
   scope path: 'admin' do
     resources :vouchers, only: %i[index create update] do
