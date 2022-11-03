@@ -1,16 +1,21 @@
 <mjml>
   <mj-head>
-    <mj-preview>Hello World</mj-preview>
+    <mj-preview>Här är ditt nya Pranzo kort utfärdat av <%= @voucher.vendor.name%></mj-preview>
   </mj-head>
   <mj-body>
-    <mj-section>
-      <mj-column>
-        <mj-text>Hello World</mj-text>
-        <% if @voucher.pass_kit_id %>
-          <p>You can also add your card to Apple Wallet or Googgle Wallet
-            <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">by following the instructions here.</a></p>
-        <% end %>
-      </mj-column>
-    </mj-section>
+    <mj-container>
+      <mj-section>
+        <mj-column>
+          <mj-image src="https://pranzo.se/assets/pranzo_color.aac7c6db.png" width="250px" height="auto" />
+          <mj-spacer height="20px" />
+          <mj-text style="font-weight:bold;">Här är ditt nya Pranzo kort utfärdat av <%= @voucher.vendor.name%></mj-text>
+          <% if @voucher.pass_kit_id %>
+            <mj-text>
+              <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">by following the instructions here.</a></mj-text>
+          <% end %>
+          <p>Hälsningar från Pranzo.se</p>
+        </mj-column>
+      </mj-section>
+    </mj-container>
   </mj-body>
 </mjml>
