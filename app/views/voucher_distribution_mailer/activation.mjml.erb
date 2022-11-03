@@ -1,0 +1,16 @@
+<mjml>
+  <mj-head>
+    <mj-preview>Hello World</mj-preview>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text>Hello World</mj-text>
+        <% if @voucher.pass_kit_id %>
+          <p>You can also add your card to Apple Wallet or Googgle Wallet
+            <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">by following the instructions here.</a></p>
+        <% end %>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

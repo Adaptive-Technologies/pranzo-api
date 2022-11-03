@@ -31,6 +31,7 @@ gem 'jwt'
 gem 'nokogiri', '~> 1.13', '>= 1.13.9'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
 gem 'valvat'
+gem 'mjml-rails'
 
 group :development, :test do
   gem 'clipboard'
@@ -40,9 +41,11 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
+  gem 'shoulda-callback-matchers'
   gem 'stripe-ruby-mock', '~> 3.1.0.rc2', require: 'stripe_mock'
   gem 'timecop'
   gem 'webmock', '~> 3.14'
+  gem 'htmlbeautifier'
 end
 
 group :development do

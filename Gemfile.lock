@@ -161,6 +161,7 @@ GEM
       rspec (>= 2.99.0, < 4.0)
     hashdiff (1.0.1)
     hashery (2.1.2)
+    htmlbeautifier (1.4.2)
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
@@ -189,6 +190,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     minitest (5.16.3)
+    mjml-rails (4.8.0)
     msgpack (1.5.6)
     multi_json (1.15.0)
     nenv (0.3.0)
@@ -319,6 +321,8 @@ GEM
     ruby-vips (2.1.4)
       ffi (~> 1.12)
     shellany (0.0.1)
+    shoulda-callback-matchers (1.1.4)
+      activesupport (>= 3)
     shoulda-matchers (5.1.0)
       activesupport (>= 5.2.0)
     spring (4.1.0)
@@ -378,10 +382,12 @@ DEPENDENCIES
   geocoder
   globalize
   guard-rspec
+  htmlbeautifier
   image_processing (>= 1.12.2)
   jmespath (>= 1.6.1)
   jwt
   listen (~> 3.7, >= 3.7.1)
+  mjml-rails
   nokogiri (~> 1.13, >= 1.13.9)
   pdf-inspector
   pg (>= 0.18, < 2.0)
@@ -397,6 +403,7 @@ DEPENDENCIES
   rexml (~> 3.2, >= 3.2.5)
   rqrcode
   rspec-rails
+  shoulda-callback-matchers
   shoulda-matchers
   spring
   spring-watcher-listen (~> 2.1)
