@@ -85,7 +85,7 @@ One way to gather data of usage, but also to track att activities of a vendor, c
 The affiliation set-up is influenced by [this gist](https://gist.github.com/jibiel/5c18d36b93891cced991791529fc1686). Not sure if this the way to go, but I don't want to spend to much time onn this ;-) 
 
 # VAT nubet lookup 
-Int the MVP, the VAT lookup is done using the [ValVat gem](https://github.com/yolk/valvat).
+Int the MVP, the VAT lookup is done using the [ValVat gem](https://github.com/yolk/valvat). The problem with this solution is the input mechmanizm on the fronmt end. Business owners in Sweden are used to enter their identification numbers (Organisationsnummer issued by the tax Swedish Tax Agency - Skatteverket), rather than VAT-numbers. The upside is that we can go more international with this solution. Of course, only within bounds on the European Union.
 
 # Deployement
 

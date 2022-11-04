@@ -62,7 +62,8 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 FROM build_deps as gems
 
 RUN gem update --system --no-document && \
-    gem install -N bundler -v ${BUNDLER_VERSION}
+    gem install -N bundler -v ${BUNDLER_VERSION} 
+    
 
 COPY Gemfile* ./
 RUN bundle install &&  rm -rf vendor/bundle/ruby/*/cache
@@ -73,7 +74,7 @@ RUN bundle install &&  rm -rf vendor/bundle/ruby/*/cache
 
 FROM base
 
-ARG DEPLOY_PACKAGES="postgresql-client file vim curl gzip libsqlite3-0"
+ARG DEPLOY_PACKAGES="postgresql-client file vim curl gzip libsqlite3-0 yarn"
 ENV DEPLOY_PACKAGES=${DEPLOY_PACKAGES}
 
 RUN --mount=type=cache,id=prod-apt-cache,sharing=locked,target=/var/cache/apt \
@@ -87,6 +88,7 @@ RUN --mount=type=cache,id=prod-apt-cache,sharing=locked,target=/var/cache/apt \
 COPY --from=gems /app /app
 COPY --from=gems /usr/lib/fullstaq-ruby/versions /usr/lib/fullstaq-ruby/versions
 COPY --from=gems /usr/local/bundle /usr/local/bundle
+
 
 #######################################################################
 
