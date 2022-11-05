@@ -4,8 +4,6 @@ RSpec.describe VoucherDistributionMailer, type: :mailer do
   let(:vendor_user) { create(:user, role: :vendor, name: 'Thomas', vendor: vendor) }
   let(:owner) { create(:owner, email: 'new_owner@random.com') }
   let(:voucher) { create(:servings_voucher, issuer: vendor_user, owner: owner, pass_kit_id: 'qwerty') }
-
-  # let(:mail) { VoucherDistributionMailer.activation(voucher).deliver_now }
   before do
     voucher.generate_pdf_card
     VoucherDistributionMailer.activation(voucher).deliver_now
@@ -15,7 +13,7 @@ RSpec.describe VoucherDistributionMailer, type: :mailer do
     subject { open_email('new_owner@random.com') }
 
     it 'is expected to have a subject' do
-      expect(subject.subject).to eq('Ditt Pranzo kort hos The Other Place / Your Pranzo-card at The Other Place')
+      expect(subject.subject).to eq('Ditt klippkort hos The Other Place')
     end
 
     it 'is expected to have a recipient' do
