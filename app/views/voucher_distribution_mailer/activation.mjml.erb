@@ -11,11 +11,16 @@
           <mj-text style="font-weight:bold;">Här är ditt nya Pranzo kort utfärdat av <%= @voucher.vendor.name%></mj-text>
           <% if @voucher.pass_kit_id %>
             <mj-text>
-              <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">by following the instructions here.</a></mj-text>
+              Du kan lägga till ditt kort till Apple Wallet eller Googgle Wallet
+              <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">genom att följa den här länken.</a></mj-text>
           <% end %>
-          <p>Hälsningar från Pranzo.se</p>
-        </mj-column>
-      </mj-section>
-    </mj-container>
-  </mj-body>
-</mjml>
+          <mj-text>Hälsningar, </mj-text>
+          <mj-text><%= @voucher.vendor.name%> och Pranzo.se </mj-text>
+          <mj-spacer height="20px" />
+          <mj-image src="<%=@voucher.dark_qr_code_path%>" width="60px" height="60px" />
+          <mj-text><%= @voucher.code%></mj-text>
+          </mj-column>
+        </mj-section>
+      </mj-container>
+    </mj-body>
+  </mjml>
