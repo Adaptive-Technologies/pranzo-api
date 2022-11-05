@@ -144,6 +144,8 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
   describe 'with create pdf version request' do
     subject { create(:voucher, active: false, issuer: vendor_user) }
     before do
+      clear_emails
+
       put "/api/vendors/#{vendor.id}/vouchers/#{subject.code}",
           params: { voucher: {
             command: 'activate',
@@ -159,10 +161,12 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
     end
 
     it 'is expected to invoke #generate_pdf_card and attach file' do
+    
       expect(subject.pdf_card.attached?).to eq true
     end
 
     it 'is expected to send email' do
+      current_email.save_and_open
       expect(email_queue).to eq 1
     end
 
