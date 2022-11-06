@@ -87,7 +87,7 @@ RUN --mount=type=cache,id=prod-apt-cache,sharing=locked,target=/var/cache/apt \
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - &&\
     apt-get install -y nodejs
 
-RUN npm install -g yarn mjml \
+RUN npm install -g yarn mjml mjml-qr-code \
     && yarn install
 
 # copy installed gems
