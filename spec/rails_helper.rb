@@ -5,7 +5,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 require 'validate_url/rspec_matcher'
 require 'rspec/rails'
-
+require 'capybara/email/rspec'
 require 'stripe_mock'
 require 'webmock/rspec'
 require 'stripe/rails/testing'

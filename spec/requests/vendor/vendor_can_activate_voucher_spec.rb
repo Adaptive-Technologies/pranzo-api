@@ -144,6 +144,8 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
   describe 'with create pdf version request' do
     subject { create(:voucher, active: false, issuer: vendor_user) }
     before do
+      clear_emails
+
       put "/api/vendors/#{vendor.id}/vouchers/#{subject.code}",
           params: { voucher: {
             command: 'activate',
@@ -156,6 +158,8 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
             }
           } },
           headers: valid_auth_headers_for_vendor_user
+      sleep 1
+      open_email 'new_user@mail.com'
     end
 
     it 'is expected to invoke #generate_pdf_card and attach file' do
@@ -166,8 +170,8 @@ RSpec.describe 'PUT /api/vendors/:vendor_id/vouchers/:id', type: :request do
       expect(email_queue).to eq 1
     end
 
-    it 'is expected to iclude link to passkit' do
-      expect(email_html_part).to include "https://pub1.pskt.io/#{Voucher.last.pass_kit_id}"
+    it 'is expected to include link to passkit' do
+      expect(current_email).to have_link href: "https://pub1.pskt.io/#{Voucher.last.pass_kit_id}"
     end
   end
 end

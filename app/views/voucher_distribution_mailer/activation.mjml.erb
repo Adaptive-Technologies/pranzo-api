@@ -1,0 +1,40 @@
+<mjml>
+  <mj-head>
+    <mj-preview>Här är ditt nya Pranzo kort utfärdat av <%= @voucher.vendor.name%>.</mj-preview>
+  </mj-head>
+  <mj-body>
+    <mj-container>
+      <mj-section>
+        <mj-column>
+          <mj-image src="https://pranzo.se/assets/pranzo_color.aac7c6db.png" width="250px" height="auto" />
+          <mj-spacer height="16px" />
+          <mj-text font-size="16px" font-weight="bold">
+            Här är ditt nya <%= @voucher.variant == "servings" ? "klippkort " : "presentkort " %>utfärdat av <%= @voucher.vendor.name%>.
+          </mj-text>
+          <% if @voucher.pass_kit_id %>
+            <mj-text font-size="16px">
+              Du kan lägga till ditt <%= @voucher.variant == "servings" ? "klippkort " : "presentkort " %> till Apple Wallet eller Googgle Wallet
+              <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">genom att klicka den här länken.</a> och följa instruktionerna.
+            </mj-text>
+          <% end %>
+          <mj-spacer height="16px" />
+          <mj-text font-size="16px">Hälsningar, </mj-text>
+          <mj-spacer height="26px" />
+          <mj-text font-size="16px"><%= @voucher.vendor.name%> och Pranzo.se </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-spacer height="16px" />
+      <mj-section>
+        <mj-column>
+          <mj-text font-size="12px">Den här qr-koden måste visas upp när du handlar. </mj-text>
+          <mj-spacer height="16px" />
+          <mj-qr-code value="<%= @voucher.code%>" />
+          <mj-image src="<%=@voucher.dark_qr_code_path%>" width="200px" height="200px" />
+          <mj-text font-size="12px">
+          Kod: <%= @voucher.code%>
+          </mj-text>
+          </mj-column>
+        </mj-section>
+      </mj-container>
+    </mj-body>
+  </mjml>

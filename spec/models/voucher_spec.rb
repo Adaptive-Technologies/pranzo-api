@@ -32,6 +32,11 @@ RSpec.describe Voucher, type: :model do
     }
   end
 
+  describe 'callbacks and hooks' do
+    it { is_expected.to callback(:generate_code).before(:validation) }
+    it { is_expected.to callback(:attach_qr_codes).after(:create) }
+  end
+
   describe 'factories' do
     it {
       expect(create(:voucher)).to be_valid

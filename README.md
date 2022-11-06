@@ -77,6 +77,10 @@ CustomCardGenerator.new(voucher, true, 1, :sv)
 
 An interesting solution is the [MJML gem](https://github.com/sighmon/mjml-rails). A PR with good examples [can be found here](https://github.com/CraftAcademy/gigafood/pull/69)
 
+Previewing emails: 
+
+Halt the execution of a spec using `binding.pry`. Make sure that `current_email` is available and open the email in the browser using `current_email.save_and_open`. Preview the source of the email in the browser. Copy the source and head over to https://mjml.io/try-it-live/ to generate a preview with styling included. 
+
 # Activity log
 One way to gather data of usage, but also to track att activities of a vendor, could be to make use of [Public Activity](https://rubygems.org/gems/public_activity) gem. 
 
@@ -85,7 +89,7 @@ One way to gather data of usage, but also to track att activities of a vendor, c
 The affiliation set-up is influenced by [this gist](https://gist.github.com/jibiel/5c18d36b93891cced991791529fc1686). Not sure if this the way to go, but I don't want to spend to much time onn this ;-) 
 
 # VAT nubet lookup 
-Int the MVP, the VAT lookup is done using the [ValVat gem](https://github.com/yolk/valvat).
+Int the MVP, the VAT lookup is done using the [ValVat gem](https://github.com/yolk/valvat). The problem with this solution is the input mechmanizm on the fronmt end. Business owners in Sweden are used to enter their identification numbers (Organisationsnummer issued by the tax Swedish Tax Agency - Skatteverket), rather than VAT-numbers. The upside is that we can go more international with this solution. Of course, only within bounds on the European Union.
 
 # Deployement
 
