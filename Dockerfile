@@ -63,7 +63,7 @@ FROM build_deps as gems
 
 RUN gem update --system --no-document && \
     gem install -N bundler -v ${BUNDLER_VERSION} 
-    
+
 
 COPY Gemfile* ./
 RUN bundle install &&  rm -rf vendor/bundle/ruby/*/cache
@@ -74,15 +74,21 @@ RUN bundle install &&  rm -rf vendor/bundle/ruby/*/cache
 
 FROM base
 
-ARG DEPLOY_PACKAGES="postgresql-client file vim curl gzip libsqlite3-0 yarn"
+ARG DEPLOY_PACKAGES="postgresql-client file vim curl gzip libsqlite3-0  libvips-dev"
 ENV DEPLOY_PACKAGES=${DEPLOY_PACKAGES}
 
 RUN --mount=type=cache,id=prod-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=prod-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
     apt-get install --no-install-recommends -y \
-    ${DEPLOY_PACKAGES} \
+    ${DEPLOY_PACKAGES}  \
     && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - &&\
+    apt-get install -y nodejs
+
+RUN npm install -g yarn mjml \
+    && yarn install
 
 # copy installed gems
 COPY --from=gems /app /app
