@@ -600,7 +600,7 @@ mjml-column@4.13.0:
     lodash "^4.17.21"
     mjml-core "4.13.0"
 
-mjml-core@4.13.0:
+mjml-core@4.13.0, mjml-core@^4.13.0:
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/mjml-core/-/mjml-core-4.13.0.tgz#24193b4b17d0fbb4c72f17c7317ce7b7db2a8a47"
   integrity sha512-kU5AoVTlZaXR/EDi3ix66xpzUe+kScYus71lBH/wo/B+LZW70GHE1AYWtsog5oJp1MuTHpMFTNuBD/wePeEgWg==
@@ -787,6 +787,15 @@ mjml-preset-core@4.13.0:
     mjml-text "4.13.0"
     mjml-wrapper "4.13.0"
 
+mjml-qr-code@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mjml-qr-code/-/mjml-qr-code-2.0.1.tgz#9dd72f08cc9a5252e22ff88283aa2c1f2b116b8e"
+  integrity sha512-LMMMNlqldTzcAXMPnu4aUg/cXyfqx0ZvF/gxakG5ONGyYQOfzP3dyXqCausdwYpw+pb05uTyuo9UYGTxK9kUKg==
+  dependencies:
+    mjml "^4.13.0"
+    mjml-core "^4.13.0"
+    mjml-validator "^4.13.0"
+
 mjml-raw@4.13.0:
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/mjml-raw/-/mjml-raw-4.13.0.tgz#3c70076aa0c3ab3751622f9e89c2bea1be86828d"
@@ -841,7 +850,7 @@ mjml-text@4.13.0:
     lodash "^4.17.21"
     mjml-core "4.13.0"
 
-mjml-validator@4.13.0:
+mjml-validator@4.13.0, mjml-validator@^4.13.0:
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/mjml-validator/-/mjml-validator-4.13.0.tgz#a05bac51535cb8073a253304105ffbaf88f85d26"
   integrity sha512-uURYfyQYtHJ6Qz/1A7/+E9ezfcoISoLZhYK3olsxKRViwaA2Mm8gy/J3yggZXnsUXWUns7Qymycm5LglLEIiQg==
