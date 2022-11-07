@@ -418,6 +418,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   geocoder
+  glib2 (~> 4.0, >= 4.0.3)
   globalize
   guard-rspec
   htmlbeautifier

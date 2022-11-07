@@ -12,6 +12,7 @@ gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise_token_auth'
 gem 'geocoder'
+gem 'glib2', '~> 4.0', '>= 4.0.3'
 gem 'globalize'
 gem 'image_processing', '>= 1.12.2'
 gem 'jmespath', '>= 1.6.1'
@@ -29,10 +30,10 @@ gem 'res_os_ruby'
 gem 'rest-client'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
 gem 'rqrcode'
+gem 'rsvg2', '~> 4.0', '>= 4.0.3'
 gem 'stripe-rails'
 gem 'validate_url'
 gem 'valvat'
-gem 'rsvg2', '~> 4.0', '>= 4.0.3'
 
 group :development, :test do
   gem 'capybara-email', '~> 3.0', '>= 3.0.2'
@@ -41,6 +42,7 @@ group :development, :test do
   gem 'faker'
   gem 'htmlbeautifier'
   gem 'launchy'
+  gem 'letter_opener'
   gem 'pdf-inspector', require: 'pdf/inspector'
   gem 'pry-rails'
   gem 'rspec-rails'
@@ -49,7 +51,6 @@ group :development, :test do
   gem 'stripe-ruby-mock', '~> 3.1.0.rc2', require: 'stripe_mock'
   gem 'timecop'
   gem 'webmock', '~> 3.14'
-  gem 'letter_opener'
 end
 
 group :development do
