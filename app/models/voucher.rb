@@ -27,7 +27,7 @@ class Voucher < ApplicationRecord
       +xml')
     end
   end
-  
+
   def dark_qr_code_path
     if Rails.env.test?
       ActiveStorage::Blob.service.path_for(qr_dark.key)
@@ -39,12 +39,11 @@ class Voucher < ApplicationRecord
 
   def dark_code_as_base64
     # 1. Read from dark url
-    svg_data = open(dark_qr_code_path).read
+    svg_data = Rails.env.test? ? open(dark_qr_code_path).read : qr_dark.download
     # 2. Convert
     png_data = ImageConverter.svg_to_png(svg_data, 150, 150)
-
   end
-  
+
   def pdf_card_path
     if Rails.env.test?
       ActiveStorage::Blob.service.path_for(pdf_card.key)

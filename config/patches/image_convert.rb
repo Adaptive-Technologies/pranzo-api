@@ -1,5 +1,3 @@
-require 'rsvg2'
-
 module ImageConverter
   def self.svg_to_png(svg, width, height)
     svg = RSVG::Handle.new_from_data(svg)

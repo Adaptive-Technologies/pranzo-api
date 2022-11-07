@@ -12,7 +12,7 @@ gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise_token_auth'
 gem 'geocoder'
-gem 'glib2', '~> 4.0', '>= 4.0.3', require: false
+gem 'glib2', '~> 3.5', '>= 3.5.1', require: false
 gem 'globalize'
 gem 'image_processing', '>= 1.12.2'
 gem 'jmespath', '>= 1.6.1'
@@ -30,10 +30,11 @@ gem 'res_os_ruby'
 gem 'rest-client'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
 gem 'rqrcode'
-gem 'rsvg2', '~> 4.0', '>= 4.0.3', require: false
+gem 'rsvg2', '~> 3.5', '>= 3.5.1'
 gem 'stripe-rails'
 gem 'validate_url'
 gem 'valvat'
+gem 'gio2', '~> 3.5', '>= 3.5.1'
 
 group :development, :test do
   gem 'capybara-email', '~> 3.0', '>= 3.0.2'
