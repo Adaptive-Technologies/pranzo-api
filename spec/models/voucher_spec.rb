@@ -199,6 +199,13 @@ RSpec.describe Voucher, type: :model do
       it { is_expected.to be_attached }
       it { is_expected.to be_an_instance_of ActiveStorage::Attached::One }
     end
+
+    describe 'dark_code_png' do
+      subject { voucher }
+      it 'does something' do
+        binding.pry
+      end
+    end
   end
 
   describe '#generate_pdf_card' do

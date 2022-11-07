@@ -28,13 +28,12 @@
             <%= @voucher.vendor.name%> och Pranzo.se </mj-text>
         </mj-column>
         <mj-spacer height="16px" />
-      </mj-section>
-      <mj-section>
+
         <mj-column>
           <mj-text font-size="12px">Den här qr-koden måste visas upp när du handlar. </mj-text>
           <mj-spacer height="16px" />
           <mj-qr-code value="<%= @voucher.code%>" />
-          <mj-image src="<%=@voucher.dark_qr_code_path%>" width="200px" height="200px" />
+          <mj-image src="<%=@voucher.dark_code_as_base64%>" width="500px" height="auto" />
           <mj-text font-size="12px">
             Kod:
             <%= @voucher.code%>

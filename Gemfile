@@ -32,6 +32,7 @@ gem 'rqrcode'
 gem 'stripe-rails'
 gem 'validate_url'
 gem 'valvat'
+gem 'rsvg2', '~> 4.0', '>= 4.0.3'
 
 group :development, :test do
   gem 'capybara-email', '~> 3.0', '>= 3.0.2'
@@ -48,6 +49,7 @@ group :development, :test do
   gem 'stripe-ruby-mock', '~> 3.1.0.rc2', require: 'stripe_mock'
   gem 'timecop'
   gem 'webmock', '~> 3.14'
+  gem 'letter_opener'
 end
 
 group :development do
