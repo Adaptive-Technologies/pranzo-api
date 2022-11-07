@@ -1,4 +1,4 @@
-# require 'rsvg2'
+require 'rsvg2'
 
 module ImageConverter
   def self.svg_to_png(svg, width, height)
