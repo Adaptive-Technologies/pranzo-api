@@ -1,0 +1,5 @@
+{
+  "packages": [
+    "/usr/lib/node_modules/mjml-qr-code/lib/MjQrCode.js"
+  ]
+}

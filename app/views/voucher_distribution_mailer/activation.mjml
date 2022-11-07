@@ -3,43 +3,62 @@
     <mj-preview>Här är ditt nya Pranzo kort utfärdat av
       <%= @voucher.vendor.name%>.</mj-preview>
   </mj-head>
-  <mj-body>
-    <mj-container>
-      <mj-section>
-        <mj-column>
-          <mj-image src="https://pranzo.se/assets/pranzo_color.aac7c6db.png" width="250px" height="auto" />
-          <mj-spacer height="16px" />
-          <mj-text font-size="16px" font-weight="bold">
-            Här är ditt nya
-            <%= @voucher.variant == "servings" ? "klippkort " : "presentkort " %>utfärdat av
-            <%= @voucher.vendor.name%>.
-          </mj-text>
-          <% if @voucher.pass_kit_id %>
-          <mj-text font-size="16px">
-            Du kan lägga till ditt
-            <%= @voucher.variant == "servings" ? "klippkort " : "presentkort " %> till Apple Wallet eller Googgle Wallet
-            <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">genom att klicka den här länken.</a> och följa instruktionerna.
-          </mj-text>
-          <% end %>
-          <mj-spacer height="16px" />
-          <mj-text font-size="16px">Hälsningar, </mj-text>
-          <mj-spacer height="26px" />
-          <mj-text font-size="16px">
-            <%= @voucher.vendor.name%> och Pranzo.se </mj-text>
-        </mj-column>
+  <mj-body background-color="#d6dde5" >
+    <mj-section background-color="#FAF9F6">
+      <mj-column width="75%">
+        <mj-image src="https://pranzo.se/assets/pranzo_color.aac7c6db.png" width="250px" height="auto" />
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#FAF9F6" padding-bottom="0px" padding-top="0">
+      <mj-column width="75%">
         <mj-spacer height="16px" />
+        <mj-text font-size="16px" font-weight="bold">
+          Här är ditt nya
+          <%= @voucher.variant == "servings" ? "klippkort " : "presentkort " %>utfärdat av
+          <%= @voucher.vendor.name%>.
+        </mj-text>
+        <% if @voucher.pass_kit_id %>
+        <mj-text font-size="16px">
+          Du kan lägga till ditt
+          <%= @voucher.variant == "servings" ? "klippkort " : "presentkort " %> till Apple Wallet eller Googgle Wallet
+          <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">genom att klicka den här länken.</a> och följa instruktionerna.
+        </mj-text>
+        <% end %>
+        <mj-spacer height="16px" />
+        <mj-text font-size="16px">Hälsningar, </mj-text>
+        <mj-spacer height="26px" />
+        <mj-text font-size="16px">
+          <%= @voucher.vendor.name%> och Pranzo.se </mj-text>
+        <mj-spacer height="16px" />
+      </mj-column>
 
-        <mj-column>
-          <mj-text font-size="12px">Den här qr-koden måste visas upp när du handlar. </mj-text>
-          <mj-spacer height="16px" />
-          <mj-qr-code value="<%= @voucher.code%>" />
-          <mj-image src="<%=@voucher.dark_code_as_base64%>" width="500px" height="auto" />
-          <mj-text font-size="12px">
-            Kod:
-            <%= @voucher.code%>
-          </mj-text>
-        </mj-column>
-      </mj-section>
-    </mj-container>
+      <mj-column width="75%">
+        <mj-text align="center" font-size="12px">Visa upp qr-koden när du handlar. </mj-text>
+        <mj-spacer height="5px" />
+        <!-- <mj-qr-code value="<%= @voucher.code%>" /> -->
+        <mj-image align="center" src="<%=@voucher.dark_code_as_base64%>" width="200px"  />
+        <mj-text font-size="12px" align="center">
+          Kod: <%= @voucher.code%> Värde: <%= @voucher.value %> <%= @voucher.variant == "servings" ? "st " : "kr " %>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#d53f8c">
+      <mj-column>
+        <mj-image src="https://pranzo.se/assets/pranzo_white.3e79cecb.png" alt="pranzo logo" align="center" border="none" width="100px" padding-bottom="5px" padding-top="5px"></mj-image>
+      </mj-column>
+      <!-- <mj-column>
+        <mj-text align="center" color="#fff" font-size="13px" padding-left="25px" padding-right="25px" padding-bottom="0px" padding-top="0">
+          <p><a href="https://mjml.io" style="text-decoration: none; color: inherit;">Privacy policy</a></p>
+        </mj-text>
+      </mj-column> -->
+      <!-- <mj-column>
+        <mj-social padding-top="20px">
+          <mj-social-element name="facebook"></mj-social-element>
+          <mj-social-element name="twitter"></mj-social-element>
+          <mj-social-element name="google"></mj-social-element>
+        </mj-social>
+      </mj-column> -->
+    </mj-section>
+    <mj-section padding-bottom="20px" padding-top="0px"></mj-section>
   </mj-body>
 </mjml>
