@@ -202,9 +202,7 @@ RSpec.describe Voucher, type: :model do
 
     describe 'dark_code_png' do
       subject { voucher }
-      it 'does something' do
-        binding.pry
-      end
+      it { is_expected.to respond_to :dark_code_as_base64 }
     end
   end
 
