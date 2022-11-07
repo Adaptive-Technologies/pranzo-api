@@ -3,7 +3,7 @@
     <mj-preview>Här är ditt nya Pranzo kort utfärdat av
       <%= @voucher.vendor.name%>.</mj-preview>
   </mj-head>
-  <mj-body background-color="#d6dde5" >
+  <mj-body background-color="#d6dde5">
     <mj-section background-color="#FAF9F6">
       <mj-column width="75%">
         <mj-image src="https://pranzo.se/assets/pranzo_color.aac7c6db.png" width="250px" height="auto" />
@@ -12,33 +12,40 @@
     <mj-section background-color="#FAF9F6" padding-bottom="0px" padding-top="0">
       <mj-column width="75%">
         <mj-spacer height="16px" />
-        <mj-text font-size="16px" font-weight="bold">
+        <mj-text color="#333333" font-size="16px" font-weight="bold">
           Här är ditt nya
           <%= @voucher.variant == "servings" ? "klippkort " : "presentkort " %>utfärdat av
           <%= @voucher.vendor.name%>.
         </mj-text>
         <% if @voucher.pass_kit_id %>
-        <mj-text font-size="16px">
+        <mj-text color="#333333" font-size="16px">
           Du kan lägga till ditt
           <%= @voucher.variant == "servings" ? "klippkort " : "presentkort " %> till Apple Wallet eller Googgle Wallet
           <a href="https://pub1.pskt.io/<%= @voucher.pass_kit_id%>">genom att klicka den här länken.</a> och följa instruktionerna.
         </mj-text>
         <% end %>
         <mj-spacer height="16px" />
-        <mj-text font-size="16px">Hälsningar, </mj-text>
+        <mj-text color="#333333" font-size="16px">Hälsningar, </mj-text>
         <mj-spacer height="26px" />
-        <mj-text font-size="16px">
+        <mj-text color="#333333" font-size="16px">
           <%= @voucher.vendor.name%> och Pranzo.se </mj-text>
         <mj-spacer height="16px" />
       </mj-column>
 
       <mj-column width="75%">
-        <mj-text align="center" font-size="12px">Visa upp qr-koden när du handlar. </mj-text>
+        <mj-text color="#333333" align="center" font-size="12px">Visa upp qr-koden när du handlar. </mj-text>
         <mj-spacer height="5px" />
-        <!-- <mj-qr-code value="<%= @voucher.code%>" /> -->
-        <mj-image align="center" src="<%=@voucher.dark_code_as_base64%>" width="200px"  />
-        <mj-text font-size="12px" align="center">
-          Kod: <%= @voucher.code%> Värde: <%= @voucher.value %> <%= @voucher.variant == "servings" ? "st " : "kr " %>
+        <% if Rails.env.test? %>
+        <mj-image align="center" src="<%=@voucher.dark_code_as_base64%>" width="200px" />
+        <% else %>
+        <mj-qr-code color="#333333" align="center" background-color="#FAF9F6" qr-margin="1" value="<%= @voucher.code%>" />
+        <% end %>
+
+        <mj-text color="#333333" font-size="12px" align="center">
+          Kod:
+          <%= @voucher.code%> Värde:
+          <%= @voucher.value %>
+          <%= @voucher.variant == "servings" ? "st " : "kr " %>
         </mj-text>
       </mj-column>
     </mj-section>
