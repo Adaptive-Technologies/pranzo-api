@@ -49,10 +49,22 @@ RSpec.describe Vendor, type: :model do
   describe 'Associations' do
     it { is_expected.to have_many :addresses }
     it { is_expected.to have_many :users }
-    it { is_expected.to have_many(:vouchers).through(:users) }
+    it {
+      is_expected.to have_many(:vouchers)
+        .through(:users)
+    }
     it { is_expected.to have_many :affiliates }
-    it { is_expected.to have_many(:affiliates).through(:affiliations) }
-    it { is_expected.to have_many(:transactions).through(:vouchers) }
+    it {
+      is_expected.to have_many(:affiliates)
+        .through(:affiliations)
+    }
+    it {
+      is_expected.to have_many(:transactions)
+        .through(:vouchers)
+    }
+    it { is_expected.to have_one_attached :logotype }
+    it { is_expected.to have_one :logotype_attachment }
+    it { is_expected.to have_one :logotype_blob }
   end
 
   describe '#logotype' do

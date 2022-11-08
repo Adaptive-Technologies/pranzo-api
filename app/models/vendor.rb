@@ -42,6 +42,12 @@ class Vendor < ApplicationRecord
     vouchers.flatten
   end
 
+  def validate_vat
+    valvat
+    save
+  end
+
+  
   private
 
   def create_system_user
@@ -62,6 +68,6 @@ class Vendor < ApplicationRecord
   def valvat
     self.vat_id = Valvat::Utils.normalize(vat_id)
     data = Valvat.new(vat_id).exists?(detail: true)
-    self.legal_name = data[:name]
+    legal_name = data[:name]
   end
 end
