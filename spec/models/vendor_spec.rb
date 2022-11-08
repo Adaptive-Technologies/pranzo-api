@@ -36,7 +36,7 @@ RSpec.describe Vendor, type: :model do
     }
 
     it 'is expected to have a legal_name set by Valvat lookup' do
-      expect(subject.legal_name).to eq "The Other Place"
+      expect(subject.legal_name).to eq 'The Other Place'
     end
   end
 
@@ -102,17 +102,17 @@ RSpec.describe Vendor, type: :model do
     let(:vendor) { create(:vendor, name: 'The Second Place', primary_email: 'primary_1@mail.com') }
     let(:another_vendor) { create(:vendor, name: 'The Third Place', primary_email: 'primary_3@mail.com') }
     it do
-      expect { subject.affiliates << vendor }.to change { subject.affiliations.count }.from(0).to(1)
+      expect { subject.affiliates << vendor }
+        .to change { subject.affiliations.count }.from(0).to(1)
     end
 
     describe ':#is_affiliated_with?' do
+      before { subject.affiliates << vendor }
       it 'is expected to be respond true if affiliation exists ' do
-        subject.affiliates << vendor
         expect(vendor.is_affiliated_with?(vendor_id: subject.id)).to eq true
       end
 
       it 'is expected to be respond false if no affiliation exists ' do
-        subject.affiliates << vendor
         expect(vendor.is_affiliated_with?(vendor_id: another_vendor.id)).to eq false
       end
     end
