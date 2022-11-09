@@ -46,6 +46,11 @@ RSpec.describe 'POST /api/vendors', type: :request do
       expect(@vendor.reload.logotype.attachment).to be_an_instance_of ActiveStorage::Attachment
     end
 
+    it 'is expected to attach logotype to vendor' do
+      vendor = Vendor.last
+      expect(vendor.logotype.attachment.filename.to_s).to eq 'attachment.jpeg'
+    end
+
     it 'is expected to respond with representation of the new resource' do
       expect(response_json['vendor']['users'].count).to eq 2 # TODO: There is a system user created every time a Vendor is instantiated
     end
@@ -162,6 +167,11 @@ RSpec.describe 'POST /api/vendors', type: :request do
     it {
       expect(response).to have_http_status 201
     }
+
+    it 'is expected to attach logotype to vendor' do
+      vendor = Vendor.last
+      expect(vendor.logotype.attachment.filename.to_s).to eq 'attachment.jpeg'
+    end
 
     it 'is expected to respond with representation of the new resource' do
       expect(response_json['vendor']['users'].count).to eq 2 # TODO: There is a system user created every time a Vendor is instantiated
