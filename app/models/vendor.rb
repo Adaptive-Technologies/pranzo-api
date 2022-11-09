@@ -47,7 +47,6 @@ class Vendor < ApplicationRecord
     save
   end
 
-
   private
 
   def create_system_user

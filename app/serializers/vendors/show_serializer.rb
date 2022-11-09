@@ -7,7 +7,7 @@ class Vendors::ShowSerializer < ActiveModel::Serializer
   has_many :addresses, serializer: Addresses::ShowSerializer
 
   def logotype
-    return unless object.logotype
+    return unless object.logotype.attached?
 
     if Rails.env.test?
       rails_blob_path(object.logotype, only_path: true)
