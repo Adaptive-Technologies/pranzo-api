@@ -47,7 +47,7 @@ class Vendor < ApplicationRecord
     save
   end
 
-  
+
   private
 
   def create_system_user
@@ -56,8 +56,9 @@ class Vendor < ApplicationRecord
       name: "#{name} (System User)",
       role: 'system_user',
       vendor: self
-    )
-    system_user.save(validate: false)
+      )
+      system_user.save(validate: false)
+      self.reload
   end
 
   def update_system_user
@@ -68,6 +69,6 @@ class Vendor < ApplicationRecord
   def valvat
     self.vat_id = Valvat::Utils.normalize(vat_id)
     data = Valvat.new(vat_id).exists?(detail: true)
-    legal_name = data[:name]
+    self.legal_name = data[:name]
   end
 end

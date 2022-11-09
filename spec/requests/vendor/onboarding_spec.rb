@@ -1,6 +1,8 @@
 RSpec.describe 'ONBOARDING FLOW - Integration', type: :request do
   let(:headers) { { HTTP_ACCEPT: 'application/json' } }
-
+  let(:logotype) do
+    File.read(fixture_path + '/files/logotype.txt')
+  end
   it '' do
     puts 'Step 1: Creating a personal account'
     post '/auth',
@@ -24,7 +26,8 @@ RSpec.describe 'ONBOARDING FLOW - Integration', type: :request do
              name: 'The Other Restaurant',
              description: 'The best food in this shithole town....',
              primary_email: user.email,
-             vat_id: 'DE259597697'
+             vat_id: 'DE259597697',
+             logotype: logotype,
            }
          },
          headers: valid_auth_headers

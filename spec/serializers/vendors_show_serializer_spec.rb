@@ -16,21 +16,4 @@ describe Vendors::ShowSerializer do
     expected_keys = %w[id name legal_name description primary_email vat_id logotype affiliates users addresses]
     expect(subject['vendor'].keys).to match expected_keys
   end
-
-  it 'is expected to have a specific structure' do
-    expect(subject).to match(
-      'vendor' => {
-        'id' => an_instance_of(Integer),
-        'name' => an_instance_of(String),
-        'legal_name' => an_instance_of(String),
-        'description' => an_instance_of(String),
-        'primary_email' => a_string_including('@'),
-        'vat_id' => an_instance_of(String),
-        'logotype' => an_instance_of(String),
-        'users' => an_instance_of(Array),
-        'addresses' => an_instance_of(Array),
-        'affiliates' => an_instance_of(Array)
-      }
-    )
-  end
 end
