@@ -1,11 +1,11 @@
 module DecodeService
-  def self.attach_image(file, target)
+  def self.attach_image(file, target, attribute)
     image = split_base64_string(file)
     decoded_data = Base64.decode64(image[:data])
     io = StringIO.new
     io.puts(decoded_data)
     io.rewind
-    target.file.attach(io: io, filename: "attachment.#{image[:extension]}")
+    target.method(attribute.to_sym).call.attach(io: io, filename: "attachment.#{image[:extension]}")
   end
 
   def self.split_base64_string(string)

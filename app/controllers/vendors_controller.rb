@@ -6,7 +6,7 @@ class VendorsController < ApplicationController
   def create
     vendor = current_user && !current_user.admin? ? current_user.create_vendor(vendor_params.merge(users: [current_user])) : Vendor.create(vendor_params)
     params[:user] ? user_create(vendor) : current_user.update(vendor: vendor)
-    if vendor.persisted?
+    if vendor.persisted? && DecodeService.attach_image(params[:vendor][:logotype], vendor, 'logotype')
       vendor.reload
       render json: vendor, serializer: Vendors::ShowSerializer, status: 201
     else
@@ -22,6 +22,7 @@ class VendorsController < ApplicationController
   def update
     vendor = Vendor.find(params[:id])
     vendor.update(vendor_params)
+    DecodeService.attach_image(params[:vendor][:logotype], vendor, 'logotype') if params[:vendor][:logotype]
     render json: vendor, serializer: Vendors::ShowSerializer
   end
 

@@ -2,6 +2,9 @@
 
 RSpec.describe 'POST /api/vendors', type: :request do
   let!(:existing_user) { create(:user, email: 'existing_user@mail.com') }
+  let(:logotype) do
+    File.read(fixture_path + '/files/logotype.txt')
+  end
   describe 'with valid attributes and address' do # Not a valid use case
     before do
       post '/api/vendors',
@@ -10,7 +13,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
                name: 'The Restaurant',
                description: 'The best food in this shithole town....',
                primary_email: 'the_restaurant@mail.com',
-               vat_id: "DE259597697",
+               vat_id: 'DE259597697',
+               logotype: logotype,
                addresses_attributes: [{
                  street: 'High Street 190',
                  post_code: '90900',
@@ -31,11 +35,16 @@ RSpec.describe 'POST /api/vendors', type: :request do
              }
            },
            headers: {}
+      @vendor = Vendor.last
     end
 
     it {
       expect(response).to have_http_status 201
     }
+
+    it 'is expected to attach logotype' do
+      expect(@vendor.reload.logotype.attachment).to be_an_instance_of ActiveStorage::Attachment
+    end
 
     it 'is expected to respond with representation of the new resource' do
       expect(response_json['vendor']['users'].count).to eq 2 # TODO: There is a system user created every time a Vendor is instantiated
@@ -89,7 +98,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
   # end
 
   describe 'Created by a Superadmin (TODO: this is with flaws!)' do
-    let(:admin) { create(:user, role: 'admin')}
+    let(:admin) { create(:user, role: 'admin') }
     let(:credentials) { admin.create_new_auth_token }
     let(:valid_auth_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
     before do
@@ -99,7 +108,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
                name: 'The Restaurant',
                description: 'The best food in this shithole town....',
                primary_email: 'the_restaurant@mail.com',
-               vat_id: 'DE259597697'
+               vat_id: 'DE259597697',
+               logotype: logotype
              },
              user: {
                name: 'Existing User',
@@ -142,7 +152,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
                name: 'The Other Restaurant',
                description: 'The best food in this shithole town....',
                primary_email: 'the_restaurant@mail.com',
-               vat_id: 'DE259597697'
+               vat_id: 'DE259597697',
+               logotype: logotype
              }, user: {}
            },
            headers: valid_auth_headers
@@ -161,11 +172,9 @@ RSpec.describe 'POST /api/vendors', type: :request do
     end
 
     it 'is expected to save vendor in database' do
-      expect(Vendor.last.name).to eq 'The Other Restaurant' 
+      expect(Vendor.last.name).to eq 'The Other Restaurant'
     end
   end
-
-
 
   describe 'with primary_email same as user.email' do
     let(:credentials) { existing_user.create_new_auth_token }
@@ -177,7 +186,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
                name: 'The Other Restaurant',
                description: 'The best food in this shithole town....',
                primary_email: existing_user.email,
-               vat_id: 'DE259597697'
+               vat_id: 'DE259597697',
+               logotype: logotype
              }, user: {}
            },
            headers: valid_auth_headers
@@ -188,7 +198,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
     }
 
     it 'is expected to respond with representation of the new resource' do
-      expect(response_json['vendor']['users'].count).to eq 1 
+      expect(response_json['vendor']['users'].count).to eq 1
     end
 
     it 'is expected to have associated users' do
@@ -196,7 +206,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
     end
 
     it 'is expected to save vendor in database' do
-      expect(Vendor.last.name).to eq 'The Other Restaurant' 
+      expect(Vendor.last.name).to eq 'The Other Restaurant'
     end
   end
 end
