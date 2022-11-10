@@ -2,6 +2,9 @@
 
 RSpec.describe CustomCardGenerator do
   let(:vendor) { create(:vendor, name: 'Lerjedalens Spis & Bar') }
+  let(:logotype) do
+    File.read(fixture_path + '/files/logotype.txt')
+  end
   let(:user) { create(:user, vendor: vendor) }
   let(:pdf) do
     file = File.open(subject.path)
@@ -9,6 +12,11 @@ RSpec.describe CustomCardGenerator do
   end
 
   describe 'with a valid voucher' do
+    before do
+      vendor.logotype.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'spis_och_bar_white.png')),
+      filename: "logo_#{vendor.name.downcase.parameterize(separator: '_')}.png",
+      content_type: 'image/png')
+    end
     context 'swedish version' do
       describe 'of variant :servings' do
         let(:servings_voucher) { create(:servings_voucher, value: 10, issuer: user) }

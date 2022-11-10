@@ -2,6 +2,7 @@
 
 require 'padded_box'
 require 'nokogiri'
+require 'open-uri'
 class CustomCardGenerator < Prawn::Document
   attr_reader :path
 
@@ -15,6 +16,7 @@ class CustomCardGenerator < Prawn::Document
       bottom_margin: 5,
       left_margin: 0, right_margin: 10
     })
+    @vendor = voucher.vendor
     @voucher = voucher
     @variant = variant
     @path = nil
@@ -120,18 +122,25 @@ class CustomCardGenerator < Prawn::Document
       box_position = top_placement(orientation, 190, '-', 1, '-')
     end
     if branding == true
-
       padded_box(box_position, 5, width: 200, height: 50) do
-        font 'Gotham'
+        if @vendor.logotype.attached?
+          logo = open(@vendor.logotype_path)
+          image = Cairo::ImageSurface.from_png logo
+          width = image.width
+          fit_width = width.between?(700, 1200) ? width / 12.5 : width / 20
+          image logo, position: orientation, vposition: :top, fit: [fit_width, 150]
+        else
+          # binding.pry
+          font 'Gotham'
 
-        fill_color @branding_color
-        text @voucher.vendor.name.upcase, size: 10, align: orientation,
-                                          style: :normal, leading: -5, character_spacing: 0.5
+          fill_color @branding_color
+          text @voucher.vendor.name.upcase, size: 10, align: orientation,
+                                            style: :normal, leading: -5, character_spacing: 0.5
+        end
       end
 
       move_up 30
-      # indent(orientation == :left ? 20 : 0) do
-      # end
+
     end
     # if branding == 'bocado'
     #   move_up 15

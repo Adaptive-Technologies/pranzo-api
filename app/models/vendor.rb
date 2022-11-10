@@ -47,6 +47,14 @@ class Vendor < ApplicationRecord
     save
   end
 
+  def logotype_path
+    if Rails.env.test?
+      ActiveStorage::Blob.service.path_for(logotype.key)
+    else
+      ActiveStorage::Blob.service.url(logotype.key, expires_in: 1.hour, disposition: 'inline', filename: logotype.attachment.filename, content_type: 'image/png')
+    end
+  end
+
   private
 
   def create_system_user
