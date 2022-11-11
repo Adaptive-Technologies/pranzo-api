@@ -124,7 +124,7 @@ class CustomCardGenerator < Prawn::Document
     if branding == true
       padded_box(box_position, 5, width: 200, height: 50) do
         if @vendor.logotype.attached?
-          logo = Rails.env.test? ? open(@vendor.logotype_path) : @vendor.logotype.download
+          logo = Rails.env.test? ? open(@vendor.logotype_path) : URI.open(@vendor.logotype_path)
           image = Cairo::ImageSurface.from_png logo
           width = image.width
           fit_width = width.between?(700, 1200) ? width / 12.5 : width / 20
