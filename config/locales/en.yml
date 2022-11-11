@@ -14,7 +14,7 @@ en:
     missing: "You have to provide a vendor"
   voucher:
     title:
-      servings: "LUNCH CARD"
+      servings: "PUNCH CARD"
       cash: "GIFT CARD"
     value: "VALUE"
     code: "Code:"

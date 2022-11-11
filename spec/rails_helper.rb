@@ -68,6 +68,8 @@ RSpec.configure do |config|
     I18n.locale = :en
     @stripe_test_helper = StripeMock.create_test_helper
     StripeMock.start
+    WebMock.disable_net_connect! allow: /\Ahttps:\/\/pranzo.se/
+
     allow(SecureRandom).to receive(:alphanumeric)
       .with(5)
       .and_return('12345')

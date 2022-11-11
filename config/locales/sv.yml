@@ -14,7 +14,7 @@ sv:
     missing: "Du måste ange ett företag"
   voucher:
     title:
-      servings: 'LUNCH KORT'
+      servings: 'KLIPP KORT'
       cash: 'PRESENT KORT'
     value: 'VÄRDE'
     code: 'Kod:'

@@ -13,7 +13,7 @@ RSpec.describe CustomCardGenerator do
 
   describe 'with a valid voucher' do
     before do
-      vendor.logotype.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'spis_och_bar_white.png')),
+      vendor.logotype.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'bjorsjoas_logo_old_black.png')),
       filename: "logo_#{vendor.name.downcase.parameterize(separator: '_')}.png",
       content_type: 'image/png')
     end
@@ -29,7 +29,7 @@ RSpec.describe CustomCardGenerator do
 
           it 'is expected to contain voucher data' do
             expect(pdf.strings)
-              .to include('LUNCHKORT')
+              .to include('KLIPPKORT')
               .and include('Kod: 12345')
               .and include('VÄRDE 10')
           end
@@ -45,7 +45,7 @@ RSpec.describe CustomCardGenerator do
           it 'is expected to contain voucher data' do
             # binding.pry
             expect(pdf.strings)
-              .to include('LUNCH')
+              .to include('KLIPP')
               .and include('KORT')
               .and include('KOD: 12345')
               .and include('VÄRDE')
@@ -55,7 +55,7 @@ RSpec.describe CustomCardGenerator do
       end
 
       describe 'of variant :cash' do
-        let(:cash_voucher) { create(:cash_voucher, value: 200, issuer: user) }
+        let(:cash_voucher) { create(:cash_voucher, value: 1000, issuer: user) }
         context 'using design 1' do
           subject { described_class.new(cash_voucher, true, 1, :sv) }
 
@@ -67,7 +67,7 @@ RSpec.describe CustomCardGenerator do
             expect(pdf.strings)
               .to include('PRESENTKORT')
               .and include('Kod: 12345')
-              .and include('VÄRDE 200SEK')
+              .and include('VÄRDE 1000SEK')
           end
         end
 
@@ -90,7 +90,7 @@ RSpec.describe CustomCardGenerator do
         end
 
         context 'using design 3' do
-          let!(:cash_voucher) { create(:cash_voucher, value: 200, issuer: user) }
+          let!(:cash_voucher) { create(:cash_voucher, value: 1000, issuer: user) }
           subject { described_class.new(cash_voucher, true, 3, :sv) }
 
           it {
@@ -103,7 +103,7 @@ RSpec.describe CustomCardGenerator do
               .and include('KORT')
               .and include('KOD: 12345')
               .and include('SEK')
-              .and include('200')
+              .and include('1000')
           end
         end
       end
@@ -121,7 +121,7 @@ RSpec.describe CustomCardGenerator do
 
           it 'is expected to contain voucher data' do
             expect(pdf.strings)
-              .to include('LUNCHCARD')
+              .to include('PUNCH CARD')
               .and include('Code: 12345')
               .and include('VALUE 10')
           end
@@ -135,7 +135,7 @@ RSpec.describe CustomCardGenerator do
 
           it 'is expected to contain voucher data' do
             expect(pdf.strings)
-              .to include('LUNCH')
+              .to include('PUNCH')
               .and include('CARD')
               .and include('CODE: 12345')
               .and include('VALUE')
@@ -155,7 +155,7 @@ RSpec.describe CustomCardGenerator do
 
           it 'is expected to contain voucher data' do
             expect(pdf.strings)
-              .to include('GIFTCARD')
+              .to include('GIFT CARD')
               .and include('Code: 12345')
               .and include('VALUE 200SEK')
           end

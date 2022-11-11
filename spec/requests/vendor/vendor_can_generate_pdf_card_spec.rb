@@ -26,7 +26,7 @@ RSpec.describe 'POST /api/vendors/:vendor_id/vouchers/:voucher_id/generate_card'
     
     it 'is expected to have content based on voucher data' do
       expect(pdf.strings)
-        .to include('LUNCHKORT')
+        .to include('KLIPPKORT')
         .and include('Kod: 12345')
         .and include('VÄRDE 10')
     end

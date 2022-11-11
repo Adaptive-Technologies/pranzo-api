@@ -20,6 +20,7 @@ class CustomCardGenerator < Prawn::Document
     @voucher = voucher
     @variant = variant
     @path = nil
+    @locale = locale
     font_families.update(
       'Gotham' => { bold: "#{Rails.root}/lib/assets/fonts/Gotham-Bold.ttf",
                     normal: "#{Rails.root}/lib/assets/fonts/Gotham-Medium.ttf",
@@ -124,7 +125,8 @@ class CustomCardGenerator < Prawn::Document
     if branding == true
       padded_box(box_position, 5, width: 200, height: 50) do
         if @vendor.logotype.attached?
-          logo = Rails.env.test? ? open(@vendor.logotype_path) : URI.open(@vendor.logotype_path)
+          # logo = Rails.env.test? ? open(@vendor.logotype_path) : URI.open(@vendor.logotype_path)
+          logo = URI.open('https://pranzo.se/bjorsjoas_logo_old_black.png')
           image = Cairo::ImageSurface.from_png logo
           width = image.width
           fit_width = width.between?(700, 1200) ? width / 12.5 : width / 20
@@ -169,7 +171,13 @@ class CustomCardGenerator < Prawn::Document
     fill_color @sub_header_color
     font 'Gotham'
     move_down 35
-    text I18n.t("voucher.title.#{@voucher.variant}").gsub(' ', ''), size: 16, style: :normal, align: :center
+    header = if @locale == (:sv || 'sv')
+               I18n.t("voucher.title.#{@voucher.variant}").gsub(' ',
+                                                                '')
+             else
+               I18n.t("voucher.title.#{@voucher.variant}")
+             end
+    text header, size: 16, style: :normal, align: :center
 
     text "#{I18n.t('voucher.value')} #{value_display}", size: 12, style: :light, align: :center
   end
@@ -196,11 +204,11 @@ class CustomCardGenerator < Prawn::Document
   def card_value_side_aligned(orientation)
     case orientation
     when :left
-      box_position = top_placement(orientation, 65, '+', 50, '-')
+      box_position = top_placement(orientation, 55, '+', 50, '-')
     when :right
       box_position = top_placement(orientation, 100, '-', 50, '-')
     end
-    padded_box(box_position, 5, width: 75, height: 45) do
+    padded_box(box_position, 5, width: 85, height: 45) do
       fill_color @sub_header_color
       font 'Gotham'
 
