@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'POST /auth/sign_in', type: :request do
-  let(:user) { create(:user, role: 'consumer') }
+  let!(:user) { create(:user) }
   let(:user_credentials) { user.create_new_auth_token }
   let(:user_headers) do
     { HTTP_ACCEPT: 'application/json' }.merge!(user_credentials)
@@ -13,12 +13,12 @@ RSpec.describe 'POST /auth/sign_in', type: :request do
         'data' => { 'email' => user.email,
                     'provider' => 'email',
                     'uid' => user.email,
-                    'id' => 9596,
+                    'id' => user.id,
                     'allow_password_change' => true,
                     'name' => user.name,
                     'role' => 'consumer',
-                    'created_at' =>user.created_at.as_json,
-                    'updated_at' =>user.updated_at.as_json,
+                    'created_at' => user.created_at.as_json,
+                    'updated_at' => user.updated_at.as_json,
                     'vendor_id' => nil } }
     end
 
@@ -28,14 +28,19 @@ RSpec.describe 'POST /auth/sign_in', type: :request do
                     password: 'new_password',
                     password_confirmation: 'new_password' },
           headers: user_headers
+      user.reload
     end
 
     it 'is expected to return a 200 response status' do
       expect(response).to have_http_status 200
     end
-    
+
     it 'is expected to return expected response' do
       expect(response_json).to eq expected_response
+    end
+
+    it 'is expected to update password' do
+      expect(user.valid_password?('new_password')).to eq true
     end
   end
 
