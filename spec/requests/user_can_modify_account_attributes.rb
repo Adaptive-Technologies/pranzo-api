@@ -45,7 +45,7 @@ RSpec.describe 'POST /auth', type: :request do
       end
     end
 
-    describe 'withour current password' do
+    describe 'without current password' do
       let(:expected_response) do
         { 'status' => 'error',
           'errors' => { 'current_password' => ["can't be blank"],
@@ -72,6 +72,60 @@ RSpec.describe 'POST /auth', type: :request do
         expect(user.valid_password?('old_password')).to eq true
       end
     end
-  end
 
+    describe 'with wrong current password' do
+      let(:expected_response) do
+        { 'status' => 'error',
+          'errors' => { 'current_password' => ['is invalid'], 'full_messages' => ['Current password is invalid'] } }
+      end
+      before do
+        put '/auth',
+            params: { current_password: 'wrong_password',
+                      password: 'new_password',
+                      password_confirmation: 'new_password' },
+            headers: user_headers
+        user.reload
+      end
+
+      it 'is expected to return a 422 response status' do
+        expect(response).to have_http_status 422
+      end
+
+      it 'is expected to return expected response' do
+        expect(response_json).to eq expected_response
+      end
+
+      it 'is expected to keep password' do
+        expect(user.valid_password?('old_password')).to eq true
+      end
+    end
+
+    describe 'with wrong current password' do
+      let(:expected_response) do
+        { 'status' => 'error',
+          'errors' => { 'password_confirmation' => ["doesn't match Password"],
+                        'full_messages' => ["Password confirmation doesn't match Password"] } }
+      end
+      before do
+        put '/auth',
+            params: { current_password: 'old_password',
+                      password: 'new_password',
+                      password_confirmation: 'wrong_new_password' },
+            headers: user_headers
+        user.reload
+      end
+
+      it 'is expected to return a 422 response status' do
+        expect(response).to have_http_status 422
+      end
+
+      it 'is expected to return expected response' do
+        expect(response_json).to eq expected_response
+      end
+
+      it 'is expected to keep password' do
+        expect(user.valid_password?('old_password')).to eq true
+      end
+    end
+  end
 end
