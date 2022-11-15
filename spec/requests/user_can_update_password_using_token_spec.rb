@@ -38,4 +38,17 @@ RSpec.describe 'POST /auth', type: :request do
       expect(email_queue).to eq 0
     end
   end
+
+  describe 'stage 2' do
+    let!(:token) do
+      user.reset_password_token="123"
+      user.save
+      get '/auth/password/edit', params: { reset_password_token: user.reset_password_token, redirect_url: 'http://example.com/reset' }, headers: {lacale: 'sv'}
+    end
+    
+    it 'does something' do
+      binding.pry
+      
+    end
+  end
 end
