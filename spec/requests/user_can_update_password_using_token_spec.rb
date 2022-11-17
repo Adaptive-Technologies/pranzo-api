@@ -1,4 +1,4 @@
-RSpec.describe 'POST /auth', type: :request do
+RSpec.describe 'Reset Password Flow', type: :request do
   let!(:user) { create(:user, password: 'old_password') }
   let(:user_credentials) { user.create_new_auth_token }
   let(:user_headers) do
