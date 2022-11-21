@@ -64,7 +64,7 @@ Rails.application.configure do
     authentication: :plain,
     enable_starttls_auto: true
   }
-  config.action_mailer.default_url_options = { host: 'pranzo.se' }
+  config.action_mailer.default_url_options = { host: 'https://pranzo-api.fly.dev/' }
   config.action_mailer.default_options = { from: 'noreply@pranzo.se' }
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -73,6 +73,7 @@ Rails.application.configure do
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
+  # https://pranzo-api.fly.dev/auth/password/edit?config=3Ddefault&redirect_url=https://pranzo.se/auth/change-password/3DxxyLxb4j78kyoYNRkHLM
   config.i18n.fallbacks = true
 
   # Send deprecation notices to registered listeners.
