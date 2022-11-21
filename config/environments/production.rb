@@ -65,7 +65,7 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
   config.action_mailer.default_url_options = { host: 'https://pranzo-api.fly.dev/' }
-  config.action_mailer.default_options = { from: 'noreply@pranzo.se' }
+  config.action_mailer.default_options = { from: 'Pranzo - NO_REPLY <no-reply@pranzo.se>' }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
