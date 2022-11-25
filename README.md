@@ -105,3 +105,12 @@ CONSOLE:
 ```
 fly ssh console -C "/app/bin/rails console"
 ```
+
+SWISH Payments
+In order to take payments with Swidish instant payment system SWISH, we need to implement a solution based on [https://github.com/tochman/swish_api](https://github.com/tochman/swish_api)
+
+1. Mark the vendor as able to accept swish by adding an attribute
+2. Store the Vendors SWISH number
+3. Display a Button for swish payment. 
+4. open a form and input the customers phone number (or generate a QR code)
+5. once the payment clears, activate th voucher with the customer as owner. 

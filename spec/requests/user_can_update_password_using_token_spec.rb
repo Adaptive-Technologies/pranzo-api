@@ -48,7 +48,7 @@ RSpec.describe 'Reset Password Flow', type: :request do
   describe 'step 2: ' do
     let!(:token) do
       post '/auth/password', params: { email: user.email, redirect_url: 'http://example.com/reset' },
-                             headers: { lacale: 'sv' }
+                             headers: { locale: 'sv' }
       # Get the email, and get the reset password token from it
       message = email.to_s
       rpt_index = message.index('reset_password_token') + 'reset_password_token'.length + 1
@@ -56,7 +56,7 @@ RSpec.describe 'Reset Password Flow', type: :request do
       reset_password_token
     end
 
-    describe 'clickung the link in email' do
+    describe 'clicking the link in email' do
       before do
         get '/auth/password/edit',
             params: { reset_password_token: token, redirect_url: 'http://example.com/reset' },
