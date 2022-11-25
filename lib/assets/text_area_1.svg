@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 25.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Lager_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 253 85.4" style="enable-background:new 0 0 253 85.4;" xml:space="preserve">
-<style type="text/css">
+<svg version="1.1" id="Lager_1"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 253 85.4" style="enable-background:new 0 0 253 85.4;" xml:space="preserve">
+	<style type="text/css">
 	.st0{filter:url(#Sprout_Shadow_Device);}
 	.st1{fill:#FFFFFF;}
-</style>
-<filter  filterUnits="userSpaceOnUse" height="148%" id="Sprout_Shadow_Device" width="142%" x="-21%" y="-21%">
-	<feGaussianBlur  in="SourceAlpha" result="blur" stdDeviation="20"></feGaussianBlur>
-	<feOffset  dx="5" dy="20" in="blur" result="offsetBlur"></feOffset>
-	<feFlood  flood-color="#000" flood-opacity="0.3" result="offsetColor"></feFlood>
-	<feComposite  in="offsetColor" in2="offsetBlur" operator="in" result="offsetBlur"></feComposite>
-	<feMerge>
-		<feMergeNode  in="offsetBlur"></feMergeNode>
-		<feMergeNode  in="SourceGraphic"></feMergeNode>
-	</feMerge>
-</filter>
-<g id="Lager_2_2_" class="st0">
-	<g id="Lager_1-2_2_">
-		<path class="st1" d="M126.7,40.6C74.9,40.6,29,29.7,0.2,12.8v75.1h253V12.8C224.4,29.7,178.5,40.6,126.7,40.6z"/>
-	</g>
-</g>
-<g id="Lager_2_1_">
-	<g>
-		<g id="Lager_1-2_8_">
-			<path class="st1" d="M126.7,38.2c-51.8,0-97.7-10.9-126.5-27.8v75.1h253V10.3C224.4,27.2,178.4,38.2,126.7,38.2z"/>
+	</style>
+	<filter filterUnits="userSpaceOnUse" height="148%" id="Sprout_Shadow_Device" width="142%" x="-21%" y="-21%">
+		<feGaussianBlur in="SourceAlpha" result="blur" stdDeviation="20"></feGaussianBlur>
+		<feOffset dx="5" dy="20" in="blur" result="offsetBlur"></feOffset>
+		<feFlood flood-color="#000" flood-opacity="0.3" result="offsetColor"></feFlood>
+		<feComposite in="offsetColor" in2="offsetBlur" operator="in" result="offsetBlur"></feComposite>
+		<feMerge>
+			<feMergeNode in="offsetBlur"></feMergeNode>
+			<feMergeNode in="SourceGraphic"></feMergeNode>
+		</feMerge>
+	</filter>
+	<g id="Lager_2_2_" class="st0">
+		<g id="Lager_1-2_2_">
+			<path class="st1" d="M126.7,40.6C74.9,40.6,29,29.7,0.2,12.8v75.1h253V12.8C224.4,29.7,178.5,40.6,126.7,40.6z"/>
 		</g>
 	</g>
-</g>
+	<g id="Lager_2_1_">
+		<g>
+			<g id="Lager_1-2_8_">
+				<path class="st1" d="M126.7,38.2c-51.8,0-97.7-10.9-126.5-27.8v75.1h253V10.3C224.4,27.2,178.4,38.2,126.7,38.2z"/>
+			</g>
+		</g>
+	</g>
 </svg>
