@@ -14,8 +14,8 @@ RSpec.describe CustomCardGenerator do
   describe 'with a valid voucher' do
     before do
       vendor.logotype.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'bjorsjoas_logo_old_black.png')),
-      filename: "logo_#{vendor.name.downcase.parameterize(separator: '_')}.png",
-      content_type: 'image/png')
+                             filename: "logo_#{vendor.name.downcase.parameterize(separator: '_')}.png",
+                             content_type: 'image/png')
     end
     context 'swedish version' do
       describe 'of variant :servings' do
