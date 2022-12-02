@@ -11,6 +11,7 @@ gem 'async'
 gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise_token_auth'
+gem 'devise-i18n'
 gem 'geocoder'
 gem 'glib2', '~> 3.5', '>= 3.5.1', require: false
 gem 'globalize'

@@ -43,8 +43,10 @@ class Vendor < ApplicationRecord
   end
 
   def validate_vat
-    valvat
-    save
+    transaction do      
+      valvat
+      save
+    end
   end
 
   def logotype_path
