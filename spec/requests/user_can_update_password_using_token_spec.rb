@@ -5,11 +5,11 @@ RSpec.describe 'Reset Password Flow', type: :request do
     { HTTP_ACCEPT: 'application/json' }.merge!(user_credentials)
   end
   let(:expected_response) do
-    { 'success' => true,
-      'message' => "Ett email har skickats till '#{user.email}' med instruktioner för hur du skapar ett nytt lösenord." }
+    { success: true,
+      message: "Ett email har skickats till '#{user.email}' med instruktioner för hur du skapar ett nytt lösenord." }.as_json
   end
 
-  let(:missing_redirect_url_response) { { 'success' => false, 'errors' => ['Missing redirect URL.'] } }
+  let(:missing_redirect_url_response) { { success: false, errors: ['Missing redirect URL.'] }.as_json }
 
   describe 'step 1' do
     describe 'requesting a password reset' do
@@ -61,19 +61,19 @@ RSpec.describe 'Reset Password Flow', type: :request do
 
     describe 'sending updated password and token' do
       let(:expected_response) do
-        { 'success' => true,
-          'data' =>
-            { 'email' => user.email,
-              'provider' => 'email',
-              'uid' => user.email,
-              'id' => user.id,
-              'allow_password_change' => false,
-              'name' => user.name,
-              'role' => 'consumer',
-              'created_at' => user.created_at.as_json,
-              'updated_at' => user.updated_at.as_json,
-              'vendor_id' => nil },
-          'message' => 'Ditt lösenord har ändrats.' }
+        { success: true,
+          data:
+            { email: user.email,
+              provider: 'email',
+              uid: user.email,
+              id: user.id,
+              allow_password_change: false,
+              name: user.name,
+              role: 'consumer',
+              created_at: user.created_at.as_json,
+              updated_at: user.updated_at.as_json,
+              vendor_id: nil },
+          message: 'Ditt lösenord har ändrats.' }.as_json
       end
       before do
         put '/auth/password',
