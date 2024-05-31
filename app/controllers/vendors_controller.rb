@@ -1,18 +1,27 @@
 # frozen_string_literal: true
 
-# This controller needs to be revisited.
-# Way to many things happening here.
 class VendorsController < ApplicationController
   after_action :attach_logotype, only: %i[create update]
-  rescue_from ActiveModel::ValidationError, with: :render_error_message
+  rescue_from ActiveRecord::RecordInvalid, with: :render_error_message
+
   def create
-    @vendor = current_user && !current_user.admin? ? current_user.create_vendor(vendor_params.merge(users: [current_user])) : Vendor.create(vendor_params)
-    params[:user] ? user_create(@vendor) : current_user.update(vendor: @vendor)
+    @vendor = if current_user && !current_user.admin?
+                current_user.create_vendor(vendor_params.merge(users: [current_user]))
+              else
+                Vendor.create!(vendor_params)
+              end
+
+    if params[:user]
+      user_create(@vendor)
+    else
+      current_user.update!(vendor: @vendor)
+    end
+
     if @vendor.persisted?
       @vendor.reload
-      render json: @vendor, serializer: Vendors::ShowSerializer, status: 201
+      render json: @vendor, serializer: Vendors::ShowSerializer, status: :created
     else
-      raise ActiveModel::ValidationError, vendor
+      render_error_message(@vendor)
     end
   end
 
@@ -23,44 +32,35 @@ class VendorsController < ApplicationController
 
   def update
     @vendor = Vendor.find(params[:id])
-    @vendor.update(vendor_params)
+    @vendor.update!(vendor_params)
     render json: @vendor, serializer: Vendors::ShowSerializer
   end
 
   private
 
   def vendor_params
-    params.require(:vendor)
-          .permit(
-            :name,
-            :description,
-            :primary_email,
-            :vat_id,
-            addresses_attributes: %i[street post_code city country]
-          )
+    params.require(:vendor).permit(:name, :vat_id, :description, :primary_email, :logotype, addresses_attributes: [:id, :street, :city, :country, :_destroy])
   end
 
   def user_params
-    if params[:user]
-      params.require(:user)
-            .permit(:name, :email, :password, :password_confirmation)
-    end
+    params.require(:user).permit(:name, :email, :password, :password_confirmation) if params[:user]
   end
 
   def attach_logotype
-    DecodeService.attach_image(params[:vendor][:logotype], @vendor, 'logotype') if params[:vendor][:logotype]
+    logotype_param = params.dig(:vendor, :logotype)
+    return unless logotype_param.present?
+
+    DecodeService.attach_image(logotype_param, @vendor, 'logotype')
   end
 
   def user_create(vendor)
     user = User.find_or_create_by(email: user_params[:email]) do |instance|
       instance.update(user_params)
     end
-    user.vendor = vendor
-    user.save
-    raise ActiveModel::ValidationError, user if user.invalid?
+    user.update!(vendor: vendor)
   end
 
   def render_error_message(exception)
-    render json: { message: exception.model.errors.full_messages.to_sentence }, status: 422
+    render json: { message: exception.record.errors.full_messages.to_sentence }, status: :unprocessable_entity
   end
 end

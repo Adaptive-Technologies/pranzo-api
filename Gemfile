@@ -38,6 +38,8 @@ gem 'validate_url'
 gem 'valvat'
 gem 'gio2', '~> 4.2'
 # gem 'gio2', '~> 3.5', '>= 3.5.1'
+gem 'sidekiq'
+gem "sidekiq-cron"
 
 group :development, :test do
   gem 'capybara-email', '~> 3.0', '>= 3.0.2'
@@ -63,3 +65,5 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1'
 end
+
+gem "dockerfile-rails", ">= 1.6", :group => :development

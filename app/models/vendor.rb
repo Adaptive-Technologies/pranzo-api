@@ -13,37 +13,29 @@ class Vendor < ApplicationRecord
   has_many :affiliates, through: :affiliations
   has_many :transactions, through: :vouchers
 
-  validates_presence_of %i[name vat_id primary_email]
+  validates_presence_of :name, :vat_id, :primary_email
   validates_uniqueness_of :name
-
   validates :vat_id, valvat: true
-  before_validation :valvat, if: proc { new_record? }
 
-  after_save :create_system_user, unless: proc { users.pluck(:email).include? primary_email }
-  after_update :update_system_user, if: proc {
-                                          users.pluck(:email).include? primary_email && saved_change_to_attribute?(:primary_email) or saved_change_to_attribute?(:name)
-                                        }
+  before_validation :normalize_vat_id, if: :new_record?
+  before_validation :set_legal_name, if: :vat_id_changed?
+  after_save :create_or_update_system_user
+  after_update :persist_legal_name, if: :saved_change_to_vat_id?
 
   def system_user
     User.system_user.where(vendor: self).first
   end
 
   def is_affiliated_with?(args)
-    affiliation = Affiliation.find_by(vendor_id: args[:vendor_id], affiliate_id: id)
-    affiliation ? true : false
+    Affiliation.exists?(vendor_id: args[:vendor_id], affiliate_id: id)
   end
 
   def affiliated_vouchers
-    vouchers = []
-    affiliations = Affiliation.where(affiliate: self)
-    affiliations.each do |aff|
-      vouchers.append(aff.vendor.vouchers.where(affiliate_network: true, active: true))
-    end
-    vouchers.flatten
+    affiliations.includes(vendor: :vouchers).flat_map { |aff| aff.vendor.vouchers.where(affiliate_network: true, active: true) }
   end
 
   def validate_vat
-    transaction do      
+    transaction do
       valvat
       save
     end
@@ -53,31 +45,28 @@ class Vendor < ApplicationRecord
     if Rails.env.test?
       ActiveStorage::Blob.service.path_for(logotype.key)
     else
-      ActiveStorage::Blob.service.url(logotype.key, expires_in: 1.hour, disposition: 'inline', filename: logotype.attachment.filename, content_type: 'image/png')
+      ActiveStorage::Blob.service.url(logotype.key, expires_in: 1.hour, disposition: 'inline', filename: logotype.filename.to_s, content_type: 'image/png')
     end
   end
 
   private
 
-  def create_system_user
-    system_user = User.new(
-      email: primary_email,
-      name: "#{name} (System User)",
-      role: 'system_user',
-      vendor: self
-      )
-      system_user.save(validate: false)
-      self.reload
+  def create_or_update_system_user
+    system_user = User.system_user.find_or_initialize_by(vendor: self)
+    system_user.assign_attributes(email: primary_email, name: "#{name} (System User)", role: 'system_user')
+    system_user.save(validate: false)
   end
 
-  def update_system_user
-    user = saved_change_to_attribute?(:primary_email) ? User.find_by(email: primary_email_previously_was) : User.find_by(email: primary_email)
-    user.update(name: "#{name} (System User)", email: primary_email)
-  end
-
-  def valvat
+  def normalize_vat_id
     self.vat_id = Valvat::Utils.normalize(vat_id)
+  end
+
+  def set_legal_name
     data = Valvat.new(vat_id).exists?(detail: true)
-    self.legal_name = data[:name]
+    self.legal_name = data[:name] if data
+  end
+
+  def persist_legal_name
+    save if legal_name_changed?
   end
 end

@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "mjml": "^4.13.0",
+    "mjml": "^4.15.3",
     "mjml-qr-code": "^2.0.1"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }

@@ -1,6 +1,10 @@
 module DecodeService
   def self.attach_image(file, target, attribute)
+    return unless file.is_a?(String) && file.start_with?('data:')
+
     image = split_base64_string(file)
+    return if image[:data].blank?
+
     decoded_data = Base64.decode64(image[:data])
     io = StringIO.new
     io.puts(decoded_data)

@@ -1,0 +1,66 @@
+app = 'pranzo-api'
+primary_region = 'arn'
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
+console_command = '/rails/bin/rails console'
+
+
+[[processes]]
+  name = "web"
+  command = "bundle exec puma -C config/puma.rb"
+
+[[processes]]
+  name = "worker"
+  command = "bundle exec sidekiq -C config/sidekiq.yml"
+
+[experimental]
+  auto_rollback = true
+
+[build]
+
+[deploy]
+  release_command = 'bin/rails fly:release'
+
+[env]
+  PORT = '8080'
+  RAILS_MASTER_KEY = '5e9bacb8557b00fe153871ded879dfff'
+
+
+
+[[services]]
+  http_checks = []
+  internal_port = 3000
+  protocol = "tcp"
+  processes = ["web"] # Specify that this service routes to the "web" process
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 2
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 200
+    soft_limit = 190
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 2
+
+[[statics]]
+  guest_path = '/rails/public'
+  url_prefix = '/'
