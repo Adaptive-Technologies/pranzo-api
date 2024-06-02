@@ -132,7 +132,6 @@ class CustomCardGenerator < Prawn::Document
           fit_width = width.between?(700, 1200) ? width / 12.5 : width / 20
           image logo, position: orientation, vposition: :top, fit: [fit_width, 150]
         else
-          # binding.pry
           font 'Gotham'
 
           fill_color @branding_color

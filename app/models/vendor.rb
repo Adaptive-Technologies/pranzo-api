@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Vendor < ApplicationRecord
   attr_accessor :legal_address
 
@@ -31,7 +29,13 @@ class Vendor < ApplicationRecord
   end
 
   def affiliated_vouchers
-    affiliations.includes(vendor: :vouchers).flat_map { |aff| aff.vendor.vouchers.where(affiliate_network: true, active: true) }
+    Voucher.joins(issuer: { vendor: :affiliations })
+           .where(
+             affiliations: { affiliate_id: id },
+             affiliate_network: true,
+             active: true
+           )
+           .distinct
   end
 
   def validate_vat
@@ -52,9 +56,22 @@ class Vendor < ApplicationRecord
   private
 
   def create_or_update_system_user
-    system_user = User.system_user.find_or_initialize_by(vendor: self)
-    system_user.assign_attributes(email: primary_email, name: "#{name} (System User)", role: 'system_user')
-    system_user.save(validate: false)
+    existing_user = User.find_by(email: primary_email)
+    
+    if existing_user && existing_user.vendor != self
+      # Handle case where existing user is not associated with this vendor
+      # Raise an error or handle appropriately
+      errors.add(:primary_email, 'is already taken by another vendor')
+      return false
+    end
+  
+    system_user = User.system_user.find_or_initialize_by(email: primary_email)
+    system_user.assign_attributes(
+      vendor: self,
+      name: "#{name} (System User)",
+      role: 'system_user'
+    )
+    system_user.save!
   end
 
   def normalize_vat_id

@@ -13,11 +13,14 @@ class VouchersController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :voucher_not_found
 
   def index
-    vouchers = if current_user.admin?
-                 Voucher.all
-               else
-                 current_user.vendor.affiliated_vouchers ? current_user.vendor.vouchers.to_a.append(current_user.vendor.affiliated_vouchers).flatten : current_user.vendor.vouchers
-               end
+    if current_user.admin?
+      vouchers = Voucher.all
+    else
+      vendor_vouchers = current_user.vendor.vouchers
+      affiliated_vouchers = current_user.vendor.affiliated_vouchers
+      vouchers = vendor_vouchers + affiliated_vouchers
+    end
+  
     if vouchers.any?
       render json: vouchers, each_serializer: Vouchers::ShowSerializer
     else

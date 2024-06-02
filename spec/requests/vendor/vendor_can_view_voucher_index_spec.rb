@@ -46,17 +46,20 @@ RSpec.describe 'GET /api/vendors/:vendor_id/vouchers', type: :request do
     end
   end
 
-  describe 'without affiliation' do
-    let!(:affiliation) { another_vendor.affiliates << vendor }
-
+  describe 'with affiliation' do
+    let!(:affiliation) { Affiliation.create(vendor: another_vendor, affiliate: vendor) }
+  
     before do
+      vendor.reload  # Ensure vendor is loaded correctly
+      another_vendor.reload  # Ensure another_vendor is loaded correctly
       get "/api/vendors/#{vendor.id}/vouchers",
           headers: valid_auth_headers_for_vendor_user
     end
+  
     it {
       expect(response).to have_http_status 200
     }
-
+  
     it 'is expected to include collection of vouchers' do
       expect(response_json['vouchers'].count).to eq 15
     end

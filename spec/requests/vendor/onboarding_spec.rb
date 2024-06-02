@@ -1,7 +1,7 @@
 RSpec.describe 'ONBOARDING FLOW - Integration', type: :request do
   let(:headers) { { HTTP_ACCEPT: 'application/json' } }
   let(:logotype) do
-    File.read(fixture_path + '/files/logotype.txt')
+    fixture_file_upload(fixture_path + '/files/logotype.txt')
   end
   it '' do
     puts 'Step 1: Creating a personal account'

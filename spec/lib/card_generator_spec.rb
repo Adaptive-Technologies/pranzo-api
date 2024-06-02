@@ -3,7 +3,7 @@
 RSpec.describe CustomCardGenerator do
   let(:vendor) { create(:vendor, name: 'Lerjedalens Spis & Bar') }
   let(:logotype) do
-    File.read(fixture_path + '/files/logotype.txt')
+    fixture_file_upload(fixture_path + '/files/logotype.txt')
   end
   let(:user) { create(:user, vendor: vendor) }
   let(:pdf) do
@@ -43,7 +43,6 @@ RSpec.describe CustomCardGenerator do
           }
 
           it 'is expected to contain voucher data' do
-            # binding.pry
             expect(pdf.strings)
               .to include('KLIPP')
               .and include('KORT')

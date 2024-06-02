@@ -2,8 +2,11 @@
 
 RSpec.describe 'POST /api/vendors', type: :request do
   let!(:existing_user) { create(:user, email: 'existing_user@mail.com') }
+  let(:credentials) { existing_user.create_new_auth_token }
+  let(:valid_auth_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
+
   let(:logotype) do
-    File.read(fixture_path + '/files/logotype.txt')
+    fixture_file_upload(fixture_path + '/files/logotype.txt')
   end
   describe 'with valid attributes and address' do # Not a valid use case
     before do
@@ -34,7 +37,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
                password_confirmation: 'password'
              }
            },
-           headers: {}
+           headers: valid_auth_headers
       @vendor = Vendor.last
     end
 
@@ -47,28 +50,27 @@ RSpec.describe 'POST /api/vendors', type: :request do
     end
 
     it 'is expected to attach logotype to vendor' do
-      vendor = Vendor.last
-      expect(vendor.logotype.attachment.filename.to_s).to eq 'attachment.jpeg'
+      expect(@vendor.reload.logotype.attachment.filename.to_s).to eq 'attachment.jpeg'
     end
 
     it 'is expected to respond with representation of the new resource' do
-      expect(response_json['vendor']['users'].count).to eq 2 # TODO: There is a system user created every time a Vendor is instantiated
+      expect(response_json['vendor']['users'].count).to eq 2 
     end
 
     it 'is expected to have associated users' do
-      expect(Vendor.last.users.count).to eq 2
+      expect(@vendor.users.count).to eq 2
     end
 
     it 'is expected to save vendor in database' do
-      expect(Vendor.last.name).to eq 'The Restaurant'
+      expect(@vendor.name).to eq 'The Restaurant'
     end
 
     it 'is expected to save vendor address in database' do
-      expect(Vendor.last.addresses.first.street).to eq 'High Street 190'
+      expect(@vendor.addresses.first.street).to eq 'High Street 190'
     end
 
     it 'is expected to save all vendor addresses in database' do
-      expect(Vendor.last.addresses.count).to eq 2
+      expect(@vendor.addresses.count).to eq 2
     end
   end
 
@@ -131,7 +133,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
     }
 
     it 'is expected to respond with representation of the new resource' do
-      expect(response_json['vendor']['users'].count).to eq 2 # TODO: There is a system user created every time a Vendor is instantiated
+      expect(response_json['vendor']['users'].count).to eq 1
     end
 
     it 'is expected to have associated users' do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# File.read(fixture_path + '/files/logotype.txt')
 
 RSpec.describe 'PUT /api/vendors/:id', type: :request do
   let(:vendor) { create(:vendor, name: 'The Restaurant') }
@@ -6,16 +7,17 @@ RSpec.describe 'PUT /api/vendors/:id', type: :request do
   let(:credentials) { user.create_new_auth_token }
   let(:valid_auth_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
   let(:logotype) do
-    File.read(fixture_path + '/files/logotype.txt')
+    fixture_file_upload(fixture_path + '/files/logotype.txt')
   end
+
   describe '' do
     before do
       put "/api/vendors/#{vendor.id}", params: {
         vendor: {
           name: 'The New Restaurant',
           logotype: logotype,
-        }, headers: {}
-      }
+        }
+      }, headers: valid_auth_headers
     end
 
     it {
@@ -38,3 +40,5 @@ RSpec.describe 'PUT /api/vendors/:id', type: :request do
     end
   end
 end
+
+

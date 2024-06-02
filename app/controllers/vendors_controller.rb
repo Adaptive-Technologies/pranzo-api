@@ -39,7 +39,10 @@ class VendorsController < ApplicationController
   private
 
   def vendor_params
-    params.require(:vendor).permit(:name, :vat_id, :description, :primary_email, :logotype, addresses_attributes: [:id, :street, :city, :country, :_destroy])
+    params.require(:vendor).permit(
+      :name, :vat_id, :description, :primary_email, :logotype,
+      addresses_attributes: [:id, :street, :city, :country, :post_code, :_destroy]
+    )
   end
 
   def user_params
@@ -49,8 +52,14 @@ class VendorsController < ApplicationController
   def attach_logotype
     logotype_param = params.dig(:vendor, :logotype)
     return unless logotype_param.present?
-
-    DecodeService.attach_image(logotype_param, @vendor, 'logotype')
+binding.pry
+    if logotype_param.is_a?(String) && logotype_param.start_with?('data:image')
+      # Handle base64 encoded string
+      DecodeService.attach_image(logotype_param, @vendor, 'logotype')
+    else
+      # Handle file upload
+      @vendor.logotype.attach(logotype_param)
+    end
   end
 
   def user_create(vendor)
