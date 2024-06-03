@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :vendor do
     name { Faker::Company.name }
+    legal_name { Faker::Company.name }
     description { 'Instagram friendly food...' }
     primary_email { Faker::Internet.email }
     vat_id { 'SE556012579001' }

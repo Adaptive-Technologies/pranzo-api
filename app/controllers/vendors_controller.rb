@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class VendorsController < ApplicationController
   after_action :attach_logotype, only: %i[create update]
   rescue_from ActiveRecord::RecordInvalid, with: :render_error_message
@@ -52,12 +50,10 @@ class VendorsController < ApplicationController
   def attach_logotype
     logotype_param = params.dig(:vendor, :logotype)
     return unless logotype_param.present?
-binding.pry
+
     if logotype_param.is_a?(String) && logotype_param.start_with?('data:image')
-      # Handle base64 encoded string
       DecodeService.attach_image(logotype_param, @vendor, 'logotype')
     else
-      # Handle file upload
       @vendor.logotype.attach(logotype_param)
     end
   end

@@ -13,15 +13,12 @@ class Vendor < ApplicationRecord
 
   validates_presence_of :name, :vat_id, :primary_email
   validates_uniqueness_of :name
-  validates :vat_id, valvat: true
 
-  before_validation :normalize_vat_id, if: :new_record?
-  before_validation :set_legal_name, if: :vat_id_changed?
   after_save :create_or_update_system_user
-  after_update :persist_legal_name, if: :saved_change_to_vat_id?
+  after_update :create_or_update_system_user, if: -> { primary_email_changed? }
 
   def system_user
-    User.system_user.where(vendor: self).first
+    users.find_by(role: 'system_user')
   end
 
   def is_affiliated_with?(args)
@@ -38,13 +35,6 @@ class Vendor < ApplicationRecord
            .distinct
   end
 
-  def validate_vat
-    transaction do
-      valvat
-      save
-    end
-  end
-
   def logotype_path
     if Rails.env.test?
       ActiveStorage::Blob.service.path_for(logotype.key)
@@ -56,34 +46,15 @@ class Vendor < ApplicationRecord
   private
 
   def create_or_update_system_user
-    existing_user = User.find_by(email: primary_email)
-    
-    if existing_user && existing_user.vendor != self
-      # Handle case where existing user is not associated with this vendor
-      # Raise an error or handle appropriately
-      errors.add(:primary_email, 'is already taken by another vendor')
-      return false
-    end
-  
-    system_user = User.system_user.find_or_initialize_by(email: primary_email)
+    existing_user = User.find_by email: primary_email
+    return if existing_user
+    system_user = users.find_or_initialize_by(email: primary_email, role: 'system_user')
     system_user.assign_attributes(
-      vendor: self,
       name: "#{name} (System User)",
-      role: 'system_user'
+      role: 'system_user',
+      vendor: self
     )
-    system_user.save!
-  end
-
-  def normalize_vat_id
-    self.vat_id = Valvat::Utils.normalize(vat_id)
-  end
-
-  def set_legal_name
-    data = Valvat.new(vat_id).exists?(detail: true)
-    self.legal_name = data[:name] if data
-  end
-
-  def persist_legal_name
-    save if legal_name_changed?
+    system_user.password = SecureRandom.hex(10) if system_user.new_record?
+    system_user.save!(validate: false)
   end
 end

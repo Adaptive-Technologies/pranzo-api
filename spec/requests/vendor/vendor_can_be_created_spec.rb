@@ -1,14 +1,10 @@
-# frozen_string_literal: true
-
 RSpec.describe 'POST /api/vendors', type: :request do
-  let!(:existing_user) { create(:user, email: 'existing_user@mail.com') }
+  let(:existing_user) { create(:user, email: 'existing_user@mail.com') }
   let(:credentials) { existing_user.create_new_auth_token }
   let(:valid_auth_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(credentials) }
+  let(:logotype) { fixture_file_upload(fixture_path + '/fast_shopping.png', 'image/png') }
 
-  let(:logotype) do
-    fixture_file_upload(fixture_path + '/files/logotype.txt')
-  end
-  describe 'with valid attributes and address' do # Not a valid use case
+  describe 'with valid attributes and address and another user' do
     before do
       post '/api/vendors',
            params: {
@@ -18,17 +14,20 @@ RSpec.describe 'POST /api/vendors', type: :request do
                primary_email: 'the_restaurant@mail.com',
                vat_id: 'DE259597697',
                logotype: logotype,
-               addresses_attributes: [{
-                 street: 'High Street 190',
-                 post_code: '90900',
-                 city: 'Berlin',
-                 country: 'Germay'
-               }, {
-                 street: 'Low Street 190',
-                 post_code: '80000',
-                 city: 'York',
-                 country: 'USA'
-               }]
+               addresses_attributes: [
+                 {
+                   street: 'High Street 190',
+                   post_code: '90900',
+                   city: 'Berlin',
+                   country: 'Germany'
+                 },
+                 {
+                   street: 'Low Street 190',
+                   post_code: '80000',
+                   city: 'York',
+                   country: 'USA'
+                 }
+               ]
              },
              user: {
                name: 'Karl Andersson',
@@ -41,24 +40,22 @@ RSpec.describe 'POST /api/vendors', type: :request do
       @vendor = Vendor.last
     end
 
-    it {
-      expect(response).to have_http_status 201
-    }
+    it { expect(response).to have_http_status 201 }
 
     it 'is expected to attach logotype' do
       expect(@vendor.reload.logotype.attachment).to be_an_instance_of ActiveStorage::Attachment
     end
 
     it 'is expected to attach logotype to vendor' do
-      expect(@vendor.reload.logotype.attachment.filename.to_s).to eq 'attachment.jpeg'
+      expect(@vendor.reload.logotype.attachment.filename.to_s).to eq 'fast_shopping.png'
     end
 
     it 'is expected to respond with representation of the new resource' do
-      expect(response_json['vendor']['users'].count).to eq 2 
+      expect(response_json['vendor']['users'].count).to eq 3 
     end
 
     it 'is expected to have associated users' do
-      expect(@vendor.users.count).to eq 2
+      expect(@vendor.users.count).to eq 3
     end
 
     it 'is expected to save vendor in database' do
@@ -73,36 +70,6 @@ RSpec.describe 'POST /api/vendors', type: :request do
       expect(@vendor.addresses.count).to eq 2
     end
   end
-
-  # describe 'without valid vendor attributes' do
-  #   before do
-  #     post '/api/vendors',
-  #          params: {
-  #            vendor: {
-  #              name: 'The Restaurant',
-  #              description: '',
-  #              primary_email: ''
-  #            },
-  #            user: {
-  #              name: '',
-  #              email: '',
-  #              password: '',
-  #              password_confirmation: ''
-  #            }
-  #          },
-  #          headers: {}
-  #   end
-
-  #   it {
-  #     expect(response).to have_http_status 422
-  #   }
-
-  #   it 'is expected to respond with error message' do
-  #     expect(response_json)
-  #       .to have_key('message')
-  #       .and have_value("Description can't be blank and Primary email can't be blank and remember to create a user account for yourself")
-  #   end
-  # end
 
   describe 'Created by a Superadmin (TODO: this is with flaws!)' do
     let(:admin) { create(:user, role: 'admin') }
@@ -128,19 +95,17 @@ RSpec.describe 'POST /api/vendors', type: :request do
            headers: valid_auth_headers
     end
 
-    it {
-      expect(response).to have_http_status 201
-    }
+    it { expect(response).to have_http_status 201 }
 
     it 'is expected to respond with representation of the new resource' do
-      expect(response_json['vendor']['users'].count).to eq 1
+      expect(response_json['vendor']['users'].count).to eq 2
     end
 
     it 'is expected to have associated users' do
       expect(Vendor.last.users.count).to eq 2
     end
 
-    it 'is expected NOt to associate the admin with vendor' do
+    it 'is expected NOT to associate the admin with vendor' do
       expect(Vendor.last.users).not_to include admin
     end
 
@@ -166,17 +131,15 @@ RSpec.describe 'POST /api/vendors', type: :request do
            headers: valid_auth_headers
     end
 
-    it {
-      expect(response).to have_http_status 201
-    }
+    it { expect(response).to have_http_status 201 }
 
     it 'is expected to attach logotype to vendor' do
       vendor = Vendor.last
-      expect(vendor.logotype.attachment.filename.to_s).to eq 'attachment.jpeg'
+      expect(vendor.logotype.attachment.filename.to_s).to eq 'fast_shopping.png'
     end
 
     it 'is expected to respond with representation of the new resource' do
-      expect(response_json['vendor']['users'].count).to eq 2 # TODO: There is a system user created every time a Vendor is instantiated
+      expect(response_json['vendor']['users'].count).to eq 2
     end
 
     it 'is expected to have associated users' do
@@ -205,9 +168,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
            headers: valid_auth_headers
     end
 
-    it {
-      expect(response).to have_http_status 201
-    }
+    it { expect(response).to have_http_status 201 }
 
     it 'is expected to respond with representation of the new resource' do
       expect(response_json['vendor']['users'].count).to eq 1

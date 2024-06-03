@@ -26,7 +26,7 @@ RSpec.describe Vendor, type: :model do
   end
 
   describe 'Factory' do
-    subject { create(:vendor) }
+    subject { create(:vendor, legal_name: 'The Other Place') }
     it {
       expect(subject).to be_valid
     }

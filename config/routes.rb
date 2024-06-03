@@ -30,5 +30,6 @@ Rails.application.routes.draw do
       end
     end
     post :validate_user, controller: :users # , action: :validate_user
+    get :vat_data, controller: :vat_data, action: :validate_vat
   end
 end
