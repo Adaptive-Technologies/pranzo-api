@@ -15,7 +15,7 @@ class Vendor < ApplicationRecord
   validates_uniqueness_of :name
 
   after_save :create_or_update_system_user
-  after_update :create_or_update_system_user, if: -> { primary_email_changed? }
+  after_update :create_or_update_system_user, if: -> { name_changed? || primary_email_changed? || vat_id_changed? }
 
   def system_user
     users.find_by(role: 'system_user')
@@ -46,12 +46,9 @@ class Vendor < ApplicationRecord
   private
 
   def create_or_update_system_user
-    existing_user = User.find_by email: primary_email
-    return if existing_user
     system_user = users.find_or_initialize_by(email: primary_email, role: 'system_user')
     system_user.assign_attributes(
       name: "#{name} (System User)",
-      role: 'system_user',
       vendor: self
     )
     system_user.password = SecureRandom.hex(10) if system_user.new_record?
