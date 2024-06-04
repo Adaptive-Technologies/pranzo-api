@@ -12,8 +12,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
                name: 'The Restaurant',
                description: 'The best food in this shithole town....',
                primary_email: 'the_restaurant@mail.com',
-               vat_id: 'DE259597697',
-               logotype: logotype,
+               vat_id: 'SE259597697001',
+               org_id: '259597-6970', logotype:,
                addresses_attributes: [
                  {
                    street: 'High Street 190',
@@ -51,7 +51,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
     end
 
     it 'is expected to respond with representation of the new resource' do
-      expect(response_json['vendor']['users'].count).to eq 3 
+      expect(response_json['vendor']['users'].count).to eq 3
     end
 
     it 'is expected to have associated users' do
@@ -82,8 +82,9 @@ RSpec.describe 'POST /api/vendors', type: :request do
                name: 'The Restaurant',
                description: 'The best food in this shithole town....',
                primary_email: 'the_restaurant@mail.com',
-               vat_id: 'DE259597697',
-               logotype: logotype
+               vat_id: 'SE259597697001',
+               org_id: '259597-6970',
+               logotype:
              },
              user: {
                name: 'Existing User',
@@ -124,8 +125,8 @@ RSpec.describe 'POST /api/vendors', type: :request do
                name: 'The Other Restaurant',
                description: 'The best food in this shithole town....',
                primary_email: 'the_restaurant@mail.com',
-               vat_id: 'DE259597697',
-               logotype: logotype
+               vat_id: 'SE259597697001',
+               org_id: '259597-6970', logotype:
              }, user: {}
            },
            headers: valid_auth_headers
@@ -162,7 +163,7 @@ RSpec.describe 'POST /api/vendors', type: :request do
                description: 'The best food in this shithole town....',
                primary_email: existing_user.email,
                vat_id: 'DE259597697',
-               logotype: logotype
+               logotype:
              }, user: {}
            },
            headers: valid_auth_headers

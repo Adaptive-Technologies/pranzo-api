@@ -38,8 +38,8 @@ class VendorsController < ApplicationController
 
   def vendor_params
     params.require(:vendor).permit(
-      :name, :vat_id, :description, :primary_email, :logotype,
-      addresses_attributes: [:id, :street, :city, :country, :post_code, :_destroy]
+      :name, :org_id, :vat_id, :description, :primary_email, :logotype,
+      addresses_attributes: %i[id street city country post_code _destroy]
     )
   end
 
@@ -62,7 +62,7 @@ class VendorsController < ApplicationController
     user = User.find_or_create_by(email: user_params[:email]) do |instance|
       instance.update(user_params)
     end
-    user.update!(vendor: vendor)
+    user.update!(vendor:)
   end
 
   def render_error_message(exception)

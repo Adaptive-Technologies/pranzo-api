@@ -13,7 +13,7 @@ describe Vendors::ShowSerializer do
   end
 
   it 'is expected to contain relevant keys' do
-    expected_keys = %w[id name legal_name description primary_email vat_id logotype affiliates users addresses]
+    expected_keys = %w[id name legal_name description primary_email org_id vat_id logotype affiliates users addresses]
     expect(subject['vendor'].keys).to match expected_keys
   end
 end

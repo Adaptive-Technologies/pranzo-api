@@ -6,6 +6,7 @@ FactoryBot.define do
     legal_name { Faker::Company.name }
     description { 'Instagram friendly food...' }
     primary_email { Faker::Internet.email }
+    org_id { '5560125790' }
     vat_id { 'SE556012579001' }
     after(:build) do |vendor|
       vendor.logotype.attach(
